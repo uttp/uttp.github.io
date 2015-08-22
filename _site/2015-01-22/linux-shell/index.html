@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>shell</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="keywords" content="shell, linux, shell,Linux,script, RainyAlley" />
+    <meta name="description" content="shell, linux, shell,Linux,script, " />
+
+    <link rel="shortcut icon" type="image/x-icon" media="screen" href="http://blog.rainyalley.com/static/favicon.ico" />
+    <link rel="canonical" href="http://blog.rainyalley.com/2015-01-22/linux-shell/" />
+    <link rel="alternate" type="application/rss+xml" title="RainyAlley" href="http://blog.rainyalley.com/feed.xml"  />
+
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/octicons/octicons.css" />
+
+    
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/highlight.css" />
+    
+
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/post.css" />
+    
+</head>
+
+<body>
+<div class="main">
+
+    
+    
+    <header>
+        <nav class="navbar navbar-tiffany rectangle" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://blog.rainyalley.com/">RainyAlley</a>
+                    <p class="navbar-text">Developer</p>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        
+                        <li>
+                        <a href="http://blog.rainyalley.com/" class="word-keep"><span class="octicon octicon-book"></span></span>&nbsp;&nbsp;Blog</a>
+                        </li>
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/archive/" class="word-keep"><span class="octicon octicon-repo"></span>&nbsp;&nbsp;Archive</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/category/" class="word-keep"><span class="octicon octicon-list-unordered"></span>&nbsp;&nbsp;Category</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/tags/" class="word-keep"><span class="octicon octicon-tag"></span>&nbsp;&nbsp;Tag</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li><a href="#stq=" class="search-button"><span class="octicon octicon-search"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <div class="container">
+        <div class="row">
+    <div class="content col-lg-9">
+        <div class="sheet post">
+          <header>
+            <h2>shell</h2>
+            <p class="post-meta">
+                <span class="octicon octicon-clock"></span> Jan 22, 2015
+            </p>
+            <p class="post-tag">
+                <span><a href="http://blog.rainyalley.com/category/#linux"><span class="octicon octicon-list-unordered"></span>&nbsp;linux</a></span>
+                <span>
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#shell"><span class="octicon octicon-tag"></span>&nbsp;shell</a>
+                    
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#Linux"><span class="octicon octicon-tag"></span>&nbsp;Linux</a>
+                    
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#script"><span class="octicon octicon-tag"></span>&nbsp;script</a>
+                    
+                </span>
+            </p>
+          </header>
+          <hr class="boundary">
+          <article>
+            <div class="toc"></div>
+
+<p>Shell有两种执行命令的方式：</p>
+
+<ul>
+<li><p>交互式（Interactive）：解释执行用户的命令，用户输入一条命令，Shell就解释执行一条。</p></li>
+<li><p>批处理（Batch）：用户事先写一个Shell脚本(Script)，其中有很多条命令，让Shell一次把这些命令执行完，而不必一条一条地敲命令。</p></li>
+</ul>
+
+<p>几种shell：
+bash（默认），sh，ash，csh，ksh</p>
+
+<h1 id="变量">变量</h1>
+
+<p>变量名和等号之间不能有空格</p>
+
+<p>首个字符必须为字母（a-z，A-Z）。</p>
+
+<p>中间不能有空格，可以使用下划线（_）。</p>
+
+<p>不能使用标点符号。</p>
+
+<p>不能使用bash里的关键字（可用help命令查看保留关键字）。</p>
+
+<p>使用变量，只要在变量名前面加美元符号（<code class="prettyprint">$</code>）即可</p>
+
+<p>加<code class="prettyprint">{}</code>是为了帮助解释器识别变量的边界，推荐给所有变量引用加上花括号</p>
+
+<p>使用 <code class="prettyprint">readonly</code> 命令可以将变量定义为<code class="prettyprint">只读</code>变量，只读变量的值不能被改变。</p>
+
+<p>定义变量：<code class="prettyprint">variableName=&quot;value&quot;</code></p>
+
+<p>使用 <code class="prettyprint">unset</code> 命令可以<code class="prettyprint">删除</code>变量</p>
+
+<h2 id="变量类型">变量类型</h2>
+
+<p>运行shell时，会同时存在三种变量：</p>
+
+<p>1) 局部变量</p>
+
+<p>局部变量在脚本或命令中定义，仅在当前shell实例中有效，其他shell启动的程序不能访问局部变量。</p>
+
+<p>2) 环境变量</p>
+
+<p>所有的程序，包括shell启动的程序，都能访问环境变量，有些程序需要环境变量来保证其正常运行。必要的时候shell脚本也可以定义环境变量。</p>
+
+<p>3) shell变量</p>
+
+<p>shell变量是由shell程序设置的特殊变量。shell变量中有一部分是环境变量，有一部分是局部变量，这些变量保证了shell的正常运行</p>
+
+<h2 id="特殊变量">特殊变量</h2>
+
+<p><code class="prettyprint">$0</code>    当前脚本的文件名</p>
+
+<p><code class="prettyprint">$n</code>    传递给脚本或函数的参数。n 是一个数字，表示第几个参数。例如，第一个参数是<code class="prettyprint">$1</code>，第二个参数是<code class="prettyprint">$2</code>。</p>
+
+<p><code class="prettyprint">$#</code>    传递给脚本或函数的参数个数。</p>
+
+<p><code class="prettyprint">$*</code>    传递给脚本或函数的所有参数。</p>
+
+<p><code class="prettyprint">$@</code>    传递给脚本或函数的所有参数。被双引号(&quot; &quot;)包含时，与 <code class="prettyprint">$*</code> 稍有不同，下面将会讲到。</p>
+
+<p><code class="prettyprint">$?</code>    上个命令的退出状态，或函数的返回值，大部分命令执行成功会返回 0，失败返回 1；不过，也有一些命令返回其他值，表示不同类型的错误。</p>
+
+<p><code class="prettyprint">$$</code>    当前Shell进程ID。对于 Shell 脚本，就是这些脚本所在的进程ID。</p>
+
+<p><code class="prettyprint">$*</code> 和 <code class="prettyprint">$@</code> 的区别：<code class="prettyprint">$*</code> 和 <code class="prettyprint">$@</code> 都表示传递给函数或脚本的所有参数，不被双引号(&quot; <q>)包含时，都以</q><code class="prettyprint">$1</code>&quot; <q>`$2`</q> … <q>`$n`</q> 的形式输出所有参数；但是当它们被双引号(&quot; <q>)包含时，</q><code class="prettyprint">$*</code><q>会将所有的参数作为一个整体，以</q><code class="prettyprint">$1</code> <code class="prettyprint">$2</code> … <code class="prettyprint">$n</code><q>的形式输出所有参数；</q><code class="prettyprint">$@</code><q>会将各个参数分开，以</q><code class="prettyprint">$1</code>&quot; <q>`$2`</q> … <q>`$n`</q> 的形式输出所有参数。</p>
+
+<h1 id="替换">替换</h1>
+
+<p>转义字符</p>
+
+<p><code class="prettyprint">\\</code>    反斜杠</p>
+
+<p><code class="prettyprint">\a</code>    警报，响铃</p>
+
+<p><code class="prettyprint">\b</code>    退格（删除键）</p>
+
+<p><code class="prettyprint">\f</code>    换页(FF)，将当前位置移到下页开头</p>
+
+<p><code class="prettyprint">\n</code>    换行</p>
+
+<p><code class="prettyprint">\r</code>    回车</p>
+
+<p><code class="prettyprint">\t</code>    水平制表符（tab键）</p>
+
+<p><code class="prettyprint">\v</code>    垂直制表符</p>
+
+<p>-e 表示对转义字符进行替换</p>
+
+<p>-E 选项禁止转义</p>
+
+<p>-n 选项可以禁止插入换行符</p>
+
+<h2 id="命令替换">命令替换</h2>
+
+<p>命令替换是指Shell可以先执行命令，将输出结果暂时保存，在适当的地方输出。</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+
+DATE=`date`
+echo &quot;Date is $DATE&quot;
+
+USERS=`who | wc -l`
+echo &quot;Logged in user are $USERS&quot;
+
+UP=`date ; uptime`
+echo &quot;Uptime is $UP&quot;
+</code></pre></div>
+<h2 id="变量替换">变量替换</h2>
+
+<p>变量替换可以根据变量的状态（是否为空、是否定义等）来改变它的值</p>
+
+<p><code class="prettyprint">${var}</code> 变量本来的值</p>
+
+<p><code class="prettyprint">${var:-word}</code>  如果变量 var 为空或已被删除(unset)，那么返回 word，但不改变 var 的值。</p>
+
+<p><code class="prettyprint">${var:=word}</code>  如果变量 var 为空或已被删除(unset)，那么返回 word，并将 var 的值设置为 word。</p>
+
+<p><code class="prettyprint">${var:?message}</code>   如果变量 var 为空或已被删除(unset)，那么将消息 message 送到标准错误输出，可以用来检测变量 var 是否可以被正常赋值。若此替换出现在Shell脚本中，那么脚本将停止运行。</p>
+
+<p><code class="prettyprint">${var:+word}</code>  如果变量 var 被定义，那么返回 word，但不改变 var 的值。</p>
+
+<h1 id="运算符">运算符</h1>
+
+<p>原生bash不支持简单的数学运算，但是可以通过其他命令来实现，例如 awk 和 expr，expr 最常用。</p>
+
+<p>expr 是一款表达式计算工具，使用它能完成表达式的求值操作。</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+
+val=`expr 2 + 2`
+echo &quot;Total value : $val&quot;
+</code></pre></div>
+<ul>
+<li><p>表达式和运算符之间要有空格，例如 2+2 是不对的，必须写成 2 + 2，这与我们熟悉的大多数编程语言不一样。</p></li>
+<li><p>完整的表达式要被 ` ` 包含，注意这个字符不是常用的单引号，在 Esc 键下边。</p></li>
+</ul>
+
+<h2 id="算术运算符">算术运算符</h2>
+
+<p><code class="prettyprint">+</code> 加法  <code class="prettyprint">expr $a + $b</code> </p>
+
+<p><code class="prettyprint">-</code> 减法  <code class="prettyprint">expr $a - $b</code></p>
+
+<p><code class="prettyprint">*</code> 乘法  <code class="prettyprint">expr $a \* $b</code></p>
+
+<p><code class="prettyprint">/</code> 除法  <code class="prettyprint">expr $b / $a</code></p>
+
+<p><code class="prettyprint">%</code> 取余  <code class="prettyprint">expr $b % $a</code></p>
+
+<p><code class="prettyprint">=</code> 赋值</p>
+
+<p><code class="prettyprint">==</code>    相等。</p>
+
+<p><code class="prettyprint">!=</code>    不相等。</p>
+
+<p>乘号(*)前边必须加反斜杠()才能实现乘法运算</p>
+
+<h2 id="关系运算符">关系运算符</h2>
+
+<p><code class="prettyprint">-eq</code>   检测两个数是否相等，相等返回 true。</p>
+
+<p><code class="prettyprint">-ne</code>   检测两个数是否相等，不相等返回 true。</p>
+
+<p><code class="prettyprint">-gt</code>   检测左边的数是否大于右边的，如果是，则返回 true。</p>
+
+<p><code class="prettyprint">-lt</code>   检测左边的数是否小于右边的，如果是，则返回 true。</p>
+
+<p><code class="prettyprint">-ge</code>   检测左边的数是否大等于右边的，如果是，则返回 true。</p>
+
+<p><code class="prettyprint">-le</code>   检测左边的数是否小于等于右边的，如果是，则返回 true。</p>
+
+<h2 id="布尔运算符">布尔运算符</h2>
+
+<p><code class="prettyprint">!</code> 非运算，表达式为 true 则返回 false，否则返回 true。</p>
+
+<p><code class="prettyprint">-o</code>    或运算，有一个表达式为 true 则返回 true。</p>
+
+<p><code class="prettyprint">-a</code>    与运算，两个表达式都为 true 才返回 true。</p>
+
+<h2 id="字符串运算符">字符串运算符</h2>
+
+<p><code class="prettyprint">=</code> 检测两个字符串是否相等，相等返回 true。    </p>
+
+<p><code class="prettyprint">!=</code>    检测两个字符串是否相等，不相等返回 true。</p>
+
+<p><code class="prettyprint">-z str</code>    检测字符串长度是否为0，为0返回 true。</p>
+
+<p><code class="prettyprint">-n str</code>    检测字符串长度是否不为0，不为0返回 true。</p>
+
+<p><code class="prettyprint">str</code>   检测字符串是否为空，不为空返回 true。</p>
+
+<h2 id="文件测试运算符">文件测试运算符</h2>
+
+<p>文件测试运算符用于检测 Unix 文件的各种属性。</p>
+
+<p><code class="prettyprint">-b file</code>   检测文件是否是块设备文件，如果是，则返回 true。</p>
+
+<p><code class="prettyprint">-c file</code>   检测文件是否是字符设备文件，如果是，则返回 true。</p>
+
+<p><code class="prettyprint">-d file</code>   检测文件是否是目录，如果是，则返回 true。</p>
+
+<p><code class="prettyprint">-f file</code>   检测文件是否是普通文件（既不是目录，也不是设备文件），如果是，则返回 true。</p>
+
+<p><code class="prettyprint">-g file</code>   检测文件是否设置了 SGID 位，如果是，则返回 true。</p>
+
+<p><code class="prettyprint">-k file</code>   检测文件是否设置了粘着位(Sticky Bit)，如果是，则返回 true。</p>
+
+<p><code class="prettyprint">-p file</code>   检测文件是否是具名管道，如果是，则返回 true。</p>
+
+<p><code class="prettyprint">-u file</code>   检测文件是否设置了 SUID 位，如果是，则返回 true。</p>
+
+<p><code class="prettyprint">-r file</code>   检测文件是否可读，如果是，则返回 true。</p>
+
+<p><code class="prettyprint">-w file</code>   检测文件是否可写，如果是，则返回 true。</p>
+
+<p><code class="prettyprint">-x file</code>   检测文件是否可执行，如果是，则返回 true。</p>
+
+<p><code class="prettyprint">-s file</code>   检测文件是否为空（文件大小是否大于0），不为空返回 true。</p>
+
+<p><code class="prettyprint">-e file</code>   检测文件（包括目录）是否存在，如果是，则返回 true。</p>
+
+<h1 id="注释">注释</h1>
+
+<p>以“#”开头的行就是注释，会被解释器忽略。</p>
+
+<p>sh里没有多行注释，只能每一行加一个#号。可以把这一段要注释的代码用一对花括号括起来，定义成一个函数，没有地方调用这个函数，这块代码就不会执行，达到了和注释一样的效果。</p>
+
+<h1 id="字符串">字符串</h1>
+
+<p>单引号字符串的限制：</p>
+
+<ul>
+<li><p>单引号里的任何字符都会原样输出，单引号字符串中的变量是无效的；</p></li>
+<li><p>单引号字串中不能出现单引号（对单引号使用转义符后也不行）。</p></li>
+</ul>
+
+<p>双引号的优点：</p>
+
+<ul>
+<li><p>双引号里可以有变量</p></li>
+<li><p>双引号里可以出现转义字符</p></li>
+</ul>
+
+<p>拼接字符串</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">your_name=&quot;qinjx&quot;
+greeting=&quot;hello, &quot;$your_name&quot; !&quot;
+greeting_1=&quot;hello, ${your_name} !&quot;
+
+echo $greeting $greeting_1
+</code></pre></div>
+<p>获取字符串长度</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">string=&quot;abcd&quot;
+echo ${#string} #输出 4
+</code></pre></div>
+<p>提取子字符串</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">string=&quot;alibaba is a great company&quot;
+echo ${string:1:4} #输出liba
+</code></pre></div>
+<p>查找子字符串</p>
+
+<p><code class="prettyprint">expr index String1 String2</code> 返回 String1 中包含 String2 中任意字符的第一个位置。（从1开始数）</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">string=&quot;alibaba is a great company&quot;
+echo `expr index &quot;$string&quot; is`
+</code></pre></div>
+<h1 id="数组">数组</h1>
+
+<p>bash支持一维数组（不支持多维数组），并且没有限定数组的大小。类似与C语言，数组元素的下标由0开始编号。获取数组中的元素要利用下标，下标可以是整数或算术表达式，其值应大于或等于0。</p>
+
+<h2 id="定义">定义</h2>
+
+<p>在Shell中，用括号来表示数组，数组元素用“空格”符号分割开。定义数组的一般形式为：array_name=(value1 ... valuen)</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">array_name=(value0 value1 value2 value3)
+
+array_name=(
+value0
+value1
+value2
+value3
+)
+
+array_name[0]=value0
+array_name[1]=value1
+array_name[2]=value2
+</code></pre></div>
+<h2 id="读取">读取</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">valuen=${array_name[2]}
+</code></pre></div>
+<p>使用<code class="prettyprint">@</code>或 <code class="prettyprint">*</code> 可以获取数组中的所有元素</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">${array_name[*]}
+${array_name[@]}
+</code></pre></div>
+<h2 id="长度">长度</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text"># 取得数组元素的个数
+length=${#array_name[@]}
+# 或者
+length=${#array_name[*]}
+# 取得数组单个元素的长度
+lengthn=${#array_name[n]}
+</code></pre></div>
+<h1 id="echo">echo</h1>
+
+<p>echo是Shell的一个内部指令，用于在屏幕上打印出指定的字符串。</p>
+
+<p><code class="prettyprint">-n</code> 不要在最后自动换行</p>
+
+<p><code class="prettyprint">-e</code> 若字符串中出现以下字符，则特别加以处理，而不会将它当成一般</p>
+
+<p>文字输出：</p>
+
+<blockquote>
+<p><code class="prettyprint">\a</code> 发出警告声；</p>
+
+<p><code class="prettyprint">\b</code> 删除前一个字符；</p>
+
+<p><code class="prettyprint">\c</code> 最后不加上换行符号；</p>
+
+<p><code class="prettyprint">\f</code> 换行但光标仍旧停留在原来的位置；</p>
+
+<p><code class="prettyprint">\n</code> 换行且光标移至行首；</p>
+
+<p><code class="prettyprint">\r</code> 光标移至行首，但不换行；</p>
+
+<p><code class="prettyprint">\t</code> 插入tab；</p>
+
+<p><code class="prettyprint">\v</code> 与\f相同；</p>
+
+<p><code class="prettyprint">\\</code> 插入\字符；</p>
+
+<p><code class="prettyprint">\nnn</code> 插入nnn（八进制）所代表的ASCII字符；</p>
+</blockquote>
+
+<p><code class="prettyprint">–help</code> 显示帮助</p>
+
+<p><code class="prettyprint">–version</code> 显示版本信息</p>
+
+<h2 id="原样输出字符串">原样输出字符串</h2>
+
+<p>若需要原样输出字符串（不进行转义），请使用单引号</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">echo &#39;$name\&quot;&#39;
+</code></pre></div>
+<h2 id="显示命令执行结果">显示命令执行结果</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">echo `date`
+</code></pre></div>
+<h1 id="printf">printf</h1>
+
+<p>printf 命令用于格式化输出， 是echo命令的增强版。它是C语言printf()库函数的一个有限的变形，并且在语法上有些不同。</p>
+
+<p>注意：printf 由 POSIX 标准所定义，移植性要比 echo 好。</p>
+
+<p>printf 不像 echo 那样会自动换行，必须显式添加换行符(\n)。</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">$printf &quot;Hello, Shell\n&quot;
+Hello, Shell
+$
+</code></pre></div>
+<p>printf 命令的语法</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">printf  format-string  [arguments...]
+</code></pre></div>
+<p>format-string 为格式控制字符串，arguments 为参数列表。</p>
+
+<p>这里仅说明与C语言printf()函数的不同：</p>
+
+<ul>
+<li><p>printf 命令不用加括号</p></li>
+<li><p>format-string 可以没有引号，但最好加上，单引号双引号均可。</p></li>
+<li><p>参数多于格式控制符(%)时，format-string 可以重用，可以将所有参数都转换。</p></li>
+<li><p>arguments 使用空格分隔，不用逗号。</p></li>
+</ul>
+
+<p>注意，根据POSIX标准，浮点格式%e、%E、%f、%g与%G是“不需要被支持”。这是因为awk支持浮点预算，且有它自己的printf语句。这样Shell程序中需要将浮点数值进行格式化的打印时，可使用小型的awk程序实现。然而，内建于bash、ksh93和zsh中的printf命令都支持浮点格式。</p>
+
+<h1 id="分支">分支</h1>
+
+<p>Shell 有三种 if ... else 语句：</p>
+
+<ul>
+<li><p>if ... fi 语句；</p></li>
+<li><p>if ... else ... fi 语句；</p></li>
+<li><p>if ... elif ... else ... fi 语句。</p></li>
+</ul>
+
+<p>最后必须以 fi 来结尾闭合 if，fi 就是 if 倒过来拼写，后面也会遇见。
+注意：expression 和方括号([ ])之间必须有空格，否则会有语法错误。</p>
+
+<h2 id="if">if</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">if [ expression ]
+then
+   statements
+fi
+</code></pre></div>
+<h2 id="if-else">if else</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">if [ expression ]
+then
+   Statements
+else
+   Statements
+fi
+</code></pre></div>
+<h2 id="if-elif-fi">if  elif  fi</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">if [ expression 1 ]
+then
+   Statements
+elif [ expression 2 ]
+then
+   Statements
+elif [ expression 3 ]
+then
+   Statements
+else
+   Statements
+fi
+</code></pre></div>
+<p>if ... else 语句也可以写成一行，以命令的方式来运行，经常与 test 命令结合使用
+<code class="prettyprint">test</code> 命令用于检查某个条件是否成立，与方括号([ ])类似。</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">if test $[2*3] -eq $[1+5]; then echo &#39;The two numbers are equal!&#39;; fi;
+</code></pre></div>
+<h1 id="多分枝选择">多分枝选择</h1>
+
+<p>case ... esac 与其他语言中的 switch ... case 语句类似，是一种多分枝选择结构。
+case 语句匹配一个值或一个模式，如果匹配成功，执行相匹配的命令。</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">case 值 in
+模式1)
+    command1
+    command2
+    command3
+    ;;
+模式2)
+    command1
+    command2
+    command3
+    ;;
+*)
+    command1
+    command2
+    command3
+    ;;
+esac
+</code></pre></div>
+<p>取值后面必须为关键字 <code class="prettyprint">in</code></p>
+
+<p>每一模式必须以<code class="prettyprint">)</code>结束</p>
+
+<p><code class="prettyprint">;;</code> 与其他语言中的 break 类似</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+
+option=&quot;${1}&quot;
+case ${option} in
+   -f) FILE=&quot;${2}&quot;
+      echo &quot;File name is $FILE&quot;
+      ;;
+   -d) DIR=&quot;${2}&quot;
+      echo &quot;Dir name is $DIR&quot;
+      ;;
+   *) 
+      echo &quot;`basename ${0}`:usage: [-f file] | [-d directory]&quot;
+      exit 1 # Command to come out of the program with status 1
+      ;;
+esac
+</code></pre></div>
+<h1 id="循环">循环</h1>
+
+<h2 id="for">for</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">for 变量 in 列表
+do
+    command1
+    command2
+    ...
+    commandN
+done
+</code></pre></div>
+<p>列表是一组值（数字、字符串等）组成的序列，每个值通过空格分隔。每循环一次，就将列表中的下一个值赋给变量。</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+
+for loop in 1 2 3 4 5
+do
+    echo &quot;The value is: $loop&quot;
+done
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+
+for FILE in $HOME/.bash*
+do
+   echo $FILE
+done
+</code></pre></div>
+<h2 id="while">while</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">while command
+do
+   statements
+done
+</code></pre></div><div class="highlight"><pre><code class="language-text" data-lang="text">COUNTER=0
+while [ $COUNTER -lt 5 ]
+do
+    COUNTER=`expr $COUNTER+1`
+    echo $COUNTER
+done
+</code></pre></div>
+<p>while循环可用于读取键盘信息</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">echo &#39;type &lt;CTRL-D&gt; to terminate&#39;
+echo -n &#39;enter your most liked film: &#39;
+while read FILM
+do
+    echo &quot;Yeah! great film the $FILM&quot;
+done
+</code></pre></div>
+<h2 id="until">until</h2>
+
+<p>until 循环执行一系列命令直至条件为 <code class="prettyprint">true</code> 时<code class="prettyprint">停止</code>。until 循环与 while 循环在处理方式上刚好相反。一般while循环优于until循环，但在某些时候，也只是极少数情况下，until 循环更加有用。</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">until command
+do
+   statements
+done
+</code></pre></div>
+<h2 id="跳出循环">跳出循环</h2>
+
+<h3 id="break">break</h3>
+
+<p>break将终止循环体中的后续操作</p>
+
+<p>在嵌套循环中，break 命令后面还可以跟一个整数，表示跳出第几层循环<code class="prettyprint">break n</code></p>
+
+<h3 id="continue">continue</h3>
+
+<p>continue跳出当次循环</p>
+
+<p>同样，continue 后面也可以跟一个数字，表示跳出第几层循环<code class="prettyprint">continue n</code></p>
+
+<h1 id="函数">函数</h1>
+
+<h2 id="定义">定义</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">function_name () {
+    list of commands
+    [ return value ]
+}
+
+#可以加上function 关键字
+function function_name () {
+    list of commands
+    [ return value ]
+}
+#函数返回值，可以显式增加return语句；如果不加，会将最后一条命令运行结果作为返回值。
+</code></pre></div>
+<p>Shell 函数返回值只能是整数，一般用来表示函数执行成功与否，0表示成功，其他值表示失败。如果 return 其他数据，比如一个字符串，往往会得到错误提示：“numeric argument required”。</p>
+
+<p>如果一定要让函数返回字符串，那么可以先定义一个变量，用来接收函数的计算结果，脚本在需要的时候访问这个变量来获得函数返回值。</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+funWithReturn(){
+    echo &quot;The function is to get the sum of two numbers...&quot;
+    echo -n &quot;Input first number: &quot;
+    read aNum
+    echo -n &quot;Input another number: &quot;
+    read anotherNum
+    echo &quot;The two numbers are $aNum and $anotherNum !&quot;
+    return $(($aNum+$anotherNum)) 
+    #两组括号的意思是做算术运算，如果不这么写直接写$a+$b的话，是按字符串理解的，就是25+50这个字符串
+}
+funWithReturn
+# Capture value returnd by last command
+ret=$?
+echo &quot;The sum of two numbers is $ret !&quot;
+</code></pre></div>
+<p>调用函数只需要给出函数名，不需要加括号。</p>
+
+<p>函数返回值在调用该函数后通过 <code class="prettyprint">$?</code> 来获得。</p>
+
+<h2 id="嵌套">嵌套</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+
+# Calling one function from another
+number_one () {
+   echo &quot;Url_1 is http://see.xidian.edu.cn/cpp/shell/&quot;
+   number_two
+}
+
+number_two () {
+   echo &quot;Url_2 is http://see.xidian.edu.cn/cpp/u/xitong/&quot;
+}
+
+number_one
+</code></pre></div>
+<h2 id="删除">删除</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">unset .f function_name
+</code></pre></div>
+<h2 id="参数">参数</h2>
+
+<p>在Shell中，调用函数时可以向其传递参数。在函数体内部，通过 <code class="prettyprint">$n</code> 的形式来获取参数的值，例如，<code class="prettyprint">$1</code>表示第一个参数，<code class="prettyprint">$2</code>表示第二个参数...</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+funWithParam(){
+    echo &quot;The value of the first parameter is $1 !&quot;
+    echo &quot;The value of the second parameter is $2 !&quot;
+    echo &quot;The value of the tenth parameter is $10 !&quot;
+    echo &quot;The value of the tenth parameter is ${10} !&quot;
+    echo &quot;The value of the eleventh parameter is ${11} !&quot;
+    echo &quot;The amount of the parameters is $# !&quot;  # 参数个数
+    echo &quot;The string of the parameters is $* !&quot;  # 传递给函数的所有参数
+}
+funWithParam 1 2 3 4 5 6 7 8 9 34 73
+</code></pre></div>
+<p>注意，<code class="prettyprint">$10</code> 不能获取第十个参数，获取第十个参数需要<code class="prettyprint">${10}</code>。当n&gt;=10时，需要使用<code class="prettyprint">${n}</code>来获取参数。</p>
+
+<p>特殊参数</p>
+
+<p><code class="prettyprint">$#</code>    传递给函数的参数个数。</p>
+
+<p><code class="prettyprint">$*</code>    显示所有传递给函数的参数。</p>
+
+<p><code class="prettyprint">$@</code>    与<code class="prettyprint">$*</code>相同，但是略有区别，请查看Shell特殊变量。</p>
+
+<p><code class="prettyprint">$?</code>    函数的返回值。</p>
+
+<h1 id="io重定向">IO重定向</h1>
+<div class="highlight"><pre><code class="language-text" data-lang="text">command &gt; file
+command &lt; file
+</code></pre></div>
+<p>一般情况下，每个 Unix/Linux 命令运行时都会打开三个文件：</p>
+
+<ul>
+<li><p>标准输入文件(<code class="prettyprint">stdin</code>)：stdin的文件描述符为<code class="prettyprint">0</code>，Unix程序默认从stdin读取数据。</p></li>
+<li><p>标准输出文件(<code class="prettyprint">stdout</code>)：stdout 的文件描述符为<code class="prettyprint">1</code>，Unix程序默认向stdout输出数据。</p></li>
+<li><p>标准错误文件(<code class="prettyprint">stderr</code>)：stderr的文件描述符为<code class="prettyprint">2</code>，Unix程序会向stderr流中写入错误信息。</p></li>
+</ul>
+
+<p>stderr 重定向到 file</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text"> command 2 &gt; file
+</code></pre></div>
+<p>将 stdout 和 stderr 合并后重定向到 file</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">command &gt; file 2&gt;&amp;1
+</code></pre></div>
+<p>默认情况下，command &gt; file 将 stdout 重定向到 file，command &lt; file 将stdin 重定向到 file。</p>
+
+<p><code class="prettyprint">command &gt; file</code>    将输出重定向到 file。</p>
+
+<p><code class="prettyprint">command &lt; file</code>    将输入重定向到 file。</p>
+
+<p><code class="prettyprint">command &gt;&gt; file</code>   将输出以追加的方式重定向到 file。</p>
+
+<p><code class="prettyprint">n &gt; file</code>  将文件描述符为 n 的文件重定向到 file。</p>
+
+<p><code class="prettyprint">n &gt;&gt; file</code> 将文件描述符为 n 的文件以追加的方式重定向到 file。</p>
+
+<p><code class="prettyprint">n &gt;&amp; m</code>    将输出文件 m 和 n 合并。</p>
+
+<p><code class="prettyprint">n &lt;&amp; m</code>    将输入文件 m 和 n 合并。</p>
+
+<p><code class="prettyprint">&lt;&lt; tag</code>    将开始标记 tag 和结束标记 tag 之间的内容作为输入。</p>
+
+<h2 id="here-document">Here Document</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">command &lt;&lt; delimiter
+    document
+delimiter
+</code></pre></div>
+<p>它的作用是将两个 delimiter 之间的内容(document) 作为输入传递给 command。
+注意：</p>
+
+<ul>
+<li><p>结尾的delimiter 一定要顶格写，前面不能有任何字符，后面也不能有任何字符，包括空格和 tab 缩进。</p></li>
+<li><p>开始的delimiter前后的空格会被忽略掉。</p></li>
+</ul>
+
+<h2 id="dev-null">/dev/null</h2>
+
+<p>/dev/null 是一个特殊的文件，写入到它的内容都会被丢弃；如果尝试从该文件读取内容，那么什么也读不到。但是 /dev/null 文件非常有用，将命令的输出重定向到它，会起到”禁止输出“的效果。
+屏蔽 stdout 和 stderr</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">command &gt; /dev/null 2&gt;&amp;1
+</code></pre></div>
+<h1 id="文件包含">文件包含</h1>
+
+<p>Shell 也可以包含外部脚本，将外部脚本的内容合并到当前脚本</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">. filename
+#或
+source filename
+</code></pre></div>
+<p>两种方式的效果相同，简单起见，一般使用点号(.)，但是注意点号(.)和文件名中间有一空格</p>
+
+<p>脚本 subscript.sh</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">url=&quot;http://see.xidian.edu.cn/cpp/view/2738.html&quot;
+</code></pre></div>
+<p>引入当前目录下的subscript.sh脚本</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">#!/bin/bash
+. ./subscript.sh
+echo $url
+</code></pre></div>
+          </article>
+          <hr class="boundary">
+          <div id="post-share" class="bdsharebuttonbox">
+              <a href="#" class="bds_more" data-cmd="more"></a>
+              <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+              <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+              <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+              <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+              <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+          </div>
+        </div>
+        <div class="pad-min"></div>
+        <div id="post-comment" class="sheet post">
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+    <div class="content-navigation col-lg-3">
+      <div class="shadow-bottom-center" >
+        <div class="content-navigation-toc">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Toc
+            </div>
+            <div class="content-navigation-list toc"></div>
+        </div>
+        <div class="content-navigation-tag">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Tags
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#shell"><span class="octicon octicon-tag"></span>&nbsp;shell</a>
+                    </li>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#Linux"><span class="octicon octicon-tag"></span>&nbsp;Linux</a>
+                    </li>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#script"><span class="octicon octicon-tag"></span>&nbsp;script</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="content-navigation-related">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Related
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+
+                    
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-05-07/js-summary/">Javascript 总结</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-02-06/closure/">JS 闭包</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-01-11/linux-make/">make</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-10-17/shell-trash/">告别rm,自制回收站</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-06-10/ssh/">SSH</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-05-07/linux-job/">Linux计划任务</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-04-20/flex/">Flex</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-02-20/linux-boot/">Linux启动流程</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-02-13/linux-ps/">Linux进程管理</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-02-08/linux-power/">Linux权限管理</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-01-25/linux-filecmd/">Linux目录与文件</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-01-05/vim/">VIM</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-01-02/linux-print/">Linux打印</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+    </div>
+
+    <div class="page-scrollTop" data-toggle="tooltip" data-placement="top" title="Top">
+        <a href="javascript:void(0);">
+            <div class="arrow"></div>
+            <div class="stick"></div>
+        </a>
+    </div>
+</div>
+
+    <footer  class="footnote footnote-tiffany">
+        <div class="container">
+                <a class="foot-item" href="mailto:dubuyuye@yeah.net" target="_blank"><span class="octicon octicon-mail"></span></a>
+                <a class="foot-item" href="https://github.com/dubuyuye" target="_blank"><span class="octicon octicon-mark-github"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/feed.xml" target="_blank"><span class="octicon octicon-rss"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/link/"><span class="octicon octicon-link-external"></span></a>
+                &nbsp;
+                <a href="http://blog.rainyalley.com/"><span class="word-keep">&copy; RainyAlley</span></a>
+        </div>
+    </footer>
+
+
+<div class="scriptHub">
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/script.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/toc.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/post.js"></script>
+    
+</div>
+
+
+
+</body>
+</html>

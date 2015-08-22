@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Java中用js解析json</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="keywords" content="Java中用js解析json, java, ScriptEngineManager,Java,javascript, RainyAlley" />
+    <meta name="description" content="Java中用js解析json, java, ScriptEngineManager,Java,javascript, 在java中如何解析json？fastjson？jackson？那未免太无趣了" />
+
+    <link rel="shortcut icon" type="image/x-icon" media="screen" href="http://blog.rainyalley.com/static/favicon.ico" />
+    <link rel="canonical" href="http://blog.rainyalley.com/2015-02-22/javajs/" />
+    <link rel="alternate" type="application/rss+xml" title="RainyAlley" href="http://blog.rainyalley.com/feed.xml"  />
+
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/octicons/octicons.css" />
+
+    
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/highlight.css" />
+    
+
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/post.css" />
+    
+</head>
+
+<body>
+<div class="main">
+
+    
+    
+    <header>
+        <nav class="navbar navbar-tiffany rectangle" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://blog.rainyalley.com/">RainyAlley</a>
+                    <p class="navbar-text">Developer</p>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        
+                        <li>
+                        <a href="http://blog.rainyalley.com/" class="word-keep"><span class="octicon octicon-book"></span></span>&nbsp;&nbsp;Blog</a>
+                        </li>
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/archive/" class="word-keep"><span class="octicon octicon-repo"></span>&nbsp;&nbsp;Archive</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/category/" class="word-keep"><span class="octicon octicon-list-unordered"></span>&nbsp;&nbsp;Category</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/tags/" class="word-keep"><span class="octicon octicon-tag"></span>&nbsp;&nbsp;Tag</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li><a href="#stq=" class="search-button"><span class="octicon octicon-search"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <div class="container">
+        <div class="row">
+    <div class="content col-lg-9">
+        <div class="sheet post">
+          <header>
+            <h2>Java中用js解析json</h2>
+            <p class="post-meta">
+                <span class="octicon octicon-clock"></span> Feb 22, 2015
+            </p>
+            <p class="post-tag">
+                <span><a href="http://blog.rainyalley.com/category/#java"><span class="octicon octicon-list-unordered"></span>&nbsp;java</a></span>
+                <span>
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#ScriptEngineManager"><span class="octicon octicon-tag"></span>&nbsp;ScriptEngineManager</a>
+                    
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#Java"><span class="octicon octicon-tag"></span>&nbsp;Java</a>
+                    
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#javascript"><span class="octicon octicon-tag"></span>&nbsp;javascript</a>
+                    
+                </span>
+            </p>
+          </header>
+          <hr class="boundary">
+          <article>
+            <p>在java中如何解析json？fastjson？jackson？那未免太无趣了</p>
+
+<p>其实我们可以试试ScriptEngine</p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">NashornTest</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">json</span> <span class="o">=</span> <span class="s">&quot;[{name:&#39;A&#39;,age:&#39;18&#39;},{name:&#39;B&#39;,age:&#39;19&#39;},{name:&#39;C&#39;,age:&#39;30&#39;}]&quot;</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">script</span> <span class="o">=</span>
+            <span class="s">&quot;function parse(json){&quot;</span> <span class="o">+</span>
+            <span class="s">&quot;   var names = new Array();&quot;</span> <span class="o">+</span>
+            <span class="s">&quot;   for(var i in json){&quot;</span> <span class="o">+</span>
+            <span class="s">&quot;       names.push(json[i].name);&quot;</span> <span class="o">+</span>
+            <span class="s">&quot;   }&quot;</span> <span class="o">+</span>
+            <span class="s">&quot;   return names;&quot;</span> <span class="o">+</span>
+            <span class="s">&quot;};&quot;</span> <span class="o">+</span>
+            <span class="s">&quot;parse(&quot;</span> <span class="o">+</span> <span class="n">json</span> <span class="o">+</span> <span class="s">&quot;);&quot;</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">ScriptException</span> <span class="o">{</span>
+        <span class="n">ScriptEngineManager</span> <span class="n">manager</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">ScriptEngineManager</span><span class="o">();</span>
+        <span class="n">ScriptEngine</span> <span class="n">engine</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="na">getEngineByName</span><span class="o">(</span> <span class="s">&quot;JavaScript&quot;</span> <span class="o">);</span>
+
+        <span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">result</span> <span class="o">=</span> <span class="o">(</span><span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span><span class="n">String</span><span class="o">&gt;)</span><span class="n">engine</span><span class="o">.</span><span class="na">eval</span><span class="o">(</span><span class="n">script</span><span class="o">);</span>
+        <span class="n">result</span><span class="o">.</span><span class="na">forEach</span><span class="o">((</span><span class="n">k</span><span class="o">,</span><span class="n">v</span><span class="o">)</span> <span class="o">-&gt;</span> <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">v</span><span class="o">));</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>输出:</p>
+
+<p>A</p>
+
+<p>B</p>
+
+<p>C</p>
+
+<blockquote>
+<p>代码中使用了 <a href="http://blog.rainynight.top/2014-12-13/java-newfeature/#lambda">lambda</a></p>
+</blockquote>
+
+          </article>
+          <hr class="boundary">
+          <div id="post-share" class="bdsharebuttonbox">
+              <a href="#" class="bds_more" data-cmd="more"></a>
+              <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+              <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+              <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+              <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+              <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+          </div>
+        </div>
+        <div class="pad-min"></div>
+        <div id="post-comment" class="sheet post">
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+    <div class="content-navigation col-lg-3">
+      <div class="shadow-bottom-center" >
+        <div class="content-navigation-toc">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Toc
+            </div>
+            <div class="content-navigation-list toc"></div>
+        </div>
+        <div class="content-navigation-tag">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Tags
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#ScriptEngineManager"><span class="octicon octicon-tag"></span>&nbsp;ScriptEngineManager</a>
+                    </li>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#Java"><span class="octicon octicon-tag"></span>&nbsp;Java</a>
+                    </li>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#javascript"><span class="octicon octicon-tag"></span>&nbsp;javascript</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="content-navigation-related">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Related
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+
+                    
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-04-09/rmi/">RMI</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-03-17/servlet-encode/">Servlet乱码分析</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-03-12/spring-security/">spring security 探秘</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-03-05/validator/">Bean Validation</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-02-13/sqlappend/">SQL 拼接</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-02-11/webtool/">DIY的 ajax 框架</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-02-06/closure/">JS 闭包</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-12-21/webservice/">WebService</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-12-13/java-newfeature/">Java8 新特性</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-11-18/java-concurrent/">Java Concurrent</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-08-20/jvm/">Java虚拟机</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-06-26/effective/">Effective Java</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-05-12/acturl-generic/">超类中的泛型</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-04-15/fileupload/">Custom Fileupload</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-03-22/reentrantlock/">可重入锁</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+    </div>
+
+    <div class="page-scrollTop" data-toggle="tooltip" data-placement="top" title="Top">
+        <a href="javascript:void(0);">
+            <div class="arrow"></div>
+            <div class="stick"></div>
+        </a>
+    </div>
+</div>
+
+    <footer  class="footnote footnote-tiffany">
+        <div class="container">
+                <a class="foot-item" href="mailto:dubuyuye@yeah.net" target="_blank"><span class="octicon octicon-mail"></span></a>
+                <a class="foot-item" href="https://github.com/dubuyuye" target="_blank"><span class="octicon octicon-mark-github"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/feed.xml" target="_blank"><span class="octicon octicon-rss"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/link/"><span class="octicon octicon-link-external"></span></a>
+                &nbsp;
+                <a href="http://blog.rainyalley.com/"><span class="word-keep">&copy; RainyAlley</span></a>
+        </div>
+    </footer>
+
+
+<div class="scriptHub">
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/script.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/toc.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/post.js"></script>
+    
+</div>
+
+
+
+</body>
+</html>

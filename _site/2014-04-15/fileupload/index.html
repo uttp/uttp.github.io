@@ -1,0 +1,1249 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Custom Fileupload</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="keywords" content="Custom Fileupload, web, fileupload,Java,Http, RainyAlley" />
+    <meta name="description" content="Custom Fileupload, web, fileupload,Java,Http, " />
+
+    <link rel="shortcut icon" type="image/x-icon" media="screen" href="http://blog.rainyalley.com/static/favicon.ico" />
+    <link rel="canonical" href="http://blog.rainyalley.com/2014-04-15/fileupload/" />
+    <link rel="alternate" type="application/rss+xml" title="RainyAlley" href="http://blog.rainyalley.com/feed.xml"  />
+
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/octicons/octicons.css" />
+
+    
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/highlight.css" />
+    
+
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/post.css" />
+    
+</head>
+
+<body>
+<div class="main">
+
+    
+    
+    <header>
+        <nav class="navbar navbar-tiffany rectangle" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://blog.rainyalley.com/">RainyAlley</a>
+                    <p class="navbar-text">Developer</p>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        
+                        <li>
+                        <a href="http://blog.rainyalley.com/" class="word-keep"><span class="octicon octicon-book"></span></span>&nbsp;&nbsp;Blog</a>
+                        </li>
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/archive/" class="word-keep"><span class="octicon octicon-repo"></span>&nbsp;&nbsp;Archive</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/category/" class="word-keep"><span class="octicon octicon-list-unordered"></span>&nbsp;&nbsp;Category</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/tags/" class="word-keep"><span class="octicon octicon-tag"></span>&nbsp;&nbsp;Tag</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li><a href="#stq=" class="search-button"><span class="octicon octicon-search"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <div class="container">
+        <div class="row">
+    <div class="content col-lg-9">
+        <div class="sheet post">
+          <header>
+            <h2>Custom Fileupload</h2>
+            <p class="post-meta">
+                <span class="octicon octicon-clock"></span> Apr 15, 2014
+            </p>
+            <p class="post-tag">
+                <span><a href="http://blog.rainyalley.com/category/#web"><span class="octicon octicon-list-unordered"></span>&nbsp;web</a></span>
+                <span>
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#fileupload"><span class="octicon octicon-tag"></span>&nbsp;fileupload</a>
+                    
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#Java"><span class="octicon octicon-tag"></span>&nbsp;Java</a>
+                    
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#Http"><span class="octicon octicon-tag"></span>&nbsp;Http</a>
+                    
+                </span>
+            </p>
+          </header>
+          <hr class="boundary">
+          <article>
+            <div class="toc"></div>
+
+<p>本文的目的是简要说明如何编写一个文件上传组件，使他的功能类似 <a href="https://github.com/apache/commons-fileupload">commons-fileupload</a>, 并在结尾处提供了完整代码的获取方式。</p>
+
+<h1 id="http">HTTP</h1>
+
+<p>本文讨论的是基于 HTTP 协议的文件上传，下面先来看看 HTTP 请求的真面目。</p>
+
+<p>首先，用 JavaSe 类库中的 Socket 搭建一个超简单的服务器，这个服务器只有一个功能，就是完整地打印整个 HTTP 请求体。</p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Server</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="n">ServerSocket</span> <span class="n">serverSocket</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">Server</span><span class="o">()</span> <span class="kd">throws</span>  <span class="n">IOException</span><span class="o">{</span>
+        <span class="n">serverSocket</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">ServerSocket</span><span class="o">(</span><span class="mi">8080</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">show</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span><span class="o">{</span>
+        <span class="k">while</span><span class="o">(</span><span class="kc">true</span><span class="o">){</span>
+            <span class="n">Socket</span> <span class="n">socket</span> <span class="o">=</span> <span class="n">serverSocket</span><span class="o">.</span><span class="na">accept</span><span class="o">();</span>
+            <span class="kt">byte</span><span class="o">[]</span> <span class="n">buf</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">byte</span><span class="o">[</span><span class="mi">1024</span><span class="o">];</span>
+            <span class="n">InputStream</span> <span class="n">is</span> <span class="o">=</span>  <span class="n">socket</span><span class="o">.</span><span class="na">getInputStream</span><span class="o">();</span>
+            <span class="n">OutputStream</span> <span class="n">os</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">ByteArrayOutputStream</span><span class="o">();</span>
+            <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+            <span class="k">while</span> <span class="o">((</span><span class="n">n</span> <span class="o">=</span> <span class="n">is</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buf</span><span class="o">))</span> <span class="o">&gt;</span> <span class="o">-</span><span class="mi">1</span><span class="o">){</span>
+                <span class="n">os</span><span class="o">.</span><span class="na">write</span><span class="o">(</span><span class="n">buf</span><span class="o">,</span><span class="mi">0</span><span class="o">,</span><span class="n">n</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="n">os</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+            <span class="n">is</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+            <span class="n">socket</span><span class="o">.</span><span class="na">close</span><span class="o">();</span>
+
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">os</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+        <span class="k">new</span> <span class="nf">Server</span><span class="o">().</span><span class="na">show</span><span class="o">();</span>
+    <span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div>
+<p>将服务器运行起来之后，在浏览器中输入地址：<code class="prettyprint">http://localhost:8080</code></p>
+
+<p>在我的机器上，显示如下内容，可以看到，这个一个get请求</p>
+
+<p><img src="http://blog.rainyalley.com/static/img/http-get.png" alt="http-get"></p>
+
+<p>下面利用一个 html 的 form表单提交 post 请求</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html">    <span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&quot;http://localhost:8080&quot;</span> <span class="na">method=</span><span class="s">&quot;post&quot;</span> <span class="na">enctype=</span><span class="s">&quot;multipart/form-data&quot;</span><span class="nt">&gt;</span>
+       <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;time&quot;</span> <span class="na">value=</span><span class="s">&quot;1970-01-01&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;file&quot;</span> <span class="na">name=</span><span class="s">&quot;file&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/form&gt;</span>
+</code></pre></div>
+<p>在我的机器上，显示如下内容</p>
+
+<p><img src="http://blog.rainyalley.com/static/img/http-post.png" alt="http-post"></p>
+
+<p>注意图中被红色框起来的部分，第一个红框指示了本次请求中，用来分隔不同元素的分隔线。</p>
+
+<p>每个元素将以此分隔线作为第一行，后面紧跟对元素的描述，描述与内容用空行分隔。</p>
+
+<p>分隔线的后面加两个小短横代表整个请求体结束，即<strong>EOF</strong>。</p>
+
+<p>我们需要做的工作，就是利用分隔线，从请求体中分离出每个元素，分析HTTP请求头的工作可以交给Servlet。</p>
+
+<h1 id="分析">分析</h1>
+
+<p>那么，如何分离呢？</p>
+
+<p>java中的 <code class="prettyprint">InputStream</code> 只能读取一次，所以我们想要方便地分析一个流，最直接的办法就是将其缓存下来。</p>
+
+<p>RandomAccessFile 或许能够满足需求，RandomAccessFile 可以提供一个指针用于在文件中的随意移动，然而需要读写本地文件的方案不会是最优方案。</p>
+
+<p>先将整个流读一遍将内容缓存到内存中？ 这种方案在多个客户端同时提交大文件时一定是不可靠的。</p>
+
+<p>最理想的方案可能是，我只需要读一遍 <code class="prettyprint">InputStream</code> , 读完后将得到一个有序列表，列表中存放每个元素对象。</p>
+
+<p>很明显，JavaSe的流没有提供这个功能</p>
+
+<p>我们知道从 <code class="prettyprint">InputStreeam</code> 中获取内容需要使用 <code class="prettyprint">read</code> 方法，返回 <code class="prettyprint">-1</code> 表示读到了流的末尾，如果我们增强一下<code class="prettyprint">read</code>的功能，让其在读到每个元素末尾的时候返回 <code class="prettyprint">-1</code>，这样不就可以分离出每个元素了吗，至于判断是否到了整个流的末尾，自有办法。</p>
+
+<h1 id="设计">设计</h1>
+
+<p>如何增强<code class="prettyprint">read</code>方法呢？</p>
+
+<p><code class="prettyprint">read</code>方法要在读到元素末尾时返回<code class="prettyprint">-1</code> , 一定需要先对已读取的内容进行分析，判断是否元素末尾。</p>
+
+<p>我的做法是，内部维护一个buffer，<code class="prettyprint">read</code>方法在读取时先将字节写入到这个buffer中，然后分析其中是否存在分隔线，然后将buffer中可用的元素复制到客户端提供的buffer。</p>
+
+<p>这个内部维护的buffer并不总是满的，其中的字节来自read方法的原始功能，所以我们需要一个变量来记录buffer中有效字节的末尾位置 <code class="prettyprint">tail</code>。</p>
+
+<p>我们还需要一个变量 <code class="prettyprint">pos</code> 来标记buffer中是否存在分隔线，pos的值即为分隔线的开头在buffer中的位置，如果buffer中不存在分隔线pos的值将为-1。</p>
+
+<p>但是问题没这个简单，分隔线在buffer中存在状态有两种情况：</p>
+
+<p>情况A，分隔线完好地存在于buffer中，图中的bundary即为分隔线</p>
+
+<p><img src="http://blog.rainyalley.com/static/img/boundary-A.png" alt="boundary-A"></p>
+
+<p>情况B，分隔线的一部分存在于buffer中</p>
+
+<p><img src="http://blog.rainyalley.com/static/img/boundary-B.png" alt="boundary-B"></p>
+
+<p>在B情况下，<code class="prettyprint">boundary</code>有多少字节存在于buffer中是不确定的，而且依靠这些不完整的字节根本无法判断他是否属于boundary开头。</p>
+
+<p>例如，buffer中没有发现boundary，但是buffer末尾的3个字节与boundary开头相同，这种情况可能只是巧合，boundary并没有被截断。</p>
+
+<p>对于这个问题，有一个解决办法，我们不必检查到buffer末尾，而是在buffer末尾留一个关健区<code class="prettyprint">pad</code>。</p>
+
+<p>这个关健区中很有可能存在被截断boundary，每次检查到<code class="prettyprint">pad</code>开头时立即收手，此位置之前的数据可以确保没有boundary，在下次填充buffer时，将这个关健区中的数据复制到buffer开头再处理。很显然，关健区<code class="prettyprint">pad</code>长度应该等于boundary，如图：</p>
+
+<p><img src="http://blog.rainyalley.com/static/img/boundary-C.png" alt="pad"></p>
+
+<h1 id="关键代码">关键代码</h1>
+
+<p><strong>在buffer中检查boundary</strong></p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kt">int</span> <span class="nf">findSeparator</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">first</span><span class="o">;</span>
+    <span class="kt">int</span> <span class="n">match</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="c1">//若buffer中head至tail之间的字节数小于boundaryLength,那么maxpos将小于head,循环将不会运行,返回值为-1</span>
+    <span class="kt">int</span> <span class="n">maxpos</span> <span class="o">=</span> <span class="n">tail</span> <span class="o">-</span> <span class="n">boundaryLength</span><span class="o">;</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">first</span> <span class="o">=</span> <span class="n">head</span><span class="o">;</span> <span class="n">first</span> <span class="o">&lt;=</span> <span class="n">maxpos</span> <span class="o">&amp;&amp;</span> <span class="n">match</span> <span class="o">!=</span> <span class="n">boundaryLength</span><span class="o">;</span> <span class="n">first</span><span class="o">++)</span> <span class="o">{</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="n">findByte</span><span class="o">(</span><span class="n">boundary</span><span class="o">[</span><span class="mi">0</span><span class="o">],</span> <span class="n">first</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">first</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span> <span class="o">||</span> <span class="n">first</span> <span class="o">&gt;</span> <span class="n">maxpos</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">match</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">match</span> <span class="o">&lt;</span> <span class="n">boundaryLength</span><span class="o">;</span> <span class="n">match</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">buffer</span><span class="o">[</span><span class="n">first</span> <span class="o">+</span> <span class="n">match</span><span class="o">]</span> <span class="o">!=</span> <span class="n">boundary</span><span class="o">[</span><span class="n">match</span><span class="o">])</span> <span class="o">{</span>
+                <span class="k">break</span><span class="o">;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">match</span> <span class="o">==</span> <span class="n">boundaryLength</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="n">first</span> <span class="o">-</span> <span class="mi">1</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div>
+<p><strong>填充buffer</strong></p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">private</span> <span class="kt">int</span> <span class="nf">makeAvailable</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="c1">//该方法在available返回0时才会被调用,若pos!=-1那pos==head,表示boundary处于head位,可用字节数为0</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">pos</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="c1">// 将pad位之后的数据移动到buffer开头</span>
+    <span class="n">total</span> <span class="o">+=</span> <span class="n">tail</span> <span class="o">-</span> <span class="n">head</span> <span class="o">-</span> <span class="n">pad</span><span class="o">;</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">arraycopy</span><span class="o">(</span><span class="n">buffer</span><span class="o">,</span> <span class="n">tail</span> <span class="o">-</span> <span class="n">pad</span><span class="o">,</span> <span class="n">buffer</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="n">pad</span><span class="o">);</span>
+
+    <span class="c1">// 将buffer填满</span>
+    <span class="n">head</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="n">tail</span> <span class="o">=</span> <span class="n">pad</span><span class="o">;</span>
+    <span class="c1">//循环读取数据,直至将buffer填满,在此过程中,每次读取都将检索buffer中是否存在boundary,无论存在与否,都将即时返回可用数据量</span>
+    <span class="k">for</span> <span class="o">(;;)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">bytesRead</span> <span class="o">=</span> <span class="n">input</span><span class="o">.</span><span class="na">read</span><span class="o">(</span><span class="n">buffer</span><span class="o">,</span> <span class="n">tail</span><span class="o">,</span> <span class="n">bufSize</span> <span class="o">-</span> <span class="n">tail</span><span class="o">);</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">bytesRead</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">//理论上因为会对buffer不断进行检索,读到boundary时就会return 0,read方法将返回 -1,</span>
+            <span class="c1">//所以不会读到input末尾,如果运行到了这里,表示发生了错误.</span>
+            <span class="kd">final</span> <span class="n">String</span> <span class="n">msg</span> <span class="o">=</span> <span class="s">&quot;Stream ended unexpectedly&quot;</span><span class="o">;</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="n">msg</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">notifier</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">notifier</span><span class="o">.</span><span class="na">noteBytesRead</span><span class="o">(</span><span class="n">bytesRead</span><span class="o">);</span>
+        <span class="o">}</span>
+        <span class="n">tail</span> <span class="o">+=</span> <span class="n">bytesRead</span><span class="o">;</span>
+        <span class="n">findSeparator</span><span class="o">();</span>
+        <span class="c1">//若buffer中的数据量小于keepRegion(boundaryLength),av将必定等于0,循环将继续,直至数据量大于或等于keepRegion(boundaryLength).</span>
+        <span class="c1">//此时将检索buffer中是否包含boundary,若包含,将返回boundary所在位置pos之前的数据量,若不包含,将返回pad位之前的数据量</span>
+        <span class="kt">int</span> <span class="n">av</span> <span class="o">=</span> <span class="n">available</span><span class="o">();</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">av</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">pos</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">av</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<p><strong>强化后的read方法</strong></p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Override</span>
+<span class="kd">public</span> <span class="kt">int</span> <span class="nf">read</span><span class="o">(</span><span class="kt">byte</span><span class="o">[]</span> <span class="n">b</span><span class="o">,</span> <span class="kt">int</span> <span class="n">off</span><span class="o">,</span> <span class="kt">int</span> <span class="n">len</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="o">{</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">closed</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">RuntimeException</span><span class="o">(</span><span class="s">&quot;the stream is closed&quot;</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">len</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="o">}</span>
+    <span class="kt">int</span> <span class="n">res</span> <span class="o">=</span> <span class="n">available</span><span class="o">();</span>
+    <span class="k">if</span> <span class="o">(</span><span class="n">res</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">makeAvailable</span><span class="o">();</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">res</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">Math</span><span class="o">.</span><span class="na">min</span><span class="o">(</span><span class="n">res</span><span class="o">,</span> <span class="n">len</span><span class="o">);</span>
+    <span class="n">System</span><span class="o">.</span><span class="na">arraycopy</span><span class="o">(</span><span class="n">buffer</span><span class="o">,</span> <span class="n">head</span><span class="o">,</span> <span class="n">b</span><span class="o">,</span> <span class="n">off</span><span class="o">,</span> <span class="n">res</span><span class="o">);</span>
+    <span class="n">head</span> <span class="o">+=</span> <span class="n">res</span><span class="o">;</span>
+    <span class="n">total</span> <span class="o">+=</span> <span class="n">res</span><span class="o">;</span>
+    <span class="k">return</span> <span class="n">res</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div>
+<h1 id="源码获取">源码获取</h1>
+
+<p>我已经按照这套想法完整地实现了文件上传组件</p>
+
+<p>有兴趣的朋友可以从我的Gighub获取源码 <a href="https://github.com/dubuyuye/fileupload/releases">点我获取</a></p>
+
+<p>使用方法：<a href="https://github.com/dubuyuye/fileupload">点我查看</a></p>
+
+          </article>
+          <hr class="boundary">
+          <div id="post-share" class="bdsharebuttonbox">
+              <a href="#" class="bds_more" data-cmd="more"></a>
+              <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+              <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+              <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+              <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+              <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+          </div>
+        </div>
+        <div class="pad-min"></div>
+        <div id="post-comment" class="sheet post">
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+    <div class="content-navigation col-lg-3">
+      <div class="shadow-bottom-center" >
+        <div class="content-navigation-toc">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Toc
+            </div>
+            <div class="content-navigation-list toc"></div>
+        </div>
+        <div class="content-navigation-tag">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Tags
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#fileupload"><span class="octicon octicon-tag"></span>&nbsp;fileupload</a>
+                    </li>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#Java"><span class="octicon octicon-tag"></span>&nbsp;Java</a>
+                    </li>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#Http"><span class="octicon octicon-tag"></span>&nbsp;Http</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="content-navigation-related">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Related
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+
+                    
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-04-09/rmi/">RMI</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-03-17/servlet-encode/">Servlet乱码分析</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-03-12/spring-security/">spring security 探秘</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-03-05/validator/">Bean Validation</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-02-22/javajs/">Java中用js解析json</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-02-13/sqlappend/">SQL 拼接</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-12-21/webservice/">WebService</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-12-13/java-newfeature/">Java8 新特性</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-11-18/java-concurrent/">Java Concurrent</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-08-20/jvm/">Java虚拟机</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-06-26/effective/">Effective Java</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-05-12/acturl-generic/">超类中的泛型</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-03-22/reentrantlock/">可重入锁</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-03-16/tomcat-https/">Tomcat Https 配置</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-03-13/resubmit/">防止重复提交的几种办法</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+    </div>
+
+    <div class="page-scrollTop" data-toggle="tooltip" data-placement="top" title="Top">
+        <a href="javascript:void(0);">
+            <div class="arrow"></div>
+            <div class="stick"></div>
+        </a>
+    </div>
+</div>
+
+    <footer  class="footnote footnote-tiffany">
+        <div class="container">
+                <a class="foot-item" href="mailto:dubuyuye@yeah.net" target="_blank"><span class="octicon octicon-mail"></span></a>
+                <a class="foot-item" href="https://github.com/dubuyuye" target="_blank"><span class="octicon octicon-mark-github"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/feed.xml" target="_blank"><span class="octicon octicon-rss"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/link/"><span class="octicon octicon-link-external"></span></a>
+                &nbsp;
+                <a href="http://blog.rainyalley.com/"><span class="word-keep">&copy; RainyAlley</span></a>
+        </div>
+    </footer>
+
+
+<div class="scriptHub">
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/script.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/toc.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/post.js"></script>
+    
+</div>
+
+
+
+</body>
+</html>

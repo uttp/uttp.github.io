@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>算法小汇</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="keywords" content="算法小汇, algorithm, 三色旗,汉诺塔,斐波那契数列,骑士周游,算法,algorithm, RainyAlley" />
+    <meta name="description" content="算法小汇, algorithm, 三色旗,汉诺塔,斐波那契数列,骑士周游,算法,algorithm, " />
+
+    <link rel="shortcut icon" type="image/x-icon" media="screen" href="http://blog.rainyalley.com/static/favicon.ico" />
+    <link rel="canonical" href="http://blog.rainyalley.com/2014-04-09/algorithm-gist/" />
+    <link rel="alternate" type="application/rss+xml" title="RainyAlley" href="http://blog.rainyalley.com/feed.xml"  />
+
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/octicons/octicons.css" />
+
+    
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/highlight.css" />
+    
+
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/post.css" />
+    
+</head>
+
+<body>
+<div class="main">
+
+    
+    
+    <header>
+        <nav class="navbar navbar-tiffany rectangle" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://blog.rainyalley.com/">RainyAlley</a>
+                    <p class="navbar-text">Developer</p>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        
+                        <li>
+                        <a href="http://blog.rainyalley.com/" class="word-keep"><span class="octicon octicon-book"></span></span>&nbsp;&nbsp;Blog</a>
+                        </li>
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/archive/" class="word-keep"><span class="octicon octicon-repo"></span>&nbsp;&nbsp;Archive</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/category/" class="word-keep"><span class="octicon octicon-list-unordered"></span>&nbsp;&nbsp;Category</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/tags/" class="word-keep"><span class="octicon octicon-tag"></span>&nbsp;&nbsp;Tag</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li><a href="#stq=" class="search-button"><span class="octicon octicon-search"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <div class="container">
+        <div class="row">
+    <div class="content col-lg-9">
+        <div class="sheet post">
+          <header>
+            <h2>算法小汇</h2>
+            <p class="post-meta">
+                <span class="octicon octicon-clock"></span> Apr 9, 2014
+            </p>
+            <p class="post-tag">
+                <span><a href="http://blog.rainyalley.com/category/#algorithm"><span class="octicon octicon-list-unordered"></span>&nbsp;algorithm</a></span>
+                <span>
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#三色旗"><span class="octicon octicon-tag"></span>&nbsp;三色旗</a>
+                    
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#汉诺塔"><span class="octicon octicon-tag"></span>&nbsp;汉诺塔</a>
+                    
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#斐波那契数列"><span class="octicon octicon-tag"></span>&nbsp;斐波那契数列</a>
+                    
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#骑士周游"><span class="octicon octicon-tag"></span>&nbsp;骑士周游</a>
+                    
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#算法"><span class="octicon octicon-tag"></span>&nbsp;算法</a>
+                    
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#algorithm"><span class="octicon octicon-tag"></span>&nbsp;algorithm</a>
+                    
+                </span>
+            </p>
+          </header>
+          <hr class="boundary">
+          <article>
+            <div class="toc"></div>
+
+<h1 id="三色旗">三色旗</h1>
+
+<p>问题描述:一条绳子上悬挂了一组旗帜,旗帜分为三种颜色,现在需要把旗帜按顺序将相同的颜色的放在一起,没有旗帜的临时存放点,只能在绳子上操作,每次只能交换两个旗帜</p>
+
+<p>例如:原本旗帜的顺序为<code class="prettyprint">rwbrbwwrbwbrbwrbrw</code>需要变成<code class="prettyprint">bbbbbbwwwwwwrrrrrr</code></p>
+
+<p>解决思路:遍历元素,如果元素该放到左边就与左边交换,该放到右边就与右边交换,左右边界动态调整,剩余的正好属于中间</p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Tricolour</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">leftColor</span> <span class="o">=</span> <span class="s">&quot;b&quot;</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">rightColor</span> <span class="o">=</span> <span class="s">&quot;r&quot;</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">tricolour</span><span class="o">(</span><span class="n">Object</span><span class="o">[]</span> <span class="n">src</span><span class="o">){</span>
+        <span class="c1">//中间区域的左端点</span>
+        <span class="kt">int</span> <span class="n">mli</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="c1">//中间区域的右端点</span>
+        <span class="kt">int</span> <span class="n">mri</span> <span class="o">=</span> <span class="n">src</span><span class="o">.</span><span class="na">length</span><span class="o">-</span><span class="mi">1</span><span class="o">;</span>
+        <span class="c1">//遍历元素,从mli开始到mri结束,mli与mri会动态调整,但是i比mli变化快</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">mli</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">mri</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="c1">//如果当前元素属于左边</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">isPartOfLeft</span><span class="o">(</span><span class="n">src</span><span class="o">[</span><span class="n">i</span><span class="o">])){</span>
+                <span class="c1">//将当前元素换与中间区域左端点元素互换</span>
+                <span class="n">swap</span><span class="o">(</span><span class="n">src</span><span class="o">,</span><span class="n">mli</span><span class="o">,</span><span class="n">i</span><span class="o">);</span>
+                <span class="c1">//mli位的元素是经过处理的,一定不是红色,所以不需要再分析i位新元素</span>
+                <span class="c1">//左端点右移</span>
+                <span class="n">mli</span><span class="o">++;</span>
+            <span class="o">}</span>
+            <span class="c1">//如果当前元素属于右边</span>
+            <span class="k">else</span> <span class="nf">if</span><span class="o">(</span><span class="n">isPartOfRight</span><span class="o">(</span><span class="n">src</span><span class="o">[</span><span class="n">i</span><span class="o">])){</span>
+                <span class="c1">//从中间区域的右端点开始向左扫描元素</span>
+                <span class="k">while</span> <span class="o">(</span><span class="n">mri</span> <span class="o">&gt;</span> <span class="n">i</span><span class="o">)</span> <span class="o">{</span>
+                    <span class="c1">//如果扫描到的元素属于右边,右端点左移,继续向左扫描,否则停止扫描</span>
+                    <span class="k">if</span><span class="o">(</span><span class="n">isPartOfRight</span><span class="o">(</span><span class="n">src</span><span class="o">[</span><span class="n">mri</span><span class="o">])){</span>
+                        <span class="n">mri</span><span class="o">--;</span>
+                    <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                        <span class="k">break</span><span class="o">;</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+                <span class="c1">//将当前元素交换到中间区域右端点</span>
+                <span class="n">swap</span><span class="o">(</span><span class="n">src</span><span class="o">,</span><span class="n">mri</span><span class="o">,</span><span class="n">i</span><span class="o">);</span>
+                <span class="c1">//右端点左移</span>
+                <span class="n">mri</span><span class="o">--;</span>
+                <span class="c1">//mri位的元素可能是蓝色的,需要再分析i位新元素</span>
+                <span class="n">i</span><span class="o">--;</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isPartOfLeft</span><span class="o">(</span><span class="n">Object</span> <span class="n">item</span><span class="o">){</span>
+        <span class="k">return</span> <span class="n">leftColor</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">item</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">isPartOfRight</span><span class="o">(</span><span class="n">Object</span> <span class="n">item</span><span class="o">){</span>
+        <span class="k">return</span> <span class="n">rightColor</span><span class="o">.</span><span class="na">equals</span><span class="o">(</span><span class="n">item</span><span class="o">);</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">swap</span><span class="o">(</span><span class="n">Object</span><span class="o">[]</span> <span class="n">src</span><span class="o">,</span> <span class="kt">int</span> <span class="n">fst</span><span class="o">,</span> <span class="kt">int</span> <span class="n">snd</span><span class="o">){</span>
+        <span class="n">Object</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">src</span><span class="o">[</span><span class="n">fst</span><span class="o">];</span>
+        <span class="n">src</span><span class="o">[</span><span class="n">fst</span><span class="o">]</span> <span class="o">=</span> <span class="n">src</span><span class="o">[</span><span class="n">snd</span><span class="o">];</span>
+        <span class="n">src</span><span class="o">[</span><span class="n">snd</span><span class="o">]</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">String</span><span class="o">[]</span> <span class="n">flags</span> <span class="o">=</span>
+            <span class="k">new</span> <span class="n">String</span><span class="o">[]{</span><span class="s">&quot;r&quot;</span><span class="o">,</span><span class="s">&quot;b&quot;</span><span class="o">,</span><span class="s">&quot;w&quot;</span><span class="o">,</span><span class="s">&quot;w&quot;</span><span class="o">,</span><span class="s">&quot;b&quot;</span><span class="o">,</span><span class="s">&quot;r&quot;</span><span class="o">,</span><span class="s">&quot;r&quot;</span><span class="o">,</span><span class="s">&quot;w&quot;</span><span class="o">,</span><span class="s">&quot;b&quot;</span><span class="o">,</span><span class="s">&quot;b&quot;</span><span class="o">,</span><span class="s">&quot;r&quot;</span><span class="o">,</span><span class="s">&quot;w&quot;</span><span class="o">,</span><span class="s">&quot;b&quot;</span><span class="o">};</span>
+        <span class="k">new</span> <span class="nf">Tricolour</span><span class="o">().</span><span class="na">tricolour</span><span class="o">(</span><span class="n">flags</span><span class="o">);</span>
+        <span class="k">for</span> <span class="o">(</span><span class="n">String</span> <span class="n">flag</span> <span class="o">:</span> <span class="n">flags</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&quot;%s,&quot;</span><span class="o">,</span><span class="n">flag</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<h1 id="汉诺塔">汉诺塔</h1>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Hanoi</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">move</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">,</span> <span class="kt">char</span> <span class="n">a</span><span class="o">,</span> <span class="kt">char</span> <span class="n">b</span><span class="o">,</span> <span class="kt">char</span> <span class="n">c</span><span class="o">){</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">1</span><span class="o">){</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&quot;盘%d由%s移动到%s\n&quot;</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">a</span><span class="o">,</span><span class="n">c</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span><span class="o">{</span>
+            <span class="n">move</span><span class="o">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">,</span><span class="n">a</span><span class="o">,</span><span class="n">c</span><span class="o">,</span><span class="n">b</span><span class="o">);</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&quot;盘%d由%s移动到%s\n&quot;</span><span class="o">,</span><span class="n">n</span><span class="o">,</span><span class="n">a</span><span class="o">,</span><span class="n">c</span><span class="o">);</span>
+            <span class="n">move</span><span class="o">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">,</span><span class="n">b</span><span class="o">,</span><span class="n">a</span><span class="o">,</span><span class="n">c</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">new</span> <span class="nf">Hanoi</span><span class="o">().</span><span class="na">move</span><span class="o">(</span><span class="mi">5</span><span class="o">,</span> <span class="sc">&#39;A&#39;</span><span class="o">,</span><span class="sc">&#39;B&#39;</span><span class="o">,</span><span class="sc">&#39;C&#39;</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<h1 id="斐波那契数列">斐波那契数列</h1>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Fibonacci</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kt">int</span><span class="o">[]</span> <span class="n">src</span> <span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">fibonacci</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">){</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">src</span> <span class="o">==</span> <span class="kc">null</span><span class="o">){</span>
+            <span class="n">src</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="o">];</span>
+        <span class="o">}</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">n</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">n</span><span class="o">==</span><span class="mi">1</span><span class="o">){</span>
+            <span class="n">src</span><span class="o">[</span><span class="n">n</span><span class="o">]</span> <span class="o">=</span> <span class="n">n</span><span class="o">;</span>
+            <span class="k">return</span> <span class="n">n</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="n">src</span><span class="o">[</span><span class="n">n</span><span class="o">]</span> <span class="o">=</span> <span class="n">fibonacci</span><span class="o">(</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="o">)</span> <span class="o">+</span> <span class="n">fibonacci</span><span class="o">(</span><span class="n">n</span><span class="o">-</span><span class="mi">2</span><span class="o">);</span>
+        <span class="k">return</span> <span class="n">src</span><span class="o">[</span><span class="n">n</span><span class="o">];</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">fibonacci2</span><span class="o">(</span><span class="kt">int</span> <span class="n">n</span><span class="o">){</span>
+        <span class="k">if</span><span class="o">(</span><span class="n">src</span> <span class="o">==</span> <span class="kc">null</span><span class="o">){</span>
+            <span class="n">src</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">n</span><span class="o">+</span><span class="mi">1</span><span class="o">];</span>
+        <span class="o">}</span>
+        <span class="n">src</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+        <span class="n">src</span><span class="o">[</span><span class="mi">1</span><span class="o">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">src</span><span class="o">.</span><span class="na">length</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">src</span><span class="o">[</span><span class="n">i</span><span class="o">]</span> <span class="o">=</span> <span class="n">src</span><span class="o">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span> <span class="o">+</span> <span class="n">src</span><span class="o">[</span><span class="n">i</span><span class="o">-</span><span class="mi">2</span><span class="o">];</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">src</span><span class="o">[</span><span class="n">n</span><span class="o">];</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">Fibonacci</span> <span class="n">fib</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Fibonacci</span><span class="o">();</span>
+        <span class="kt">int</span> <span class="n">n</span> <span class="o">=</span> <span class="n">fib</span><span class="o">.</span><span class="na">fibonacci</span><span class="o">(</span><span class="mi">20</span><span class="o">);</span>
+        <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">n</span><span class="o">);</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">:</span> <span class="n">fib</span><span class="o">.</span><span class="na">src</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">i</span><span class="o">);</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<h1 id="骑士周游">骑士周游</h1>
+
+<p>骑士只能按照如图所示的方法前进,且每个格子只能路过一次,现在指定一个起点,判断骑士能否走完整个棋盘.</p>
+
+<p>思路:对任意一个骑士所在的位置,找出其所有可用的出口,若无可用出口则周游失败,再对每个出口找出其可用的子出口,然后骑士移动至子出口最少的出口处,重复以上过程.</p>
+
+<p><img src="http://img.blog.csdn.net/20130710174118812?watermark/2/text/aHR0cDovL2Jsb2cuY3Nkbi5uZXQvamlhamlheW91YmE=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70/gravity/SouthEast" alt=""></p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">java.awt.Point</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">static</span> <span class="n">java</span><span class="o">.</span><span class="na">lang</span><span class="o">.</span><span class="na">System</span><span class="o">.</span><span class="na">out</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">KnightTour</span> <span class="o">{</span>
+
+    <span class="c1">// 对应骑士可走的八個方向</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">Point</span><span class="o">[]</span> <span class="n">relatives</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Point</span><span class="o">[]{</span>
+            <span class="k">new</span> <span class="nf">Point</span><span class="o">(-</span><span class="mi">2</span><span class="o">,</span><span class="mi">1</span><span class="o">),</span>
+            <span class="k">new</span> <span class="nf">Point</span><span class="o">(-</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">),</span>
+            <span class="k">new</span> <span class="nf">Point</span><span class="o">(</span><span class="mi">1</span><span class="o">,</span><span class="mi">2</span><span class="o">),</span>
+            <span class="k">new</span> <span class="nf">Point</span><span class="o">(</span><span class="mi">2</span><span class="o">,</span><span class="mi">1</span><span class="o">),</span>
+            <span class="k">new</span> <span class="nf">Point</span><span class="o">(</span><span class="mi">2</span><span class="o">,-</span><span class="mi">1</span><span class="o">),</span>
+            <span class="k">new</span> <span class="nf">Point</span><span class="o">(</span><span class="mi">1</span><span class="o">,-</span><span class="mi">2</span><span class="o">),</span>
+            <span class="k">new</span> <span class="nf">Point</span><span class="o">(-</span><span class="mi">1</span><span class="o">,-</span><span class="mi">2</span><span class="o">),</span>
+            <span class="k">new</span> <span class="nf">Point</span><span class="o">(-</span><span class="mi">2</span><span class="o">,-</span><span class="mi">1</span><span class="o">)</span>
+    <span class="o">};</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="kt">int</span> <span class="n">direct</span> <span class="o">=</span> <span class="mi">8</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">KnightTour</span><span class="o">(</span><span class="kt">int</span> <span class="n">sideLen</span><span class="o">){</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">sideLen</span> <span class="o">=</span> <span class="n">sideLen</span><span class="o">;</span>
+        <span class="n">board</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">sideLen</span><span class="o">][</span><span class="n">sideLen</span><span class="o">];</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">int</span> <span class="n">sideLen</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="kt">int</span><span class="o">[][]</span> <span class="n">board</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">travel</span><span class="o">(</span><span class="kt">int</span> <span class="n">startX</span><span class="o">,</span> <span class="kt">int</span> <span class="n">startY</span><span class="o">)</span> <span class="o">{</span>
+
+        <span class="c1">// 当前出口的位置集</span>
+        <span class="n">Point</span><span class="o">[]</span> <span class="n">nexts</span><span class="o">;</span>
+
+        <span class="c1">// 记录每个出口的可用出口个数</span>
+        <span class="kt">int</span><span class="o">[]</span> <span class="n">exits</span><span class="o">;</span>
+
+        <span class="c1">//当前位置</span>
+        <span class="n">Point</span> <span class="n">current</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Point</span><span class="o">(</span><span class="n">startX</span><span class="o">,</span> <span class="n">startY</span><span class="o">);</span>
+
+        <span class="n">board</span><span class="o">[</span><span class="n">current</span><span class="o">.</span><span class="na">x</span><span class="o">][</span><span class="n">current</span><span class="o">.</span><span class="na">y</span><span class="o">]</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+
+        <span class="c1">//当前步的编号</span>
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">2</span><span class="o">;</span> <span class="n">m</span> <span class="o">&lt;=</span> <span class="n">Math</span><span class="o">.</span><span class="na">pow</span><span class="o">(</span><span class="n">board</span><span class="o">.</span><span class="na">length</span><span class="o">,</span> <span class="mi">2</span><span class="o">);</span> <span class="n">m</span><span class="o">++)</span> <span class="o">{</span>
+
+            <span class="c1">//清空每个出口的可用出口数</span>
+            <span class="n">nexts</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Point</span><span class="o">[</span><span class="n">direct</span><span class="o">];</span>
+            <span class="n">exits</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="o">[</span><span class="n">direct</span><span class="o">];</span>
+
+            <span class="kt">int</span> <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+            <span class="c1">// 试探八个方向</span>
+            <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">direct</span><span class="o">;</span> <span class="n">k</span><span class="o">++)</span> <span class="o">{</span>
+                <span class="kt">int</span> <span class="n">tmpX</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="na">x</span> <span class="o">+</span> <span class="n">relatives</span><span class="o">[</span><span class="n">k</span><span class="o">].</span><span class="na">x</span><span class="o">;</span>
+                <span class="kt">int</span> <span class="n">tmpY</span> <span class="o">=</span> <span class="n">current</span><span class="o">.</span><span class="na">y</span> <span class="o">+</span> <span class="n">relatives</span><span class="o">[</span><span class="n">k</span><span class="o">].</span><span class="na">y</span><span class="o">;</span>
+
+                <span class="c1">// 如果这个方向可走，记录下来</span>
+                <span class="k">if</span><span class="o">(</span><span class="n">accessable</span><span class="o">(</span><span class="n">tmpX</span><span class="o">,</span> <span class="n">tmpY</span><span class="o">))</span> <span class="o">{</span>
+                    <span class="n">nexts</span><span class="o">[</span><span class="n">count</span><span class="o">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Point</span><span class="o">(</span><span class="n">tmpX</span><span class="o">,</span><span class="n">tmpY</span><span class="o">);</span>
+                    <span class="c1">// 可走的方向加一個</span>
+                    <span class="n">count</span><span class="o">++;</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+
+            <span class="c1">//可用出口数最少的出口在exits中的索引</span>
+            <span class="kt">int</span> <span class="n">minI</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">count</span> <span class="o">==</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+            <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+                <span class="c1">// 记录每个出口的可用出口数</span>
+                <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="n">count</span><span class="o">;</span> <span class="n">l</span><span class="o">++)</span> <span class="o">{</span>
+                    <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">direct</span><span class="o">;</span> <span class="n">k</span><span class="o">++)</span> <span class="o">{</span>
+                        <span class="kt">int</span> <span class="n">tmpX</span> <span class="o">=</span> <span class="n">nexts</span><span class="o">[</span><span class="n">l</span><span class="o">].</span><span class="na">x</span> <span class="o">+</span> <span class="n">relatives</span><span class="o">[</span><span class="n">k</span><span class="o">].</span><span class="na">x</span><span class="o">;</span>
+                        <span class="kt">int</span> <span class="n">tmpY</span> <span class="o">=</span> <span class="n">nexts</span><span class="o">[</span><span class="n">l</span><span class="o">].</span><span class="na">y</span> <span class="o">+</span> <span class="n">relatives</span><span class="o">[</span><span class="n">k</span><span class="o">].</span><span class="na">y</span><span class="o">;</span>
+                        <span class="k">if</span><span class="o">(</span><span class="n">accessable</span><span class="o">(</span><span class="n">tmpX</span><span class="o">,</span> <span class="n">tmpY</span><span class="o">)){</span>
+                            <span class="n">exits</span><span class="o">[</span><span class="n">l</span><span class="o">]++;</span>
+                        <span class="o">}</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+
+                <span class="c1">// 从可走的方向中寻找最少出路的方向</span>
+                <span class="kt">int</span> <span class="n">tmp</span> <span class="o">=</span> <span class="n">exits</span><span class="o">[</span><span class="mi">0</span><span class="o">];</span>
+                <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">l</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="n">count</span><span class="o">;</span> <span class="n">l</span><span class="o">++)</span> <span class="o">{</span>
+                    <span class="k">if</span><span class="o">(</span><span class="n">exits</span><span class="o">[</span><span class="n">l</span><span class="o">]</span> <span class="o">&lt;</span> <span class="n">tmp</span><span class="o">)</span> <span class="o">{</span>
+                        <span class="n">tmp</span> <span class="o">=</span> <span class="n">exits</span><span class="o">[</span><span class="n">l</span><span class="o">];</span>
+                        <span class="n">minI</span> <span class="o">=</span> <span class="n">l</span><span class="o">;</span>
+                    <span class="o">}</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+
+            <span class="c1">// 走最少出路的方向</span>
+            <span class="n">current</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">Point</span><span class="o">(</span><span class="n">nexts</span><span class="o">[</span><span class="n">minI</span><span class="o">]);</span>
+            <span class="n">board</span><span class="o">[</span><span class="n">current</span><span class="o">.</span><span class="na">x</span><span class="o">][</span><span class="n">current</span><span class="o">.</span><span class="na">y</span><span class="o">]</span> <span class="o">=</span> <span class="n">m</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">boolean</span> <span class="nf">accessable</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span><span class="o">,</span> <span class="kt">int</span> <span class="n">y</span><span class="o">){</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">sideLen</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">sideLen</span> <span class="o">&amp;&amp;</span> <span class="n">board</span><span class="o">[</span><span class="n">x</span><span class="o">][</span><span class="n">y</span><span class="o">]</span> <span class="o">==</span> <span class="mi">0</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">sideLen</span> <span class="o">=</span> <span class="mi">9</span><span class="o">;</span>
+        <span class="n">KnightTour</span> <span class="n">knight</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">KnightTour</span><span class="o">(</span><span class="n">sideLen</span><span class="o">);</span>
+
+        <span class="k">if</span><span class="o">(</span><span class="n">knight</span><span class="o">.</span><span class="na">travel</span><span class="o">(</span><span class="mi">4</span><span class="o">,</span><span class="mi">2</span><span class="o">))</span> <span class="o">{</span>
+            <span class="n">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;游历完成！&quot;</span><span class="o">);</span>
+        <span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+            <span class="n">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">&quot;游历失败！&quot;</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">sideLen</span><span class="o">;</span> <span class="n">y</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">for</span><span class="o">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">sideLen</span><span class="o">;</span> <span class="n">x</span><span class="o">++)</span> <span class="o">{</span>
+                <span class="n">out</span><span class="o">.</span><span class="na">printf</span><span class="o">(</span><span class="s">&quot;%3d &quot;</span><span class="o">,</span> <span class="n">knight</span><span class="o">.</span><span class="na">board</span><span class="o">[</span><span class="n">x</span><span class="o">][</span><span class="n">y</span><span class="o">]);</span>
+            <span class="o">}</span>
+            <span class="n">out</span><span class="o">.</span><span class="na">println</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<h1 id="帕斯卡三角">帕斯卡三角</h1>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Pascal</span> <span class="kd">extends</span> <span class="n">JFrame</span><span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kt">int</span> <span class="n">maxRow</span><span class="o">;</span>
+
+    <span class="n">Pascal</span><span class="o">(</span><span class="kt">int</span> <span class="n">maxRow</span><span class="o">){</span>
+        <span class="n">setBackground</span><span class="o">(</span><span class="n">Color</span><span class="o">.</span><span class="na">white</span><span class="o">);</span>
+        <span class="n">setTitle</span><span class="o">(</span><span class="s">&quot;帕斯卡三角&quot;</span><span class="o">);</span>
+        <span class="n">setSize</span><span class="o">(</span><span class="mi">520</span><span class="o">,</span> <span class="mi">350</span><span class="o">);</span>
+        <span class="n">setDefaultCloseOperation</span><span class="o">(</span><span class="n">JFrame</span><span class="o">.</span><span class="na">EXIT_ON_CLOSE</span><span class="o">);</span>
+        <span class="n">setVisible</span><span class="o">(</span><span class="kc">true</span><span class="o">);</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">maxRow</span> <span class="o">=</span> <span class="n">maxRow</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="cm">/**</span>
+<span class="cm">     * 获取值</span>
+<span class="cm">     * @param row 行号 从0开始</span>
+<span class="cm">     * @param col 列号 从0开始</span>
+<span class="cm">     * @return</span>
+<span class="cm">     */</span>
+    <span class="kd">private</span> <span class="kt">int</span> <span class="nf">value</span><span class="o">(</span><span class="kt">int</span> <span class="n">row</span><span class="o">,</span><span class="kt">int</span> <span class="n">col</span><span class="o">){</span>
+        <span class="kt">int</span> <span class="n">v</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span>
+        <span class="k">for</span> <span class="o">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="o">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">col</span><span class="o">;</span> <span class="n">i</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="n">v</span> <span class="o">=</span> <span class="n">v</span> <span class="o">*</span> <span class="o">(</span><span class="n">row</span> <span class="o">-</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="o">)</span> <span class="o">/</span> <span class="n">i</span><span class="o">;</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">v</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">paint</span><span class="o">(</span><span class="n">Graphics</span> <span class="n">g</span><span class="o">)</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">r</span><span class="o">,</span> <span class="n">c</span><span class="o">;</span>
+        <span class="k">for</span><span class="o">(</span><span class="n">r</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">r</span> <span class="o">&lt;=</span> <span class="n">maxRow</span><span class="o">;</span> <span class="n">r</span><span class="o">++)</span> <span class="o">{</span>
+            <span class="k">for</span><span class="o">(</span><span class="n">c</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span> <span class="n">c</span> <span class="o">&lt;=</span> <span class="n">r</span><span class="o">;</span> <span class="n">c</span><span class="o">++){</span>
+                <span class="n">g</span><span class="o">.</span><span class="na">drawString</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">valueOf</span><span class="o">(</span><span class="n">value</span><span class="o">(</span><span class="n">r</span><span class="o">,</span> <span class="n">c</span><span class="o">)),</span> <span class="o">(</span><span class="n">maxRow</span> <span class="o">-</span> <span class="n">r</span><span class="o">)</span> <span class="o">*</span> <span class="mi">20</span> <span class="o">+</span> <span class="n">c</span> <span class="o">*</span> <span class="mi">40</span><span class="o">,</span> <span class="n">r</span> <span class="o">*</span> <span class="mi">20</span> <span class="o">+</span> <span class="mi">50</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">new</span> <span class="nf">Pascal</span><span class="o">(</span><span class="mi">12</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+          </article>
+          <hr class="boundary">
+          <div id="post-share" class="bdsharebuttonbox">
+              <a href="#" class="bds_more" data-cmd="more"></a>
+              <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+              <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+              <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+              <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+              <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+          </div>
+        </div>
+        <div class="pad-min"></div>
+        <div id="post-comment" class="sheet post">
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+    <div class="content-navigation col-lg-3">
+      <div class="shadow-bottom-center" >
+        <div class="content-navigation-toc">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Toc
+            </div>
+            <div class="content-navigation-list toc"></div>
+        </div>
+        <div class="content-navigation-tag">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Tags
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#三色旗"><span class="octicon octicon-tag"></span>&nbsp;三色旗</a>
+                    </li>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#汉诺塔"><span class="octicon octicon-tag"></span>&nbsp;汉诺塔</a>
+                    </li>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#斐波那契数列"><span class="octicon octicon-tag"></span>&nbsp;斐波那契数列</a>
+                    </li>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#骑士周游"><span class="octicon octicon-tag"></span>&nbsp;骑士周游</a>
+                    </li>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#算法"><span class="octicon octicon-tag"></span>&nbsp;算法</a>
+                    </li>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#algorithm"><span class="octicon octicon-tag"></span>&nbsp;algorithm</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="content-navigation-related">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Related
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+
+                    
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-10-09/bitmap/">Bitmap</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-09-19/sort/">八种排序</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+    </div>
+
+    <div class="page-scrollTop" data-toggle="tooltip" data-placement="top" title="Top">
+        <a href="javascript:void(0);">
+            <div class="arrow"></div>
+            <div class="stick"></div>
+        </a>
+    </div>
+</div>
+
+    <footer  class="footnote footnote-tiffany">
+        <div class="container">
+                <a class="foot-item" href="mailto:dubuyuye@yeah.net" target="_blank"><span class="octicon octicon-mail"></span></a>
+                <a class="foot-item" href="https://github.com/dubuyuye" target="_blank"><span class="octicon octicon-mark-github"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/feed.xml" target="_blank"><span class="octicon octicon-rss"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/link/"><span class="octicon octicon-link-external"></span></a>
+                &nbsp;
+                <a href="http://blog.rainyalley.com/"><span class="word-keep">&copy; RainyAlley</span></a>
+        </div>
+    </footer>
+
+
+<div class="scriptHub">
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/script.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/toc.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/post.js"></script>
+    
+</div>
+
+
+
+</body>
+</html>

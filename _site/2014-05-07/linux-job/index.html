@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Linux计划任务</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="keywords" content="Linux计划任务, linux, 计划任务,Linux, RainyAlley" />
+    <meta name="description" content="Linux计划任务, linux, 计划任务,Linux, " />
+
+    <link rel="shortcut icon" type="image/x-icon" media="screen" href="http://blog.rainyalley.com/static/favicon.ico" />
+    <link rel="canonical" href="http://blog.rainyalley.com/2014-05-07/linux-job/" />
+    <link rel="alternate" type="application/rss+xml" title="RainyAlley" href="http://blog.rainyalley.com/feed.xml"  />
+
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/octicons/octicons.css" />
+
+    
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/highlight.css" />
+    
+
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/post.css" />
+    
+</head>
+
+<body>
+<div class="main">
+
+    
+    
+    <header>
+        <nav class="navbar navbar-tiffany rectangle" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://blog.rainyalley.com/">RainyAlley</a>
+                    <p class="navbar-text">Developer</p>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        
+                        <li>
+                        <a href="http://blog.rainyalley.com/" class="word-keep"><span class="octicon octicon-book"></span></span>&nbsp;&nbsp;Blog</a>
+                        </li>
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/archive/" class="word-keep"><span class="octicon octicon-repo"></span>&nbsp;&nbsp;Archive</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/category/" class="word-keep"><span class="octicon octicon-list-unordered"></span>&nbsp;&nbsp;Category</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/tags/" class="word-keep"><span class="octicon octicon-tag"></span>&nbsp;&nbsp;Tag</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li><a href="#stq=" class="search-button"><span class="octicon octicon-search"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <div class="container">
+        <div class="row">
+    <div class="content col-lg-9">
+        <div class="sheet post">
+          <header>
+            <h2>Linux计划任务</h2>
+            <p class="post-meta">
+                <span class="octicon octicon-clock"></span> May 7, 2014
+            </p>
+            <p class="post-tag">
+                <span><a href="http://blog.rainyalley.com/category/#linux"><span class="octicon octicon-list-unordered"></span>&nbsp;linux</a></span>
+                <span>
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#计划任务"><span class="octicon octicon-tag"></span>&nbsp;计划任务</a>
+                    
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#Linux"><span class="octicon octicon-tag"></span>&nbsp;Linux</a>
+                    
+                </span>
+            </p>
+          </header>
+          <hr class="boundary">
+          <article>
+            <div class="toc"></div>
+
+<h2 id="at"><code class="prettyprint">at</code></h2>
+
+<p>at 是个可以处理<strong>仅运行一次</strong>就结束计划任务的命令，不过要运行 at 时， 必须要有 atd 这个服务的支持才行。</p>
+
+<p>[root@www ~]# <code class="prettyprint">/etc/init.d/atd restart</code></p>
+
+<p>使用 at 这个命令来产生所要运行的任务，并将任务以文件的方式写入 <code class="prettyprint">/var/spool/at</code> 目录内，该任务便能被 atd 服务运行</p>
+
+<blockquote>
+<p>对at进行权限控制</p>
+
+<ul>
+<li><p>先找寻 <code class="prettyprint">/etc/at.allow</code> 这个文件，写在这个文件中的使用者才<strong>能</strong>使用 at ，没有在这个文件中的使用者则不能使用 at (即使没有写在 at.deny 当中)；</p></li>
+<li><p>如果 /etc/at.allow 不存在，就寻找 <code class="prettyprint">/etc/at.deny</code> 这个文件，写在这个 at.deny 的使用者<strong>不能</strong>使用 at ，而没有在这个 at.deny 文件中的使用者，就可以使用 at 咯；</p></li>
+<li><p>如果两个文件都不存在，那么只有 root 可以使用 at 命令。</p></li>
+</ul>
+</blockquote>
+
+<p>[root@www ~]# <code class="prettyprint">at [-mldv] TIME</code></p>
+
+<p>[root@www ~]# <code class="prettyprint">at -c 任务号码</code></p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-m</code>  ：当 at 的任务完成后，即使没有输出信息，亦以 email 通知使用者该任务已完成。</p>
+
+<p><code class="prettyprint">-l</code>  ：at -l 相当於 <code class="prettyprint">atq</code>，列出目前系统上面的所有该使用者的 at 任务；</p>
+
+<p><code class="prettyprint">-d</code>  ：at -d 相当於 <code class="prettyprint">atrm</code> ，可以取消一个在 at 排程中的任务；</p>
+
+<p><code class="prettyprint">-v</code>  ：可以使用较明显的时间格式列出 at 排程中的任务列表；</p>
+
+<p><code class="prettyprint">-c</code>  ：可以列出后面接的该项工作的实际命令内容。</p>
+
+<blockquote>
+<p>TIME：时间格式，这里可以定义出『什么时候要进行 at 这项工作』的时间，格式有：</p>
+
+<ul>
+<li> <code class="prettyprint">HH:MM</code></li>
+</ul>
+
+<p>ex&gt; 04:00</p>
+
+<p>在今日的 HH:MM 时刻进行，若该时刻已超过，则明天的 HH:MM 进行此工作。</p>
+
+<ul>
+<li> <code class="prettyprint">HH:MM YYYY-MM-DD</code></li>
+</ul>
+
+<p>ex&gt; 04:00 2009-03-17</p>
+
+<p>强制在某年某月某日的某时刻进行！</p>
+
+<ul>
+<li> <code class="prettyprint">HH:MM[am|pm] [Month] [Date]</code></li>
+</ul>
+
+<p>ex&gt; 04pm March 17</p>
+
+<p>强制在某年某月某日的某时刻进行！</p>
+
+<ul>
+<li> <code class="prettyprint">HH:MM[am|pm] + number [minutes|hours|days|weeks]</code></li>
+</ul>
+
+<p>ex&gt; now + 5 minutes ex&gt; 04pm + 3 days</p>
+
+<p>在某个时间点『再加几个时间后』才进行。</p>
+</blockquote>
+
+<p><code class="prettyprint">!</code>at命令会进入atshell环境，使用绝对路径输入指令不易出现问题</p>
+
+<p><code class="prettyprint">!</code>at 的运行与终端机环境无关，想要查看io结果，需要指定终端<code class="prettyprint">echo &quot;Hello&quot; &gt; /dev/tty1</code></p>
+
+<p><code class="prettyprint">!</code>at 的运行独立于bash，所以at任务可以离线运行</p>
+
+<p><strong><code class="prettyprint">batch</code></strong>：系统有空(负载低于0.8 )时才进行背景任务，用法与at完全相同，本质上是是at命令加一些控制参数</p>
+
+<h2 id="crontab"><code class="prettyprint">crontab</code></h2>
+
+<p>crontab 这个命令所配置的工作将会循环的<strong>一直进行</strong>下去， 可编辑 /etc/crontab 来支持，让 crontab 生效的服务是 <code class="prettyprint">crond</code></p>
+
+<p>[root@www ~]# ·<code class="prettyprint">/etc/init.d/crond restart</code></p>
+
+<p>当使用者使用 crontab 这个命令来创建工作排程之后，该项工作就会被纪录到 <code class="prettyprint">/var/spool/cron/</code>目录内</p>
+
+<p>cron 运行的每一项工作都会被纪录到 <code class="prettyprint">/var/log/cron</code> 内</p>
+
+<blockquote>
+<p>权限控制(与at相同，默认保留/etc/cron.deny )</p>
+
+<ul>
+<li><p><code class="prettyprint">/etc/cron.allow</code>：将可以使用 crontab 的帐号写入其中，若不在这个文件内的使用者则不可使用 crontab；</p></li>
+<li><p><code class="prettyprint">/etc/cron.deny</code>：将不可以使用 crontab 的帐号写入其中，若未记录到这个文件当中的使用者，就可以使用 crontab</p></li>
+</ul>
+</blockquote>
+
+<p>[root@www ~]# <code class="prettyprint">crontab [-u username] [-l|-e|-r]</code></p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-u</code>  ：只有 root 才能进行这个任务，亦即帮其他使用者创建/移除 crontab 工作排程；</p>
+
+<p><code class="prettyprint">-e</code>  ：编辑 crontab 的工作内容</p>
+
+<p><code class="prettyprint">-l</code>  ：查阅 crontab 的工作内容</p>
+
+<p><code class="prettyprint">-r</code>  ：移除所有的 crontab 的工作内容，若仅要移除一项，请用 -e 去编辑。</p>
+
+<p>[dmtsai@www ~]$ <code class="prettyprint">crontab -e</code></p>
+
+<blockquote>
+<p><code class="prettyprint">0 12 * * * &lt;command&gt;</code></p>
+
+<p><code class="prettyprint">分 时 日 月 周 &lt;命令串&gt;</code></p>
+</blockquote>
+
+<p>特殊字符</p>
+
+<p><code class="prettyprint">*</code>代表任何时刻都接受的意思</p>
+
+<p><code class="prettyprint">,</code>代表分隔时段的意思</p>
+
+<p><code class="prettyprint">-</code>代表一段时间范围内</p>
+
+<p><code class="prettyprint">/n</code>代表每间隔n单位</p>
+
+<p>系统计划任务(不受crontab -e命令管理)
+编辑<code class="prettyprint">/etc/crontab</code>文件，该文件每1分钟被检查一次</p>
+
+<h2 id="anacron"><code class="prettyprint">anacron</code></h2>
+
+<p>侦测系统未进行的 crontab 任务(例如 crontab 设置在周末运行，但是周末关机了)</p>
+
+<p>[root@www ~]# <code class="prettyprint">anacron [-sfn] [job]..</code></p>
+
+<p>[root@www ~]# <code class="prettyprint">anacron -u [job]..</code></p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-s</code>  ：开始一连续的运行各项工作 (job)，会依据时间记录档的数据判断是否进行；</p>
+
+<p><code class="prettyprint">-f</code> ：强制进行，而不去判断时间记录档的时间戳记；</p>
+
+<p><code class="prettyprint">-n</code>  ：立刻进行未进行的任务，而不延迟 (delay) 等待时间；</p>
+
+<p><code class="prettyprint">-u</code>  ：仅升级时间记录档的时间戳记，不进行任何工作。</p>
+
+<p><code class="prettyprint">job</code> ：由 <strong>/etc/anacrontab</strong> 定义的各项工作名称。</p>
+
+<p>配置文件位于<code class="prettyprint">/etc/anacrontab</code></p>
+
+<blockquote>
+<p>[root@www ~]# cat /etc/anacrontab</p>
+
+<p>SHELL=/bin/sh</p>
+
+<p>PATH=/sbin:/bin:/usr/sbin:/usr/bin</p>
+
+<p>MAILTO=root</p>
+
+<p>1       65      cron.daily     run-parts /etc/cron.daily</p>
+
+<p>7       70      cron.weekly    run-parts /etc/cron.weekly</p>
+
+<p>30      75      cron.monthly   run-parts /etc/cron.monthly</p>
+</blockquote>
+
+<p>天数   延迟时间（分） 工作名称定义   实际要进行的命令串</p>
+
+<p>任务文件位于<code class="prettyprint">/var/spool/anacron/</code></p>
+
+          </article>
+          <hr class="boundary">
+          <div id="post-share" class="bdsharebuttonbox">
+              <a href="#" class="bds_more" data-cmd="more"></a>
+              <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+              <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+              <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+              <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+              <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+          </div>
+        </div>
+        <div class="pad-min"></div>
+        <div id="post-comment" class="sheet post">
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+    <div class="content-navigation col-lg-3">
+      <div class="shadow-bottom-center" >
+        <div class="content-navigation-toc">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Toc
+            </div>
+            <div class="content-navigation-list toc"></div>
+        </div>
+        <div class="content-navigation-tag">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Tags
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#计划任务"><span class="octicon octicon-tag"></span>&nbsp;计划任务</a>
+                    </li>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#Linux"><span class="octicon octicon-tag"></span>&nbsp;Linux</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="content-navigation-related">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Related
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+
+                    
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-01-22/linux-shell/">shell</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-01-11/linux-make/">make</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-10-17/shell-trash/">告别rm,自制回收站</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-06-10/ssh/">SSH</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-02-20/linux-boot/">Linux启动流程</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-02-13/linux-ps/">Linux进程管理</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-02-08/linux-power/">Linux权限管理</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-01-25/linux-filecmd/">Linux目录与文件</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-01-05/vim/">VIM</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-01-02/linux-print/">Linux打印</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+    </div>
+
+    <div class="page-scrollTop" data-toggle="tooltip" data-placement="top" title="Top">
+        <a href="javascript:void(0);">
+            <div class="arrow"></div>
+            <div class="stick"></div>
+        </a>
+    </div>
+</div>
+
+    <footer  class="footnote footnote-tiffany">
+        <div class="container">
+                <a class="foot-item" href="mailto:dubuyuye@yeah.net" target="_blank"><span class="octicon octicon-mail"></span></a>
+                <a class="foot-item" href="https://github.com/dubuyuye" target="_blank"><span class="octicon octicon-mark-github"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/feed.xml" target="_blank"><span class="octicon octicon-rss"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/link/"><span class="octicon octicon-link-external"></span></a>
+                &nbsp;
+                <a href="http://blog.rainyalley.com/"><span class="word-keep">&copy; RainyAlley</span></a>
+        </div>
+    </footer>
+
+
+<div class="scriptHub">
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/script.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/toc.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/post.js"></script>
+    
+</div>
+
+
+
+</body>
+</html>

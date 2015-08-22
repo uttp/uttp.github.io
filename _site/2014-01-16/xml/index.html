@@ -1,0 +1,1634 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>XML</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="keywords" content="XML, common, XML, RainyAlley" />
+    <meta name="description" content="XML, common, XML, " />
+
+    <link rel="shortcut icon" type="image/x-icon" media="screen" href="http://blog.rainyalley.com/static/favicon.ico" />
+    <link rel="canonical" href="http://blog.rainyalley.com/2014-01-16/xml/" />
+    <link rel="alternate" type="application/rss+xml" title="RainyAlley" href="http://blog.rainyalley.com/feed.xml"  />
+
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/octicons/octicons.css" />
+
+    
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/highlight.css" />
+    
+
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/post.css" />
+    
+</head>
+
+<body>
+<div class="main">
+
+    
+    
+    <header>
+        <nav class="navbar navbar-tiffany rectangle" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://blog.rainyalley.com/">RainyAlley</a>
+                    <p class="navbar-text">Developer</p>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        
+                        <li>
+                        <a href="http://blog.rainyalley.com/" class="word-keep"><span class="octicon octicon-book"></span></span>&nbsp;&nbsp;Blog</a>
+                        </li>
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/archive/" class="word-keep"><span class="octicon octicon-repo"></span>&nbsp;&nbsp;Archive</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/category/" class="word-keep"><span class="octicon octicon-list-unordered"></span>&nbsp;&nbsp;Category</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/tags/" class="word-keep"><span class="octicon octicon-tag"></span>&nbsp;&nbsp;Tag</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li><a href="#stq=" class="search-button"><span class="octicon octicon-search"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <div class="container">
+        <div class="row">
+    <div class="content col-lg-9">
+        <div class="sheet post">
+          <header>
+            <h2>XML</h2>
+            <p class="post-meta">
+                <span class="octicon octicon-clock"></span> Jan 16, 2014
+            </p>
+            <p class="post-tag">
+                <span><a href="http://blog.rainyalley.com/category/#common"><span class="octicon octicon-list-unordered"></span>&nbsp;common</a></span>
+                <span>
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#XML"><span class="octicon octicon-tag"></span>&nbsp;XML</a>
+                    
+                </span>
+            </p>
+          </header>
+          <hr class="boundary">
+          <article>
+            <div class="toc"></div>
+
+<p>XML 文档可以包含非 ASCII 字符，为了避免错误，需要<strong>规定</strong> XML 编码，或者将 XML 文档<strong>存</strong>为 Unicode，两者需要保持一致。</p>
+
+<p>必须包含<strong>根</strong>元素，该元素是所有其他元素的父元素。</p>
+
+<p>所有元素都必须有<strong>关闭</strong>标签</p>
+
+<p>对大小写<strong>敏感</strong></p>
+
+<p>属性值须加<strong>引号</strong>，如果属性本身包含引号，就用单引号包围属性</p>
+
+<p><code class="prettyprint">&lt;</code> 和 <code class="prettyprint">&amp;</code> 是非法的，用实体引用代替</p>
+
+<p>文档中的空格不会被删节，而html只会保留1个</p>
+
+<p>XML以 <code class="prettyprint">LF</code> 存储换行</p>
+
+<p>名称不能以数字或者标点符号或“xml”（或者 XML、Xml）开始，不能包含空格，避免<code class="prettyprint">-.:</code>字符</p>
+
+<p>元数据（有关数据的数据）应当存储为属性，而数据本身应当存储为元素。</p>
+
+<p>Internet Explorer 5 拥有对 XML 的支持，但是 XSL 部分与 W3C 的官方标准不兼容！</p>
+
+<h1 id="namespace">NameSpace</h1>
+
+<p>XML 命名空间属性被放置于元素的开始标签之中，并使用以下的语法：</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">xmlns:namespace-prefix=&quot;namespaceURI&quot;
+</code></pre></div>
+<p>默认的命名空间，省去前缀：</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">xmlns=&quot;namespaceURI&quot;
+</code></pre></div>
+<h1 id="构建模块">构建模块</h1>
+
+<ul>
+<li><p>元素</p></li>
+<li><p>属性</p></li>
+<li><p>实体</p></li>
+<li><p><strong>PCDATA</strong>：会被解析器解析的文本，这些文本将被解析器检查实体以及标记。解析器将能识别PCDATA包含的元素，并将其作为节点</p></li>
+<li><p><strong>CDATA</strong>：不会被解析器解析的文本。某些文本，比如 JavaScript 代码，包含大量 <q><</q> 或 <q>&</q> 字符。为了避免错误，可以将脚本代码定义为 CDATA。</p></li>
+</ul>
+
+<p>CDATA 部分由 <q>`<![CDATA[`</q> 开始，由 <q>`]]>`</q> 结束，包含的内容将被解析器忽略，CDATA 部分不能包含字符串 <q>]]></q>，也不允许嵌套的 ，标记 CDATA 部分结尾的 <q>]]></q> 不能包含空格或折行。：</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">script</span><span class="o">&gt;</span>
+<span class="o">&lt;!</span><span class="p">[</span><span class="nx">CDATA</span><span class="p">[</span>
+<span class="kd">function</span> <span class="nx">matchwo</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span><span class="nx">b</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">a</span> <span class="o">&lt;</span> <span class="nx">b</span> <span class="o">&amp;&amp;</span> <span class="nx">a</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="nx">then</span>
+  <span class="p">{</span>
+  <span class="k">return</span> <span class="mi">1</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="k">else</span>
+  <span class="p">{</span>
+  <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="p">]]</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="err">/script&gt;</span>
+</code></pre></div>
+<h1 id="css">CSS</h1>
+
+<p>XML文本展示效果可以被CSS渲染，建议使用XSLT</p>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;?xml version=&quot;1.0&quot; encoding=&quot;ISO-8859-1&quot;?&gt;
+&lt;?xml-stylesheet type=&quot;text/css&quot; href=&quot;cd_catalog.css&quot;?&gt;
+</code></pre></div>
+<h1 id="xslt">XSLT</h1>
+
+<p>XSLT 是首选的 XML 样式表语言。
+XSLT (eXtensible Stylesheet Language Transformations) 远比 CSS 更加完善，XSLT 可以把 XML 文档转换为其他格式，比如 XHTML。
+<a href="http://www.w3school.com.cn/xsl/index.asp">XSLT</a></p>
+
+<h1 id="dtd">DTD</h1>
+
+<p>DTD：XML Type Definition ，文档类型定义，建议使用XSD</p>
+
+<h2 id="xml文档定义：">XML文档定义：</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;!DOCTYPE 根元素 [元素声明]&gt;
+</code></pre></div><div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="err">&lt;</span><span class="o">?</span><span class="err">xml</span> <span class="err">version=</span><span class="s2">&quot;1.0&quot;</span><span class="o">?</span><span class="k">&gt;</span>
+<span class="k">&lt;!DOCTYPE</span> <span class="nt">note</span> <span class="k">[</span>
+  <span class="k">&lt;!ELEMENT</span> <span class="nt">note</span> <span class="o">(</span><span class="nt">to</span><span class="o">,</span><span class="nt">from</span><span class="o">,</span><span class="nt">heading</span><span class="o">,</span><span class="nt">body</span><span class="o">)</span><span class="k">&gt;</span>
+  <span class="k">&lt;!ELEMENT</span> <span class="nt">to</span>      <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">)</span><span class="k">&gt;</span>
+  <span class="k">&lt;!ELEMENT</span> <span class="nt">from</span>    <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">)</span><span class="k">&gt;</span>
+  <span class="k">&lt;!ELEMENT</span> <span class="nt">heading</span> <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">)</span><span class="k">&gt;</span>
+  <span class="k">&lt;!ELEMENT</span> <span class="nt">body</span>    <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">)</span><span class="k">&gt;</span>
+<span class="k">]&gt;</span>
+<span class="err">&lt;note</span><span class="k">&gt;</span>
+  <span class="err">&lt;to</span><span class="k">&gt;</span><span class="err">George&lt;/to</span><span class="k">&gt;</span>
+  <span class="err">&lt;from</span><span class="k">&gt;</span><span class="err">John&lt;/from</span><span class="k">&gt;</span>
+  <span class="err">&lt;heading</span><span class="k">&gt;</span><span class="err">Reminder&lt;/heading</span><span class="k">&gt;</span>
+  <span class="err">&lt;body</span><span class="k">&gt;</span><span class="err">Don&#39;t</span> <span class="err">forget</span> <span class="err">the</span> <span class="err">meeting!&lt;/body</span><span class="k">&gt;</span>
+<span class="err">&lt;/note</span><span class="k">&gt;</span>
+</code></pre></div>
+<p><code class="prettyprint">!ELEMENT note</code> (第三行)定义 note 元素有四个元素：<q>to、from、heading,、body</q>
+<code class="prettyprint">!ELEMENT to</code> (第四行)定义 to 元素为 <q>`#PCDATA`</q> 类型</p>
+
+<h2 id="外部dtd">外部DTD</h2>
+<div class="highlight"><pre><code class="language-text" data-lang="text">&lt;!DOCTYPE 根元素 SYSTEM &quot;文件名&quot;&gt;
+</code></pre></div><div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE note SYSTEM &quot;note.dtd&quot;&gt;</span>
+<span class="nt">&lt;note&gt;</span>
+<span class="nt">&lt;to&gt;</span>George<span class="nt">&lt;/to&gt;</span>
+<span class="nt">&lt;from&gt;</span>John<span class="nt">&lt;/from&gt;</span>
+<span class="nt">&lt;heading&gt;</span>Reminder<span class="nt">&lt;/heading&gt;</span>
+<span class="nt">&lt;body&gt;</span>Don&#39;t forget the meeting!<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/note&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ELEMENT</span> <span class="nt">note</span> <span class="o">(</span><span class="nt">to</span><span class="o">,</span><span class="nt">from</span><span class="o">,</span><span class="nt">heading</span><span class="o">,</span><span class="nt">body</span><span class="o">)</span><span class="k">&gt;</span>
+<span class="k">&lt;!ELEMENT</span> <span class="nt">to</span> <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">)</span><span class="k">&gt;</span>
+<span class="k">&lt;!ELEMENT</span> <span class="nt">from</span> <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">)</span><span class="k">&gt;</span>
+<span class="k">&lt;!ELEMENT</span> <span class="nt">heading</span> <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">)</span><span class="k">&gt;</span>
+<span class="k">&lt;!ELEMENT</span> <span class="nt">body</span> <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">)</span><span class="k">&gt;</span>
+</code></pre></div>
+<h2 id="元素">元素</h2>
+
+<p>声明元素</p>
+<div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ELEMENT</span> <span class="nt">元素名称</span> <span class="nt">类别</span><span class="k">&gt;</span>
+<span class="k">&lt;!ELEMENT</span> <span class="nt">元素名称</span> <span class="o">(</span><span class="nt">元素内容</span><span class="o">)</span><span class="k">&gt;</span>
+</code></pre></div>
+<p>空元素</p>
+<div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ELEMENT</span> <span class="nt">元素名称</span> <span class="kc">EMPTY</span><span class="k">&gt;</span>
+</code></pre></div>
+<p>只有 PCDATA 的元素</p>
+<div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ELEMENT</span> <span class="nt">元素名称</span> <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">)</span><span class="k">&gt;</span>
+</code></pre></div>
+<p>带有任何内容的元素</p>
+<div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ELEMENT</span> <span class="nt">元素名称</span> <span class="kc">ANY</span><span class="k">&gt;</span>
+</code></pre></div>
+<p>带有子元素（序列）的元素</p>
+
+<p>当子元素按照由逗号分隔开的序列进行声明时，这些子元素必须按照<strong>相同的顺序</strong>出现在文档中。在一个完整的声明中，子元素也必须被声明，同时子元素也可拥有子元素。</p>
+<div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ELEMENT</span> <span class="nt">元素名称</span> <span class="o">(</span><span class="nt">子元素名称</span> <span class="nt">1</span><span class="o">,</span><span class="nt">子元素名称</span> <span class="nt">2</span><span class="o">,</span><span class="nt">.....</span><span class="o">)</span><span class="k">&gt;</span>
+</code></pre></div>
+<p>声明元素重复出现的次数，重复标记与正则表达式相同</p>
+
+<p>声明只出现一次的元素</p>
+<div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ELEMENT</span> <span class="nt">元素名称</span> <span class="o">(</span><span class="nt">子元素名称</span><span class="o">)</span><span class="k">&gt;</span>
+</code></pre></div>
+<p>声明最少出现一次的元素</p>
+<div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ELEMENT</span> <span class="nt">元素名称</span> <span class="o">(</span><span class="nt">子元素名称</span><span class="o">+)</span><span class="k">&gt;</span>
+</code></pre></div>
+<p>声明出现零次或多次的元素</p>
+<div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ELEMENT</span> <span class="nt">元素名称</span> <span class="o">(</span><span class="nt">子元素名称</span><span class="o">*)</span><span class="k">&gt;</span>
+</code></pre></div>
+<p>声明出现零次或一次的元素</p>
+<div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ELEMENT</span> <span class="nt">元素名称</span> <span class="o">(</span><span class="nt">子元素名称</span><span class="o">?)</span><span class="k">&gt;</span>
+</code></pre></div>
+<p>声明“或”类型的内容，第四个元素可以为message或body</p>
+<div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ELEMENT</span> <span class="nt">note</span> <span class="o">(</span><span class="nt">to</span><span class="o">,</span><span class="nt">from</span><span class="o">,</span><span class="nt">header</span><span class="o">,(</span><span class="nt">message</span><span class="o">|</span><span class="nt">body</span><span class="o">))</span><span class="k">&gt;</span>
+</code></pre></div>
+<p>声明混合型的内容</p>
+<div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ELEMENT</span> <span class="nt">note</span> <span class="o">(</span><span class="kc">#PCDATA</span><span class="o">|</span><span class="nt">to</span><span class="o">|</span><span class="nt">from</span><span class="o">|</span><span class="nt">header</span><span class="o">|</span><span class="nt">message</span><span class="o">)*</span><span class="k">&gt;</span>
+</code></pre></div>
+<h2 id="属性">属性</h2>
+
+<p>声明属性</p>
+<div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ATTLIST</span> <span class="nt">元素名称</span> <span class="na">属性名称</span> <span class="na">属性类型</span> <span class="na">默认值</span><span class="k">&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ATTLIST</span> <span class="nt">payment</span> <span class="na">type</span> <span class="kc">CDATA</span> <span class="s2">&quot;check&quot;</span><span class="k">&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;payment</span> <span class="na">type=</span><span class="s">&quot;check&quot;</span> <span class="nt">/&gt;</span>
+</code></pre></div>
+<p><img src="http://blog.rainyalley.com/static/img/xml-field-type.jpg" alt="field-type"></p>
+
+<hr>
+
+<h2 id="实体">实体</h2>
+<div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ENTITY</span> <span class="ni">实体名称</span> <span class="s2">&quot;实体的值&quot;</span><span class="k">&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ENTITY</span> <span class="ni">writer</span> <span class="s2">&quot;Bill Gates&quot;</span><span class="k">&gt;</span>
+<span class="k">&lt;!ENTITY</span> <span class="ni">copyright</span> <span class="s2">&quot;Copyright W3School.com.cn&quot;</span><span class="k">&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;author&gt;</span><span class="ni">&amp;writer;&amp;copyright;</span><span class="nt">&lt;/author&gt;</span>
+</code></pre></div>
+<p>外部实体声明</p>
+<div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ENTITY</span> <span class="ni">实体名称</span> <span class="kc">SYSTEM</span> <span class="s2">&quot;URI/URL&quot;</span><span class="k">&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-dtd" data-lang="dtd"><span class="k">&lt;!ENTITY</span> <span class="ni">writer</span> <span class="kc">SYSTEM</span> <span class="s2">&quot;http://www.w3school.com.cn/dtd/entities.dtd&quot;</span><span class="k">&gt;</span>
+<span class="k">&lt;!ENTITY</span> <span class="ni">copyright</span> <span class="kc">SYSTEM</span> <span class="s2">&quot;http://www.w3school.com.cn/dtd/entities.dtd&quot;</span><span class="k">&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;author&gt;</span><span class="ni">&amp;writer;&amp;copyright;</span><span class="nt">&lt;/author&gt;</span>
+</code></pre></div>
+<h2 id="验证">验证</h2>
+
+<p>javascript验证，load( ) 方法用于文件，而 loadXML( ) 方法用于字符串，validateOnParse设为false关闭验证</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">xmlDoc</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">ActiveXObject</span><span class="p">(</span><span class="s2">&quot;Microsoft.XMLDOM&quot;</span><span class="p">);</span>
+<span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">async</span><span class="o">=</span><span class="s2">&quot;false&quot;</span><span class="p">;</span>
+<span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">validateOnParse</span><span class="o">=</span><span class="s2">&quot;true&quot;</span><span class="p">;</span>
+<span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">load</span><span class="p">(</span><span class="s2">&quot;note_dtd_error.xml&quot;</span><span class="p">);</span>
+</code></pre></div>
+<h1 id="xsd">XSD</h1>
+
+<p>XML Schema Definition，文档模式定义，是基于 XML 的 DTD 替代物。</p>
+
+<p>与 DTD 不同，XML Schema 支持数据类型和命名空间。</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="nt">&lt;xs:schema</span> <span class="na">xmlns:xs=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema&quot;</span>
+<span class="na">targetNamespace=</span><span class="s">&quot;http://www.w3school.com.cn&quot;</span>
+<span class="na">xmlns=</span><span class="s">&quot;http://www.w3school.com.cn&quot;</span>
+<span class="na">elementFormDefault=</span><span class="s">&quot;qualified&quot;</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;note&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;xs:complexType&gt;</span>
+      <span class="nt">&lt;xs:sequence&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;to&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;from&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;heading&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;body&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;/xs:sequence&gt;</span>
+    <span class="nt">&lt;/xs:complexType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+
+<span class="nt">&lt;/xs:schema&gt;</span>
+</code></pre></div>
+<p>xmlns:xs 显示 schema 中<strong>用到的元素</strong>和<strong>数据类型</strong>来自哪个命名空间，同时它还规定了来自此命名空间的元素和数据类型应该使用前缀 xs；</p>
+
+<p>targetNamespace  显示被此 schema <strong>定义的元素</strong> (note, to, from, heading, body) 来自哪个命名空间, 这意味着，如果在xml文档中使用此命名空间，那么定义的元素将可以被使用，如果不同的命名空间含有同名元素，使用前缀区分。</p>
+
+<p>elementFormDefault=<q>qualified</q> 指出任何 XML 实例文档所使用的且在此 schema 中声明过的元素必须被命名空间限定。</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&quot;1.0&quot;?&gt;</span>
+<span class="nt">&lt;note</span>
+<span class="na">xmlns=</span><span class="s">&quot;http://www.w3school.com.cn&quot;</span>
+<span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+<span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://www.w3school.com.cn note.xsd&quot;</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;to&gt;</span>George<span class="nt">&lt;/to&gt;</span>
+<span class="nt">&lt;from&gt;</span>John<span class="nt">&lt;/from&gt;</span>
+<span class="nt">&lt;heading&gt;</span>Reminder<span class="nt">&lt;/heading&gt;</span>
+<span class="nt">&lt;body&gt;</span>Don&#39;t forget the meeting!<span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/note&gt;</span>
+</code></pre></div>
+<p>一旦拥有了可用的 XML Schema 实例命名空间：xmlns:xsi</p>
+
+<p>就可以使用 schemaLocation 属性来注册命名空间，只有注册的命名空间可以被使用。此属性有两个值，第一个值是需要使用的命名空间，第二个值是供命名空间使用的 XML schema 的位置：xsi:schemaLocation</p>
+
+<h2 id="元素">元素</h2>
+
+<p><code class="prettyprint">&lt;schema&gt;</code> 元素是每一个 XML Schema 的根元素</p>
+
+<h3 id="简易元素">简易元素</h3>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;xxx&quot;</span> <span class="na">type=</span><span class="s">&quot;yyy&quot;</span><span class="nt">/&gt;</span>
+</code></pre></div>
+<p>常用类型：
+xs:string
+xs:decimal
+xs:integer
+xs:boolean
+xs:date
+xs:time
+缺省值</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;color&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span> <span class="na">default=</span><span class="s">&quot;red&quot;</span><span class="nt">/&gt;</span>
+</code></pre></div>
+<p>固定值</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;color&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span> <span class="na">fixed=</span><span class="s">&quot;red&quot;</span><span class="nt">/&gt;</span>
+</code></pre></div>
+<h3 id="复合元素">复合元素</h3>
+
+<p>子元素包围在<code class="prettyprint">&lt;sequence&gt;</code>中，这意味着子元素必须以它们被声明的次序出现。</p>
+
+<p>声明形式，这种类型是employee独有的</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;employee&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:complexType&gt;</span>
+    <span class="nt">&lt;xs:sequence&gt;</span>
+      <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;firstname&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;lastname&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/xs:sequence&gt;</span>
+  <span class="nt">&lt;/xs:complexType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div>
+<p>引用形式，这种类型是共享的</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;employee&quot;</span> <span class="na">type=</span><span class="s">&quot;personinfo&quot;</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;xs:complexType</span> <span class="na">name=</span><span class="s">&quot;personinfo&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:sequence&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;firstname&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;lastname&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/xs:sequence&gt;</span>
+<span class="nt">&lt;/xs:complexType&gt;</span>
+</code></pre></div>
+<p>类型扩展</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;employee&quot;</span> <span class="na">type=</span><span class="s">&quot;fullpersoninfo&quot;</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;xs:complexType</span> <span class="na">name=</span><span class="s">&quot;personinfo&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:sequence&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;firstname&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;lastname&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/xs:sequence&gt;</span>
+<span class="nt">&lt;/xs:complexType&gt;</span>
+
+<span class="nt">&lt;xs:complexType</span> <span class="na">name=</span><span class="s">&quot;fullpersoninfo&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:complexContent&gt;</span>
+    <span class="nt">&lt;xs:extension</span> <span class="na">base=</span><span class="s">&quot;personinfo&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;xs:sequence&gt;</span>
+        <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;address&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;city&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;country&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;/xs:sequence&gt;</span>
+    <span class="nt">&lt;/xs:extension&gt;</span>
+  <span class="nt">&lt;/xs:complexContent&gt;</span>
+<span class="nt">&lt;/xs:complexType&gt;</span>
+</code></pre></div>
+<h3 id="复合空元素">复合空元素</h3>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;product&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:complexType&gt;</span>
+    <span class="nt">&lt;xs:complexContent&gt;</span>
+      <span class="nt">&lt;xs:restriction</span> <span class="na">base=</span><span class="s">&quot;xs:integer&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;xs:attribute</span> <span class="na">name=</span><span class="s">&quot;prodid&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:positiveInteger&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;/xs:restriction&gt;</span>
+    <span class="nt">&lt;/xs:complexContent&gt;</span>
+  <span class="nt">&lt;/xs:complexType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;product&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:complexType&gt;</span>
+    <span class="nt">&lt;xs:attribute</span> <span class="na">name=</span><span class="s">&quot;prodid&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:positiveInteger&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/xs:complexType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;product&quot;</span> <span class="na">type=</span><span class="s">&quot;prodtype&quot;</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;xs:complexType</span> <span class="na">name=</span><span class="s">&quot;prodtype&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:attribute</span> <span class="na">name=</span><span class="s">&quot;prodid&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:positiveInteger&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/xs:complexType&gt;</span>
+</code></pre></div>
+<h3 id="仅含元素复合类型">仅含元素复合类型</h3>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;person&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:complexType&gt;</span>
+    <span class="nt">&lt;xs:sequence&gt;</span>
+      <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;firstname&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;lastname&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/xs:sequence&gt;</span>
+  <span class="nt">&lt;/xs:complexType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;person&quot;</span> <span class="na">type=</span><span class="s">&quot;persontype&quot;</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;xs:complexType</span> <span class="na">name=</span><span class="s">&quot;persontype&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:sequence&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;firstname&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;lastname&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/xs:sequence&gt;</span>
+<span class="nt">&lt;/xs:complexType&gt;</span>
+</code></pre></div>
+<h3 id="仅含文本复合类型">仅含文本复合类型</h3>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;某个名称&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:complexType&gt;</span>
+    <span class="nt">&lt;xs:simpleContent&gt;</span>
+      <span class="nt">&lt;xs:extension</span> <span class="na">base=</span><span class="s">&quot;basetype&quot;</span><span class="nt">&gt;</span>
+        ....
+        ....
+      <span class="nt">&lt;/xs:extension&gt;</span>
+    <span class="nt">&lt;/xs:simpleContent&gt;</span>
+  <span class="nt">&lt;/xs:complexType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;某个名称&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:complexType&gt;</span>
+    <span class="nt">&lt;xs:simpleContent&gt;</span>
+      <span class="nt">&lt;xs:restriction</span> <span class="na">base=</span><span class="s">&quot;basetype&quot;</span><span class="nt">&gt;</span>
+        ....
+        ....
+      <span class="nt">&lt;/xs:restriction&gt;</span>
+    <span class="nt">&lt;/xs:simpleContent&gt;</span>
+  <span class="nt">&lt;/xs:complexType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div>
+<h3 id="混合内容复合类型">混合内容复合类型</h3>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;letter&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:complexType</span> <span class="na">mixed=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;xs:sequence&gt;</span>
+      <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;name&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;orderid&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:positiveInteger&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;shipdate&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:date&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/xs:sequence&gt;</span>
+  <span class="nt">&lt;/xs:complexType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;letter&quot;</span> <span class="na">type=</span><span class="s">&quot;lettertype&quot;</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;xs:complexType</span> <span class="na">name=</span><span class="s">&quot;lettertype&quot;</span> <span class="na">mixed=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:sequence&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;name&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;orderid&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:positiveInteger&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;shipdate&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:date&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/xs:sequence&gt;</span>
+<span class="nt">&lt;/xs:complexType&gt;</span>
+</code></pre></div>
+<h2 id="属性">属性</h2>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:attribute</span> <span class="na">name=</span><span class="s">&quot;xxx&quot;</span> <span class="na">type=</span><span class="s">&quot;yyy&quot;</span><span class="nt">/&gt;</span>
+</code></pre></div>
+<p>常用类型与元素相同</p>
+
+<p>默认值与固定值用法与元素相同</p>
+
+<p>可选的和必需的属性，在缺省的情况下，属性是可选的。如需规定属性为必选，请使用 <q>use</q> 属性：</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:attribute</span> <span class="na">name=</span><span class="s">&quot;lang&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span> <span class="na">use=</span><span class="s">&quot;required&quot;</span><span class="nt">/&gt;</span>
+</code></pre></div>
+<h2 id="限定-facets">限定 / Facets</h2>
+
+<p>对值的限定</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;age&quot;</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;xs:simpleType&gt;</span>
+  <span class="nt">&lt;xs:restriction</span> <span class="na">base=</span><span class="s">&quot;xs:integer&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;xs:minInclusive</span> <span class="na">value=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:maxInclusive</span> <span class="na">value=</span><span class="s">&quot;120&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/xs:restriction&gt;</span>
+<span class="nt">&lt;/xs:simpleType&gt;</span>
+
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div>
+<p>枚举限定</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;car&quot;</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;xs:simpleType&gt;</span>
+  <span class="nt">&lt;xs:restriction</span> <span class="na">base=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;xs:enumeration</span> <span class="na">value=</span><span class="s">&quot;Audi&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:enumeration</span> <span class="na">value=</span><span class="s">&quot;Golf&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:enumeration</span> <span class="na">value=</span><span class="s">&quot;BMW&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/xs:restriction&gt;</span>
+<span class="nt">&lt;/xs:simpleType&gt;</span>
+
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div>
+<p>也可以写成</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;car&quot;</span> <span class="na">type=</span><span class="s">&quot;carType&quot;</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;xs:simpleType</span> <span class="na">name=</span><span class="s">&quot;carType&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:restriction</span> <span class="na">base=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;xs:enumeration</span> <span class="na">value=</span><span class="s">&quot;Audi&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:enumeration</span> <span class="na">value=</span><span class="s">&quot;Golf&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:enumeration</span> <span class="na">value=</span><span class="s">&quot;BMW&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/xs:restriction&gt;</span>
+<span class="nt">&lt;/xs:simpleType&gt;</span>
+</code></pre></div>
+<p>对一系列值的限定
+模式约束（pattern constraint）,类似于正则</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;password&quot;</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;xs:simpleType&gt;</span>
+  <span class="nt">&lt;xs:restriction</span> <span class="na">base=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;xs:pattern</span> <span class="na">value=</span><span class="s">&quot;[a-zA-Z0-9]{8}&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/xs:restriction&gt;</span>
+<span class="nt">&lt;/xs:simpleType&gt;</span>
+
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div>
+<p>对空白字符的限定</p>
+
+<p>preserve，不会移除任何空白字符</p>
+
+<p>replace， 将移除所有空白字符（换行、回车、空格以及制表符）</p>
+
+<p>collapse，移除所有空白字符（换行、回车、空格以及制表符会被替换为空格，开头和结尾的空格会被移除，而多个连续的空格会被缩减为一个单一的空格）</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;address&quot;</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;xs:simpleType&gt;</span>
+  <span class="nt">&lt;xs:restriction</span> <span class="na">base=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;xs:whiteSpace</span> <span class="na">value=</span><span class="s">&quot;preserve&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/xs:restriction&gt;</span>
+<span class="nt">&lt;/xs:simpleType&gt;</span>
+
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div>
+<p>对长度的限定</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;password&quot;</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;xs:simpleType&gt;</span>
+  <span class="nt">&lt;xs:restriction</span> <span class="na">base=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;xs:length</span> <span class="na">value=</span><span class="s">&quot;8&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/xs:restriction&gt;</span>
+<span class="nt">&lt;/xs:simpleType&gt;</span>
+
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div><div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;password&quot;</span><span class="nt">&gt;</span>
+
+<span class="nt">&lt;xs:simpleType&gt;</span>
+  <span class="nt">&lt;xs:restriction</span> <span class="na">base=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;xs:minLength</span> <span class="na">value=</span><span class="s">&quot;5&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;xs:maxLength</span> <span class="na">value=</span><span class="s">&quot;8&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/xs:restriction&gt;</span>
+<span class="nt">&lt;/xs:simpleType&gt;</span>
+
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div>
+<p>数据类型的限定</p>
+
+<p><img src="http://blog.rainyalley.com/static/img/xml-data-type.jpg" alt="data-type"></p>
+
+<h2 id="指示器">指示器</h2>
+
+<p>有七种指示器：</p>
+
+<p>Order 指示器：用于定义元素的顺序，标签</p>
+
+<ul>
+<li><p>All：子元素可以按照任意顺序出现，且每个子元素必须只出现<strong>1</strong>次</p></li>
+<li><p>Choice：可出现某个子元素或者可出现另外一个子元素（非此即彼）</p></li>
+<li><p>Sequence：子元素必须按照特定的顺序出现：</p></li>
+</ul>
+
+<p>Occurrence 指示器：用于定义某个元素出现的频率，属性</p>
+
+<ul>
+<li><p>maxOccurs：规定某个元素可出现的最大次数，（maxOccurs=<q>unbounded</q>表示不受限制）</p></li>
+<li><p>minOccurs：规定某个元素可出现的最小次数</p></li>
+</ul>
+
+<p>Group 指示器：定义相关的数批元素，标签</p>
+
+<ul>
+<li><p>Group name：必须在 group 声明内部定义一个 all、choice 或者 sequence 元素，通过<code class="prettyprint">&lt;xs:group ref=&quot;group&quot;/&gt;</code>引用</p></li>
+<li><p>attributeGroup name：属性组通过 attributeGroup 声明来进行定义，子元素为<code class="prettyprint">attribute</code>，通过<code class="prettyprint">&lt;xs:attributeGroup ref=&quot;personattrgroup&quot;/&gt;</code>引用</p></li>
+</ul>
+
+<h2 id="any">any</h2>
+
+<p><code class="prettyprint">&lt;any&gt;</code>元素使我们有能力通过未被 schema 规定的元素来拓展 XML 文档，</p>
+
+<p>定义<code class="prettyprint">&lt;any&gt;</code>元素，表示此处添加任何由其他 schema 规定的元素</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;person&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:complexType&gt;</span>
+    <span class="nt">&lt;xs:sequence&gt;</span>
+      <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;firstname&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;lastname&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;xs:any</span> <span class="na">minOccurs=</span><span class="s">&quot;0&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/xs:sequence&gt;</span>
+  <span class="nt">&lt;/xs:complexType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div>
+<h2 id="anyattribute">anyAttribute</h2>
+
+<p><code class="prettyprint">&lt;anyAttribute&gt;</code> 元素使我们有能力通过未被 schema 规定的属性来扩展 XML 文档，</p>
+
+<p>定义<code class="prettyprint">&lt;anyAttribute&gt;</code>元素，表示此处添加任何由其他 schema 规定的属性</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;person&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:complexType&gt;</span>
+    <span class="nt">&lt;xs:sequence&gt;</span>
+      <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;firstname&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+      <span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;lastname&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/xs:sequence&gt;</span>
+    <span class="nt">&lt;xs:anyAttribute/&gt;</span>
+  <span class="nt">&lt;/xs:complexType&gt;</span>
+<span class="nt">&lt;/xs:element&gt;</span>
+</code></pre></div>
+<h2 id="元素替换">元素替换</h2>
+
+<p>可替换元素的类型必须和主元素相同，或者从主元素衍生而来。假如可替换元素的类型与主元素的类型相同，那么您就不必规定可替换元素的类型了。</p>
+
+<p>请注意，substitutionGroup 中的所有元素（主元素和可替换元素）必须被声明为全局元素，否则就无法工作！</p>
+
+<p>全局元素指 <q>schema</q> 元素的直接子元素！本地元素（Local elements）指嵌套在其他元素中的元素。</p>
+
+<p>首先，我们声明主元素，然后我们会声明次元素，这些次元素可声明它们能够替换主元素。</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;name&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;navn&quot;</span> <span class="na">substitutionGroup=</span><span class="s">&quot;name&quot;</span><span class="nt">/&gt;</span>
+
+<span class="nt">&lt;xs:complexType</span> <span class="na">name=</span><span class="s">&quot;custinfo&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;xs:sequence&gt;</span>
+    <span class="nt">&lt;xs:element</span> <span class="na">ref=</span><span class="s">&quot;name&quot;</span><span class="nt">/&gt;</span>
+  <span class="nt">&lt;/xs:sequence&gt;</span>
+<span class="nt">&lt;/xs:complexType&gt;</span>
+
+<span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;customer&quot;</span> <span class="na">type=</span><span class="s">&quot;custinfo&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;kunde&quot;</span> <span class="na">substitutionGroup=</span><span class="s">&quot;customer&quot;</span><span class="nt">/&gt;</span>
+</code></pre></div>
+<p>复合此规定的xml文档格式：</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;customer&gt;</span>
+  <span class="nt">&lt;name&gt;</span>John Smith<span class="nt">&lt;/name&gt;</span>
+<span class="nt">&lt;/customer&gt;</span>
+</code></pre></div>
+<p>或者</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;kunde&gt;</span>
+  <span class="nt">&lt;navn&gt;</span>John Smith<span class="nt">&lt;/navn&gt;</span>
+<span class="nt">&lt;/kunde&gt;</span>
+</code></pre></div>
+<p>阻止元素替换</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;xs:element</span> <span class="na">name=</span><span class="s">&quot;name&quot;</span> <span class="na">type=</span><span class="s">&quot;xs:string&quot;</span> <span class="na">block=</span><span class="s">&quot;substitution&quot;</span><span class="nt">/&gt;</span>
+</code></pre></div>
+<h2 id="数据类型">数据类型</h2>
+
+<p>略，详见<a href="http://www.w3school.com.cn/schema/schema_dtypes_string.asp">W3C</a></p>
+
+<h1 id="dom">DOM</h1>
+
+<p>获取元素值</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">x</span><span class="o">=</span><span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nx">childNodes</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="nx">txt</span><span class="o">=</span><span class="nx">x</span><span class="p">.</span><span class="nx">nodeValue</span><span class="p">;</span>
+</code></pre></div>
+<p>获取属性值</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">txt</span><span class="o">=</span><span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nx">getAttribute</span><span class="p">(</span><span class="s2">&quot;lang&quot;</span><span class="p">);</span>
+</code></pre></div>
+<p>改变元素的值</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">x</span><span class="o">=</span><span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;title&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nx">childNodes</span><span class="p">[</span><span class="mi">0</span><span class="p">];</span>
+<span class="nx">x</span><span class="p">.</span><span class="nx">nodeValue</span><span class="o">=</span><span class="s2">&quot;Easy Cooking&quot;</span><span class="p">;</span>
+</code></pre></div>
+<p>改变属性的值</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">x</span><span class="o">=</span><span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;book&quot;</span><span class="p">);</span>
+<span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span><span class="nx">i</span><span class="o">&lt;</span><span class="nx">x</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span><span class="nx">i</span><span class="o">++</span><span class="p">)</span>
+  <span class="p">{</span>
+  <span class="nx">x</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">setAttribute</span><span class="p">(</span><span class="s2">&quot;edition&quot;</span><span class="p">,</span><span class="s2">&quot;first&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+</code></pre></div>
+<p>创建元素</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">newel</span><span class="o">=</span><span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">createElement</span><span class="p">(</span><span class="s2">&quot;edition&quot;</span><span class="p">);</span> <span class="c1">//创建新的元素节点。</span>
+<span class="nx">newtext</span><span class="o">=</span><span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">createTextNode</span><span class="p">(</span><span class="s2">&quot;First&quot;</span><span class="p">);</span> <span class="c1">//创建新的文本节点</span>
+<span class="nx">newel</span><span class="p">.</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">newtext</span><span class="p">);</span> <span class="c1">//向节点添加子节点</span>
+
+<span class="nx">x</span><span class="o">=</span><span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;book&quot;</span><span class="p">);</span>
+<span class="nx">x</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">appendChild</span><span class="p">(</span><span class="nx">newel</span><span class="p">);</span>
+</code></pre></div>
+<p>删除元素</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">x</span><span class="o">=</span><span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;book&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
+<span class="nx">x</span><span class="p">.</span><span class="nx">removeChild</span><span class="p">(</span><span class="nx">x</span><span class="p">.</span><span class="nx">childNodes</span><span class="p">[</span><span class="mi">0</span><span class="p">]);</span>
+</code></pre></div>
+<h1 id="解析器">解析器</h1>
+
+<p>js解析xml</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">XMLHttpRequest</span><span class="p">)</span>
+  <span class="p">{</span><span class="c1">// code for IE7+, Firefox, Chrome, Opera, Safari</span>
+  <span class="nx">xmlhttp</span><span class="o">=</span><span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="k">else</span>
+  <span class="p">{</span><span class="c1">// code for IE6, IE5</span>
+  <span class="nx">xmlhttp</span><span class="o">=</span><span class="k">new</span> <span class="nx">ActiveXObject</span><span class="p">(</span><span class="s2">&quot;Microsoft.XMLHTTP&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+
+<span class="nx">xmlhttp</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span><span class="s2">&quot;books.xml&quot;</span><span class="p">,</span><span class="kc">false</span><span class="p">);</span>
+<span class="nx">xmlhttp</span><span class="p">.</span><span class="nx">send</span><span class="p">();</span>
+<span class="nx">xmlDoc</span><span class="o">=</span><span class="nx">xmlhttp</span><span class="p">.</span><span class="nx">responseXML</span><span class="p">;</span> 
+</code></pre></div>
+<p>js解析字符串</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">txt</span><span class="o">=</span><span class="s2">&quot;&lt;bookstore&gt;&lt;book&gt;&quot;</span><span class="p">;</span>
+<span class="nx">txt</span><span class="o">=</span><span class="nx">txt</span><span class="o">+</span><span class="s2">&quot;&lt;title&gt;Everyday Italian&lt;/title&gt;&quot;</span><span class="p">;</span>
+<span class="nx">txt</span><span class="o">=</span><span class="nx">txt</span><span class="o">+</span><span class="s2">&quot;&lt;author&gt;Giada De Laurentiis&lt;/author&gt;&quot;</span><span class="p">;</span>
+<span class="nx">txt</span><span class="o">=</span><span class="nx">txt</span><span class="o">+</span><span class="s2">&quot;&lt;year&gt;2005&lt;/year&gt;&quot;</span><span class="p">;</span>
+<span class="nx">txt</span><span class="o">=</span><span class="nx">txt</span><span class="o">+</span><span class="s2">&quot;&lt;/book&gt;&lt;/bookstore&gt;&quot;</span><span class="p">;</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">DOMParser</span><span class="p">)</span>
+  <span class="p">{</span>
+  <span class="nx">parser</span><span class="o">=</span><span class="k">new</span> <span class="nx">DOMParser</span><span class="p">();</span>
+  <span class="nx">xmlDoc</span><span class="o">=</span><span class="nx">parser</span><span class="p">.</span><span class="nx">parseFromString</span><span class="p">(</span><span class="nx">txt</span><span class="p">,</span><span class="s2">&quot;text/xml&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="k">else</span> <span class="c1">// Internet Explorer</span>
+  <span class="p">{</span>
+  <span class="nx">xmlDoc</span><span class="o">=</span><span class="k">new</span> <span class="nx">ActiveXObject</span><span class="p">(</span><span class="s2">&quot;Microsoft.XMLDOM&quot;</span><span class="p">);</span>
+  <span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">async</span><span class="o">=</span><span class="s2">&quot;false&quot;</span><span class="p">;</span>
+  <span class="c1">//loadXML() 方法用于加载字符串（文本），load() 用于加载文件</span>
+  <span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">loadXML</span><span class="p">(</span><span class="nx">txt</span><span class="p">);</span>
+  <span class="p">}</span>
+</code></pre></div>
+<p>访问xml节点</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">xmlDoc</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s2">&quot;to&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">].</span><span class="nx">childNodes</span><span class="p">[</span><span class="mi">0</span><span class="p">].</span><span class="nx">nodeValue</span>
+</code></pre></div>
+<p>XMLHttpRequest</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">xmlhttp</span><span class="p">;</span>
+<span class="kd">function</span> <span class="nx">loadXMLDoc</span><span class="p">(</span><span class="nx">url</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="nx">xmlhttp</span><span class="o">=</span><span class="kc">null</span><span class="p">;</span>
+<span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">XMLHttpRequest</span><span class="p">)</span>
+  <span class="p">{</span><span class="c1">// code for all new browsers</span>
+  <span class="nx">xmlhttp</span><span class="o">=</span><span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+  <span class="p">}</span>
+<span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nb">window</span><span class="p">.</span><span class="nx">ActiveXObject</span><span class="p">)</span>
+  <span class="p">{</span><span class="c1">// code for IE5 and IE6</span>
+  <span class="nx">xmlhttp</span><span class="o">=</span><span class="k">new</span> <span class="nx">ActiveXObject</span><span class="p">(</span><span class="s2">&quot;Microsoft.XMLHTTP&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">xmlhttp</span><span class="o">!=</span><span class="kc">null</span><span class="p">)</span>
+  <span class="p">{</span>
+  <span class="nx">xmlhttp</span><span class="p">.</span><span class="nx">onreadystatechange</span><span class="o">=</span><span class="nx">state_Change</span><span class="p">;</span>
+  <span class="nx">xmlhttp</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span><span class="nx">url</span><span class="p">,</span><span class="kc">true</span><span class="p">);</span>
+  <span class="nx">xmlhttp</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="kc">null</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="k">else</span>
+  <span class="p">{</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Your browser does not support XMLHTTP.&quot;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">function</span> <span class="nx">state_Change</span><span class="p">()</span>
+<span class="p">{</span>
+<span class="k">if</span> <span class="p">(</span><span class="nx">xmlhttp</span><span class="p">.</span><span class="nx">readyState</span><span class="o">==</span><span class="mi">4</span><span class="p">)</span>
+  <span class="p">{</span><span class="c1">// 4 = &quot;loaded&quot;</span>
+  <span class="k">if</span> <span class="p">(</span><span class="nx">xmlhttp</span><span class="p">.</span><span class="nx">status</span><span class="o">==</span><span class="mi">200</span><span class="p">)</span>
+    <span class="p">{</span><span class="c1">// 200 = OK</span>
+    <span class="c1">// ...our code here...</span>
+    <span class="p">}</span>
+  <span class="k">else</span>
+    <span class="p">{</span>
+    <span class="nx">alert</span><span class="p">(</span><span class="s2">&quot;Problem retrieving XML data&quot;</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div>
+<h1 id="衍生产品">衍生产品</h1>
+
+<ul>
+<li><p>XHTML
+更严格更纯净的基于 XML 的 HTML 版本。</p></li>
+<li><p>XML DOM
+访问和操作 XML 的标准文档模型。</p></li>
+<li><p>XSLT
+XSL 包含三个部分：
+XSLT - 把 XML 转换为其他格式，比如 HTML
+XSL-FO - 用于格式化 XML 文档的语言
+XPath - 用于在 XML 文档中导航的语言</p></li>
+<li><p>XQuery
+基于 XML 的用于查询 XML 数据的语言。</p></li>
+<li><p>DTD
+用于定义 XML 文档中的合法元素的标准。</p></li>
+<li><p>XSD
+XML Schema。基于 XML 的 DTD 替代物。</p></li>
+<li><p>XLink
+在 XML 文档中创建超级链接的语言。</p></li>
+<li><p>XPointer
+允许 XLink 超级链接指向 XML 文档中更多具体的部分。</p></li>
+<li><p>XForms
+使用 XML 定义表单数据。</p></li>
+<li><p>SOAP
+允许应用程序在 HTTP 之上交换信息的基于 XML 的协议。</p></li>
+<li><p>WSDL
+用于描述网络服务的基于 XML 的语言。</p></li>
+<li><p>RDF
+用于描述网络资源的基于 XML 的语言。</p></li>
+<li><p>RSS
+聚合新闻以及类新闻站点内容的格式。</p></li>
+<li><p>WAP
+用于在无线设备上（比如移动电话）显示内容的一种基于 XML 的语言。</p></li>
+<li><p>SMIL
+描述视听呈现的语言。</p></li>
+<li><p>SVG
+使用 XML 格式定义图形。</p></li>
+</ul>
+
+          </article>
+          <hr class="boundary">
+          <div id="post-share" class="bdsharebuttonbox">
+              <a href="#" class="bds_more" data-cmd="more"></a>
+              <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+              <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+              <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+              <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+              <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+          </div>
+        </div>
+        <div class="pad-min"></div>
+        <div id="post-comment" class="sheet post">
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+    <div class="content-navigation col-lg-3">
+      <div class="shadow-bottom-center" >
+        <div class="content-navigation-toc">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Toc
+            </div>
+            <div class="content-navigation-list toc"></div>
+        </div>
+        <div class="content-navigation-tag">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Tags
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#XML"><span class="octicon octicon-tag"></span>&nbsp;XML</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="content-navigation-related">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Related
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+
+                    
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-04-22/design-pattern/">设计模式与原则</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2013-11-17/complement/">为什么要用补码表示负数</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+    </div>
+
+    <div class="page-scrollTop" data-toggle="tooltip" data-placement="top" title="Top">
+        <a href="javascript:void(0);">
+            <div class="arrow"></div>
+            <div class="stick"></div>
+        </a>
+    </div>
+</div>
+
+    <footer  class="footnote footnote-tiffany">
+        <div class="container">
+                <a class="foot-item" href="mailto:dubuyuye@yeah.net" target="_blank"><span class="octicon octicon-mail"></span></a>
+                <a class="foot-item" href="https://github.com/dubuyuye" target="_blank"><span class="octicon octicon-mark-github"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/feed.xml" target="_blank"><span class="octicon octicon-rss"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/link/"><span class="octicon octicon-link-external"></span></a>
+                &nbsp;
+                <a href="http://blog.rainyalley.com/"><span class="word-keep">&copy; RainyAlley</span></a>
+        </div>
+    </footer>
+
+
+<div class="scriptHub">
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/script.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/toc.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/post.js"></script>
+    
+</div>
+
+
+
+</body>
+</html>

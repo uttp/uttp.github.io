@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Linux进程管理</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="keywords" content="Linux进程管理, linux, Linux,进程管理, RainyAlley" />
+    <meta name="description" content="Linux进程管理, linux, Linux,进程管理, " />
+
+    <link rel="shortcut icon" type="image/x-icon" media="screen" href="http://blog.rainyalley.com/static/favicon.ico" />
+    <link rel="canonical" href="http://blog.rainyalley.com/2014-02-13/linux-ps/" />
+    <link rel="alternate" type="application/rss+xml" title="RainyAlley" href="http://blog.rainyalley.com/feed.xml"  />
+
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/octicons/octicons.css" />
+
+    
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/highlight.css" />
+    
+
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/post.css" />
+    
+</head>
+
+<body>
+<div class="main">
+
+    
+    
+    <header>
+        <nav class="navbar navbar-tiffany rectangle" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://blog.rainyalley.com/">RainyAlley</a>
+                    <p class="navbar-text">Developer</p>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        
+                        <li>
+                        <a href="http://blog.rainyalley.com/" class="word-keep"><span class="octicon octicon-book"></span></span>&nbsp;&nbsp;Blog</a>
+                        </li>
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/archive/" class="word-keep"><span class="octicon octicon-repo"></span>&nbsp;&nbsp;Archive</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/category/" class="word-keep"><span class="octicon octicon-list-unordered"></span>&nbsp;&nbsp;Category</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/tags/" class="word-keep"><span class="octicon octicon-tag"></span>&nbsp;&nbsp;Tag</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li><a href="#stq=" class="search-button"><span class="octicon octicon-search"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <div class="container">
+        <div class="row">
+    <div class="content col-lg-9">
+        <div class="sheet post">
+          <header>
+            <h2>Linux进程管理</h2>
+            <p class="post-meta">
+                <span class="octicon octicon-clock"></span> Feb 13, 2014
+            </p>
+            <p class="post-tag">
+                <span><a href="http://blog.rainyalley.com/category/#linux"><span class="octicon octicon-list-unordered"></span>&nbsp;linux</a></span>
+                <span>
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#Linux"><span class="octicon octicon-tag"></span>&nbsp;Linux</a>
+                    
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#进程管理"><span class="octicon octicon-tag"></span>&nbsp;进程管理</a>
+                    
+                </span>
+            </p>
+          </header>
+          <hr class="boundary">
+          <article>
+            <div class="toc"></div>
+
+<h2 id="amp"><code class="prettyprint">&amp;</code></h2>
+
+<p><strong>将命令放在后台运行</strong></p>
+
+<p>command &amp;</p>
+
+<p>此时将会产生1个任务编号与一个PID，命令执行完成后将会在前台出现提示</p>
+
+<blockquote>
+<p>后台执行的任务如果存在信息输出，最好将其写入到文件，否则将会在前台显示，影响操作</p>
+</blockquote>
+
+<hr>
+
+<h2 id="ctrl-z"><code class="prettyprint">[ctrl]-z</code></h2>
+
+<p><strong>将命令放在后台暂停</strong></p>
+
+<p>此时将会产生1个任务编号及其命令</p>
+
+<hr>
+
+<h2 id="jobs"><code class="prettyprint">jobs</code></h2>
+
+<p><strong>查看后台任务状态</strong></p>
+
+<p>[root@www ~]# <code class="prettyprint">jobs [-lrs]</code></p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-l</code>  ：除了列出 job number 与命令串之外，同时列出 PID 的号码；</p>
+
+<p><code class="prettyprint">-r</code>  ：仅列出正在背景 run 的工作；</p>
+
+<p><code class="prettyprint">-s</code>  ：仅列出正在背景当中暂停 (stop) 的工作。</p>
+
+<blockquote>
+<p><code class="prettyprint">+</code> 代表最近被放到背景的工作号码， <code class="prettyprint">-</code> 代表最近最后第二个被放置到背景中的工作号码，其余没有符号</p>
+</blockquote>
+
+<hr>
+
+<h2 id="fg"><code class="prettyprint">fg</code></h2>
+
+<p><strong>将后台任务放到前台</strong></p>
+
+<p>[root@www ~]# <code class="prettyprint">fg %jobnumber</code></p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">%jobnumber</code> ：jobnumber 为任务号码(数字)，那个 % 是可有可无的！</p>
+
+<hr>
+
+<h2 id="bg"><code class="prettyprint">bg</code></h2>
+
+<p><strong>将后台暂停的任务变为运行中</strong></p>
+
+<p>[root@www ~]# <code class="prettyprint">bg %jobnumber</code> </p>
+
+<hr>
+
+<h2 id="kill"><code class="prettyprint">kill</code></h2>
+
+<p><strong>移除任务</strong></p>
+
+<p>[root@www ~]#<code class="prettyprint">kill -signal %jobnumber</code></p>
+
+<p>[root@www ~]#<code class="prettyprint">kill -l</code></p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-l</code>  ：这个是 L 的小写，列出目前 kill 能够使用的讯号 (signal) 有哪些</p>
+
+<p><code class="prettyprint">signal</code> ：代表给予后面接的那个工作什么样的指示罗！用 man 7 signal 可知：</p>
+
+<blockquote>
+<p><code class="prettyprint">-1</code> ：重新读取一次参数的配置档 (类似 reload)；</p>
+
+<p><code class="prettyprint">-2</code> ：代表与由键盘输入 [ctrl]-c 同样的动作；</p>
+
+<p><code class="prettyprint">-9</code> ：立刻强制删除一个工作；</p>
+
+<p><code class="prettyprint">-15</code>：以正常的程序方式终止一项工作。与 -9 是不一样的。</p>
+</blockquote>
+
+<hr>
+
+<h2 id="nohup"><code class="prettyprint">nohup</code></h2>
+
+<p><strong>离线任务</strong></p>
+
+<blockquote>
+<p><code class="prettyprint">!特别说明</code> 前面的几个命令中所谓的&quot;背景”，都是指终端机背景(不会被ctrl+c中断)，并非系统背景，一旦退出终端，任务立即终止。<code class="prettyprint">nohup</code>可以在退出终端后继续执行任务。</p>
+</blockquote>
+
+<p>[root@www ~]# <code class="prettyprint">nohup</code> [命令与参数]   &lt;==在终端机前台中工作</p>
+
+<p>[root@www ~]# <code class="prettyprint">nohup</code> [命令与参数] &amp; &lt;==在终端机后台中工作</p>
+
+<hr>
+
+<h2 id="pstree"><code class="prettyprint">pstree</code></h2>
+
+<p><strong>显示进程树</strong></p>
+
+<p>[root@www ~]# <code class="prettyprint">pstree [-A|U] [-up]</code></p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-A</code>  ：各程序树之间的连接以 ASCII 字节来连接；</p>
+
+<p><code class="prettyprint">-U</code>  ：各程序树之间的连接以万国码的字节来连接。在某些终端介面下可能会有错误；</p>
+
+<p><code class="prettyprint">-p</code>  ：并同时列出每个 process 的 PID；</p>
+
+<p><code class="prettyprint">-u</code>  ：并同时列出每个 process 的所属帐号名称。</p>
+
+<hr>
+
+<h2 id="ps"><code class="prettyprint">ps</code></h2>
+
+<p><strong>将某个时间点的程序运行情况撷取下来</strong></p>
+
+<p>[root@www ~]# <code class="prettyprint">ps aux</code>  &lt;==观察系统所有的程序数据</p>
+
+<p>[root@www ~]# <code class="prettyprint">ps -lA</code>  &lt;==也是能够观察所有系统的数据</p>
+
+<p>[root@www ~]# <code class="prettyprint">ps axjf</code> &lt;==连同部分程序树状态</p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-A</code>  ：所有的 process 均显示出来，与 -e 具有同样的效用；</p>
+
+<p><code class="prettyprint">-a</code>  ：不与 terminal 有关的所有 process ；</p>
+
+<p><code class="prettyprint">-u</code>  ：有效使用者 (effective user) 相关的 process ；</p>
+
+<p><code class="prettyprint">x</code>   ：通常与 a 这个参数一起使用，可列出较完整资讯。</p>
+
+<p>输出格式规划：</p>
+
+<p><code class="prettyprint">l</code>   ：较长、较详细的将该 PID 的的资讯列出；</p>
+
+<p><code class="prettyprint">j</code>   ：工作的格式 (jobs format)</p>
+
+<p><code class="prettyprint">-f</code>  ：做一个更为完整的输出。</p>
+
+<hr>
+
+<h3 id="ps-l"><code class="prettyprint">ps -l</code></h3>
+
+<p><strong>仅观察自己的 bash 相关程序</strong></p>
+
+<p><code class="prettyprint">F</code>：代表这个程序旗标 (process flags)，说明这个程序的总结权限，常见号码有：</p>
+
+<blockquote>
+<p>若为 <code class="prettyprint">4</code> 表示此程序的权限为 root ；</p>
+
+<p>若为 <code class="prettyprint">1</code> 则表示此子程序仅进行复制(fork)而没有实际运行(exec)。</p>
+</blockquote>
+
+<p><code class="prettyprint">S</code>：代表这个程序的状态 (STAT)，主要的状态有：</p>
+
+<blockquote>
+<p><code class="prettyprint">R</code> (Running)：该程序正在运行中；</p>
+
+<p><code class="prettyprint">S</code> (Sleep)：该程序目前正在睡眠状态(idle)，但可以被唤醒(signal)。</p>
+
+<p><code class="prettyprint">D</code> ：不可被唤醒的睡眠状态，通常这支程序可能在等待 I/O 的情况(ex&gt;列印)</p>
+
+<p><code class="prettyprint">T</code> ：停止状态(stop)，可能是在工作控制(背景暂停)或除错 (traced) 状态；</p>
+
+<p><code class="prettyprint">Z</code> (Zombie)：僵尸状态，程序已经终止但却无法被移除至内存外。</p>
+</blockquote>
+
+<p><code class="prettyprint">UID/PID/PPID</code>：代表此程序被该 UID 所拥有/程序的 PID 号码/此程序的父程序 PID 号码</p>
+
+<p><code class="prettyprint">C</code>：代表 CPU 使用率，单位为百分比</p>
+
+<p><code class="prettyprint">PRI/NI</code>：Priority/Nice 的缩写，代表此程序被 CPU 所运行的优先顺序，数值越小代表该程序越快被 CPU 运行</p>
+
+<p><code class="prettyprint">ADDR/SZ/WCHAN</code>：都与内存有关，ADDR 是 kernel function，指出该程序在内存的哪个部分，如果是个 running 的程序，一般就会显示『 - 』 / SZ 代表此程序用掉多少内存 / WCHAN 表示目前程序是否运行中，同样的， 若为 - 表示正在运行中。</p>
+
+<p><code class="prettyprint">TTY</code>：登陆者的终端机位置，若为远程登陆则使用动态终端介面 (pts/n)；</p>
+
+<p><code class="prettyprint">TIME</code>：使用掉的 CPU 时间，注意，是此程序实际花费 CPU 运行的时间，而不是系统时间；</p>
+
+<p><code class="prettyprint">CMD</code>：就是 command 的缩写，造成此程序的触发程序之命令为何</p>
+
+<hr>
+
+<h3 id="ps-aux"><code class="prettyprint">ps aux</code></h3>
+
+<p><strong>观察系统所有程序</strong></p>
+
+<p><code class="prettyprint">USER</code>：该 process 属於那个使用者帐号的？</p>
+
+<p><code class="prettyprint">PID</code> ：该 process 的程序识别码。</p>
+
+<p><code class="prettyprint">%CPU</code>：该 process 使用掉的 CPU 资源百分比；</p>
+
+<p><code class="prettyprint">%MEM</code>：该 process 所占用的实体内存百分比；</p>
+
+<p><code class="prettyprint">VSZ</code> ：该 process 使用掉的虚拟内存量 (Kbytes)</p>
+
+<p><code class="prettyprint">RSS</code> ：该 process 占用的固定的内存量 (Kbytes)</p>
+
+<p><code class="prettyprint">TTY</code> ：该 process 是在那个终端机上面运行，若与终端机无关则显示 ?，另外， tty1-tty6 是本机上面的登陆者程序，若为 pts/0 等等的，则表示为由网络连接进主机的程序。</p>
+
+<p><code class="prettyprint">STAT</code>：该程序目前的状态，状态显示与 ps -l 的 S 旗标相同 (R/S/T/Z)</p>
+
+<p><code class="prettyprint">START</code>：该 process 被触发启动的时间；</p>
+
+<p><code class="prettyprint">TIME</code> ：该 process 实际使用 CPU 运行的时间。</p>
+
+<p><code class="prettyprint">COMMAND</code>：该程序的实际命令为何？</p>
+
+<blockquote>
+<p>ps结果后接 <code class="prettyprint">&lt;defunct&gt;</code> 表示为僵尸程序</p>
+</blockquote>
+
+<hr>
+
+<h2 id="top"><code class="prettyprint">top</code></h2>
+
+<p><strong>动态观察程序的变化</strong></p>
+
+<p>[root@www ~]# <code class="prettyprint">top [-d 数字] | top [-bnp]</code></p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-d</code>  ：后面可以接秒数，就是整个程序画面升级的秒数。默认是 5 秒；</p>
+
+<p><code class="prettyprint">-b</code>  ：以批量的方式运行 top ，还有更多的参数可以使用，通常会搭配数据流重导向来将批量的结果输出成为文件。</p>
+
+<p><code class="prettyprint">-n</code>  ：与 -b 搭配，意义是，需要进行几次 top 的输出结果。</p>
+
+<p><code class="prettyprint">-p</code>  ：指定某些个 PID 来进行观察监测。</p>
+
+<p>在 top 运行过程当中可以使用的按键命令：</p>
+
+<p><code class="prettyprint">?</code> ：显示在 top 当中可以输入的按键命令；</p>
+
+<p><code class="prettyprint">P</code>：以 CPU 的使用资源排序显示；</p>
+
+<p><code class="prettyprint">M</code> ：以 Memory 的使用资源排序显示；</p>
+
+<p><code class="prettyprint">N</code> ：以 PID 来排序喔！</p>
+
+<p><code class="prettyprint">T</code> ：由该 Process 使用的 CPU 时间累积 (TIME+) 排序。</p>
+
+<p><code class="prettyprint">k</code> ：给予某个 PID 一个讯号  (signal)</p>
+
+<p><code class="prettyprint">r</code> ：给予某个 PID 重新制订一个 nice 值。</p>
+
+<p><code class="prettyprint">q</code> ：离开 top 软件的按键。</p>
+
+<hr>
+
+<p><strong><code class="prettyprint">echo $$</code></strong> ( 查看bash的pid)</p>
+
+<hr>
+
+<h2 id="signal"><code class="prettyprint">signal</code></h2>
+
+<table><thead>
+<tr>
+<th style="text-align: center">代号</th>
+<th style="text-align: center">名称</th>
+<th style="text-align: left">内容</th>
+</tr>
+</thead><tbody>
+<tr>
+<td style="text-align: center">1</td>
+<td style="text-align: center">SIGHUP</td>
+<td style="text-align: left">启动被终止的程序,可让该 PID 重新读取配置,类似重新启动</td>
+</tr>
+<tr>
+<td style="text-align: center">2</td>
+<td style="text-align: center">SIGINT</td>
+<td style="text-align: left">相当於用键盘输入 [ctrl]-c 来中断一个程序</td>
+</tr>
+<tr>
+<td style="text-align: center">9</td>
+<td style="text-align: center">SIGKILL</td>
+<td style="text-align: left">强制中断一个程序，尚未完成的部分可能会有遗留物</td>
+</tr>
+<tr>
+<td style="text-align: center">15</td>
+<td style="text-align: center">SIGTERM</td>
+<td style="text-align: left">正常结束程序,如果该程序已经发生问题,signal将失效</td>
+</tr>
+<tr>
+<td style="text-align: center">17</td>
+<td style="text-align: center">SIGSTOP</td>
+<td style="text-align: left">相当於用键盘输入 [ctrl]-z 来暂停一个程序</td>
+</tr>
+</tbody></table>
+
+<hr>
+
+<h2 id="kill"><code class="prettyprint">kill</code></h2>
+
+<p><strong>杀死进程</strong></p>
+
+<p>[root@www ~]#<code class="prettyprint">kill PID</code></p>
+
+<p><code class="prettyprint">!特别说明</code>：kill后面直接加数字表示杀死进程，这与上面的移除任务用法是不同的</p>
+
+<hr>
+
+<h2 id="killall"><code class="prettyprint">killall</code></h2>
+
+<p><strong>按程序启动命令杀死进程</strong></p>
+
+<p>[root@www ~]#<code class="prettyprint">killall [-iIe] [command name]</code></p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-i</code>  ：interactive 互动的意思，删除时，会出现提示</p>
+
+<p><code class="prettyprint">-e</code>  ：exact 准确的意思，后面接的 command name要与运行中程序的启动命令一致，但整个完整的命令不能超过 15 个字节(若程序启动时使用了参数，则程序名与后面接的参数作为整体)</p>
+
+<p><code class="prettyprint">-I</code> ：命令名称(可能含参数)忽略大小写。  </p>
+
+<hr>
+
+<h2 id="nice"><code class="prettyprint">nice</code></h2>
+
+<p><strong>指定nice值启动新程序</strong></p>
+
+<p>[root@www ~]# <code class="prettyprint">nice [-n 数字] command</code></p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-n</code>  ：后面接一个数值，数值的范围 -20 ~ 19。</p>
+
+<hr>
+
+<h2 id="renice"><code class="prettyprint">renice</code></h2>
+
+<p><strong>重设指定程序的nice值</strong></p>
+
+<p>[root@www ~]# <code class="prettyprint">renice [number] PID</code></p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">PID</code> ：某个程序的 ID </p>
+
+<hr>
+
+<h2 id="free"><code class="prettyprint">free</code></h2>
+
+<p><strong>观察内存使用情况</strong></p>
+
+<p>[root@www ~]# <code class="prettyprint">free [-b|-k|-m|-g] [-t]</code></p>
+
+<p>选项与参数：</p>
+
+<p>默认单位为 Kbytes，可以使用 <code class="prettyprint">-b</code>(bytes),<code class="prettyprint">-m</code>(Mbytes),<code class="prettyprint">-k</code>(Kbytes),<code class="prettyprint">-g</code>(Gbytes) 来显示单位</p>
+
+<p><code class="prettyprint">-t</code> ：显示实体内存与 swap 的总量。</p>
+
+<hr>
+
+<h2 id="uname"><code class="prettyprint">uname</code></h2>
+
+<p><strong>查看系统核心信息</strong></p>
+
+<p>[root@www ~]# <code class="prettyprint">uname [-asrmpi]</code></p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-a</code>  ：所有系统相关的资讯，包括底下的数据都会被列出来；</p>
+
+<p><code class="prettyprint">-s</code>  ：系统核心名称</p>
+
+<p><code class="prettyprint">-r</code> ：核心的版本</p>
+
+<p><code class="prettyprint">-m</code>  ：本系统的硬件名称，例如 i686 或 x86_64 等；</p>
+
+<p><code class="prettyprint">-p</code>  ：CPU 的类型，与 -m 类似，只是显示的是 CPU 的类型！</p>
+
+<p><code class="prettyprint">-i</code>  ：硬件的平台 (ix86)</p>
+
+<hr>
+
+<h2 id="uptime"><code class="prettyprint">uptime</code></h2>
+
+<p><strong>观察系统启动时间与工作负载</strong></p>
+
+<hr>
+
+<h2 id="netstat"><code class="prettyprint">netstat</code></h2>
+
+<p><strong>追踪网络与Socket</strong></p>
+
+<p>[root@www ~]# <code class="prettyprint">netstat -[atunlp]</code></p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-a</code>  ：将目前系统上所有的连线、监听、Socket 数据都列出来</p>
+
+<p><code class="prettyprint">-t</code>  ：列出 tcp 网络封包的数据</p>
+
+<p><code class="prettyprint">-u</code>  ：列出 udp 网络封包的数据</p>
+
+<p><code class="prettyprint">-n</code>  ：不以程序的服务名称，以端口号 (port number) 来显示；</p>
+
+<p><code class="prettyprint">-l</code> ：列出目前正在网络监听 (listen) 的服务；</p>
+
+<p><code class="prettyprint">-p</code> ：列出该网络服务的程序 PID </p>
+
+<p>网络参数</p>
+
+<p><code class="prettyprint">Proto</code> ：网络的封包协议，主要分为 TCP 与 UDP 封包，相关数据请参考服务器篇；</p>
+
+<p><code class="prettyprint">Recv-Q</code>：非由使用者程序连结到此 socket 的复制的总 bytes 数；</p>
+
+<p><code class="prettyprint">Send-Q</code>：非由远程主机传送过来的 acknowledged 总 bytes 数；</p>
+
+<p><code class="prettyprint">Local Address</code> ：本地端的 IP:port 情况</p>
+
+<p><code class="prettyprint">Foreign Address</code>：远程主机的 IP:port 情况</p>
+
+<p><code class="prettyprint">State</code> ：连线状态，主要有创建(ESTABLISED)及监听(LISTEN)；</p>
+
+<p>本机程序</p>
+
+<p><code class="prettyprint">Proto</code> ：一般就是 unix 啦；</p>
+
+<p><code class="prettyprint">RefCnt</code>：连接到此 socket 的程序数量；</p>
+
+<p><code class="prettyprint">Flags</code> ：连线的旗标；</p>
+
+<p><code class="prettyprint">Type</code> ：socket 存取的类型。主要有确认连线的 STREAM 与不需确认的 DGRAM 两种；</p>
+
+<p><code class="prettyprint">State</code> ：若为 CONNECTED 表示多个程序之间已经连线创建。</p>
+
+<p><code class="prettyprint">Path</code> ：连接到此 socket 的相关程序的路径！或者是相关数据输出的路径。</p>
+
+<hr>
+
+<h2 id="dmesg"><code class="prettyprint">dmesg</code></h2>
+
+<p><strong>查看核心产生的信息</strong></p>
+
+<hr>
+
+<h2 id="vmstat"><code class="prettyprint">vmstat</code></h2>
+
+<p><strong>侦测系统资源变化</strong></p>
+
+<p>[root@www ~]# <code class="prettyprint">vmstat [-a] [间隔时间] [总次数]]</code> &lt;==CPU/内存等资讯</p>
+
+<p>[root@www ~]#<code class="prettyprint">vmstat [-fs]</code>                    &lt;==内存相关</p>
+
+<p>[root@www ~]# <code class="prettyprint">vmstat [-S 单位]</code>                 &lt;==配置显示数据的单位</p>
+
+<p>[root@www ~]# <code class="prettyprint">vmstat [-d]</code>                       &lt;==与磁碟有关</p>
+
+<p>[root@www ~]# <code class="prettyprint">vmstat [-p 分割槽]</code>                &lt;==与磁碟有关</p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-a</code>  ：使用 inactive/active(活跃与否) 取代 buffer/cache 的内存输出资讯；</p>
+
+<p><code class="prettyprint">-f</code>  ：启动到目前为止，系统复制 (fork) 的程序数；</p>
+
+<p><code class="prettyprint">-s</code>  ：将一些事件 (启动至目前为止) 导致的内存变化情况列表说明；</p>
+
+<p><code class="prettyprint">-S</code>  ：后面可以接单位，让显示的数据有单位。例如 K/M 取代 bytes 的容量；</p>
+
+<p><code class="prettyprint">-d</code>  ：列出磁碟的读写总量统计表</p>
+
+<p><code class="prettyprint">-p</code>  ：后面列出分割槽，可显示该分割槽的读写总量统计表</p>
+
+<blockquote>
+<p>内存栏位 (<code class="prettyprint">procs</code>) 的项目分别为：</p>
+
+<blockquote>
+<p><code class="prettyprint">r</code> ：等待运行中的程序数量；<code class="prettyprint">b</code>：不可被唤醒的程序数量。这两个项目越多，代表系统越忙碌 (因为系统太忙，所以很多程序就无法被运行或一直在等待而无法被唤醒之故)。</p>
+</blockquote>
+
+<p>内存栏位 (<code class="prettyprint">memory</code>) 项目分别为：</p>
+
+<blockquote>
+<p><code class="prettyprint">swpd</code>：虚拟内存被使用的容量； <code class="prettyprint">free</code>：未被使用的内存容量； <code class="prettyprint">buff</code>：用於缓冲内存； <code class="prettyprint">cache</code>：用於高速缓存。 这部份则与 <code class="prettyprint">free</code> 是相同的。</p>
+</blockquote>
+
+<p>内存置换空间 (<code class="prettyprint">swap</code>) 的项目分别为：</p>
+
+<blockquote>
+<p><code class="prettyprint">si</code>：由磁碟中将程序取出的量； <code class="prettyprint">so</code>：由於内存不足而将没用到的程序写入到磁碟的 <code class="prettyprint">swap</code> 的容量。 如果 si/so 的数值太大，表示内存内的数据常常得在磁碟与主内存之间传来传去，系统效能会很差！</p>
+</blockquote>
+
+<p>磁碟读写 (<code class="prettyprint">io</code>) 的项目分别为：</p>
+
+<blockquote>
+<p><code class="prettyprint">bi</code>：由磁碟写入的区块数量； <code class="prettyprint">bo</code>：写入到磁碟去的区块数量。如果这部份的值越高，代表系统的 I/O 非常忙碌！</p>
+</blockquote>
+
+<p>系统 (<code class="prettyprint">system</code>) 的项目分别为：</p>
+
+<blockquote>
+<p><code class="prettyprint">in</code>：每秒被中断的程序次数； <code class="prettyprint">cs</code>：每秒钟进行的事件切换次数；这两个数值越大，代表系统与周边设备的沟通非常频繁！ 这些周边设备当然包括磁碟、网络卡、时间钟等。</p>
+</blockquote>
+
+<p><code class="prettyprint">CPU</code> 的项目分别为：</p>
+
+<blockquote>
+<p><code class="prettyprint">us</code>：非核心层的 CPU 使用状态； <code class="prettyprint">sy</code>：核心层所使用的 CPU 状态； <code class="prettyprint">id</code>：闲置的状态； <code class="prettyprint">wa</code>：等待 I/O 所耗费的 CPU 状态； <code class="prettyprint">st</code>：被虚拟机器 (virtual machine) 所盗用的 CPU 使用状态 (2.6.11 以后才支持)。</p>
+</blockquote>
+</blockquote>
+
+<hr>
+
+<h2 id="fuser"><code class="prettyprint">fuser</code></h2>
+
+<p><strong>查看使用指定的文件或文件系统的进程</strong></p>
+
+<p>[root@www ~]# <code class="prettyprint">fuser [-umv] [-k [i] [-signal]]</code> file/dir</p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-u</code> ：除了程序的 PID 之外，同时列出该程序的拥有者；</p>
+
+<p><code class="prettyprint">-m</code>  ：后面接的那个档名会主动的上提到该文件系统的最顶层，对 umount 不成功很有效！</p>
+
+<p><code class="prettyprint">-v</code>  ：可以列出每个文件与程序还有命令的完整相关性！</p>
+
+<p><code class="prettyprint">-k</code>  ：找出使用该文件/目录的 PID ，并试图以 SIGKILL 这个讯号给予该 PID；</p>
+
+<p><code class="prettyprint">-i</code>  ：必须与 -k 配合，在删除 PID 之前会先询问使用者意愿！</p>
+
+<p><code class="prettyprint">-signal</code>：例如 -1 -15 等等，若不加的话，默认是 SIGKILL (-9) 罗！</p>
+
+<blockquote>
+<p>权限:</p>
+</blockquote>
+
+<p><code class="prettyprint">c</code> ：此程序在当前的目录下(非次目录)；</p>
+
+<p><code class="prettyprint">e</code> ：可被触发为运行状态；</p>
+
+<p><code class="prettyprint">f</code> ：是一个被开启的文件；</p>
+
+<p><code class="prettyprint">r</code> ：代表顶层目录 (root directory)；</p>
+
+<p><code class="prettyprint">F</code> ：该文件被开启了，不过在等待回应中；</p>
+
+<p><code class="prettyprint">m</code> ：可能为分享的动态函式库；</p>
+
+<hr>
+
+<h2 id="lsof"><code class="prettyprint">lsof</code></h2>
+
+<p><strong>列出由程序开启的文件</strong></p>
+
+<p>[root@www ~]# <code class="prettyprint">lsof [-aUu] [+d]</code></p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-a</code>  ：多项数据需要『同时成立』才显示出结果时！（内连接<code class="prettyprint">？</code>）</p>
+
+<p><code class="prettyprint">-U</code>  ：仅列出 Unix like 系统的 socket 文件类型；</p>
+
+<p><code class="prettyprint">-u</code>  ：后面接 username，列出该使用者相关程序所开启的文件；</p>
+
+<p><code class="prettyprint">+d</code>  ：后面接目录，即找出某个目录底下已经被开启的文件！</p>
+
+<hr>
+
+<h2 id="pidof"><code class="prettyprint">pidof</code></h2>
+
+<p><strong>找出某个正在的运行程序的pid</strong></p>
+
+<p>[root@www ~]# <code class="prettyprint">pidof [-sx] program_name...</code></p>
+
+<p>选项与参数：</p>
+
+<p><code class="prettyprint">-s</code>  ：仅列出一个 PID 而不列出所有的 PID</p>
+
+<p><code class="prettyprint">-x</code>  ：同时列出该 program name 可能的 PPID 那个程序的 PID</p>
+
+          </article>
+          <hr class="boundary">
+          <div id="post-share" class="bdsharebuttonbox">
+              <a href="#" class="bds_more" data-cmd="more"></a>
+              <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+              <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+              <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+              <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+              <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+          </div>
+        </div>
+        <div class="pad-min"></div>
+        <div id="post-comment" class="sheet post">
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+    <div class="content-navigation col-lg-3">
+      <div class="shadow-bottom-center" >
+        <div class="content-navigation-toc">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Toc
+            </div>
+            <div class="content-navigation-list toc"></div>
+        </div>
+        <div class="content-navigation-tag">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Tags
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#Linux"><span class="octicon octicon-tag"></span>&nbsp;Linux</a>
+                    </li>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#进程管理"><span class="octicon octicon-tag"></span>&nbsp;进程管理</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="content-navigation-related">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Related
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+
+                    
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-01-22/linux-shell/">shell</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-01-11/linux-make/">make</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-10-17/shell-trash/">告别rm,自制回收站</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-06-10/ssh/">SSH</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-05-07/linux-job/">Linux计划任务</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-02-20/linux-boot/">Linux启动流程</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-02-08/linux-power/">Linux权限管理</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-01-25/linux-filecmd/">Linux目录与文件</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-01-05/vim/">VIM</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-01-02/linux-print/">Linux打印</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+    </div>
+
+    <div class="page-scrollTop" data-toggle="tooltip" data-placement="top" title="Top">
+        <a href="javascript:void(0);">
+            <div class="arrow"></div>
+            <div class="stick"></div>
+        </a>
+    </div>
+</div>
+
+    <footer  class="footnote footnote-tiffany">
+        <div class="container">
+                <a class="foot-item" href="mailto:dubuyuye@yeah.net" target="_blank"><span class="octicon octicon-mail"></span></a>
+                <a class="foot-item" href="https://github.com/dubuyuye" target="_blank"><span class="octicon octicon-mark-github"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/feed.xml" target="_blank"><span class="octicon octicon-rss"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/link/"><span class="octicon octicon-link-external"></span></a>
+                &nbsp;
+                <a href="http://blog.rainyalley.com/"><span class="word-keep">&copy; RainyAlley</span></a>
+        </div>
+    </footer>
+
+
+<div class="scriptHub">
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/script.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/toc.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/post.js"></script>
+    
+</div>
+
+
+
+</body>
+</html>

@@ -1,0 +1,1670 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>spring security 探秘</title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="keywords" content="spring security 探秘, web, spring,security,Java, RainyAlley" />
+    <meta name="description" content="spring security 探秘, web, spring,security,Java, " />
+
+    <link rel="shortcut icon" type="image/x-icon" media="screen" href="http://blog.rainyalley.com/static/favicon.ico" />
+    <link rel="canonical" href="http://blog.rainyalley.com/2015-03-12/spring-security/" />
+    <link rel="alternate" type="application/rss+xml" title="RainyAlley" href="http://blog.rainyalley.com/feed.xml"  />
+
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/3.3.0/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/octicons/octicons.css" />
+
+    
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/highlight.css" />
+    
+
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="http://blog.rainyalley.com/static/css/post.css" />
+    
+</head>
+
+<body>
+<div class="main">
+
+    
+    
+    <header>
+        <nav class="navbar navbar-tiffany rectangle" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="http://blog.rainyalley.com/">RainyAlley</a>
+                    <p class="navbar-text">Developer</p>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        
+                        <li>
+                        <a href="http://blog.rainyalley.com/" class="word-keep"><span class="octicon octicon-book"></span></span>&nbsp;&nbsp;Blog</a>
+                        </li>
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/archive/" class="word-keep"><span class="octicon octicon-repo"></span>&nbsp;&nbsp;Archive</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/category/" class="word-keep"><span class="octicon octicon-list-unordered"></span>&nbsp;&nbsp;Category</a>
+                        </li>
+                        
+                        
+                        
+                        <li>
+                            <a href="http://blog.rainyalley.com/tags/" class="word-keep"><span class="octicon octicon-tag"></span>&nbsp;&nbsp;Tag</a>
+                        </li>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        <li><a href="#stq=" class="search-button"><span class="octicon octicon-search"></span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+
+
+    <div class="container">
+        <div class="row">
+    <div class="content col-lg-9">
+        <div class="sheet post">
+          <header>
+            <h2>spring security 探秘</h2>
+            <p class="post-meta">
+                <span class="octicon octicon-clock"></span> Mar 12, 2015
+            </p>
+            <p class="post-tag">
+                <span><a href="http://blog.rainyalley.com/category/#web"><span class="octicon octicon-list-unordered"></span>&nbsp;web</a></span>
+                <span>
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#spring"><span class="octicon octicon-tag"></span>&nbsp;spring</a>
+                    
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#security"><span class="octicon octicon-tag"></span>&nbsp;security</a>
+                    
+                    <a class="word-keep" href="http://blog.rainyalley.com/tags/#Java"><span class="octicon octicon-tag"></span>&nbsp;Java</a>
+                    
+                </span>
+            </p>
+          </header>
+          <hr class="boundary">
+          <article>
+            <div class="toc"></div>
+
+<h1 id="概述">概述</h1>
+
+<p><a href="http://projects.spring.io/spring-security">Spring Security</a>这是一种基于Spring AOP和Servlet过滤器的安全框架。它提供全面的安全性解决方案，同时在Web请求级和方法调用级处理身份确认和授权。在Spring Framework基础上，Spring Security充分利用了依赖注入（DI，Dependency Injection）和面向切面技术。</p>
+
+<p>本文的宗旨并非描述如何从零开始搭建一个 <q>hello world</q> 级的demo，或者列举有哪些可配置项（这种类似于词典的文档，没有比<a href="http://docs.spring.io/spring-security/site/docs/4.0.1.RELEASE/reference/htmlsingle/">参考书</a>更合适的了），而是简单描述spring-security项目的整体结构，设计思想，以及某些重要配置做了什么。</p>
+
+<p>本文所有内容基于spring-security-4.0.1.RELEASE ,你可以在<a href="https://github.com/spring-projects/spring-security">Github</a>中找到它，或者使用Maven获取，引入spring-security-config是为了通过命名空间简化配置。</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.security<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-security-web<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>4.0.1.RELEASE<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+<span class="nt">&lt;dependency&gt;</span>
+    <span class="nt">&lt;groupId&gt;</span>org.springframework.security<span class="nt">&lt;/groupId&gt;</span>
+    <span class="nt">&lt;artifactId&gt;</span>spring-security-config<span class="nt">&lt;/artifactId&gt;</span>
+    <span class="nt">&lt;version&gt;</span>4.0.1.RELEASE<span class="nt">&lt;/version&gt;</span>
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div>
+<h1 id="filter">Filter</h1>
+
+<p>spring-security的业务流程是独立于项目的，我们需要在web.xml中指定其入口，注意该过滤器必须在项目的过滤器之前。</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;filter&gt;</span>
+    <span class="nt">&lt;filter-name&gt;</span>springSecurityFilterChain<span class="nt">&lt;/filter-name&gt;</span>
+    <span class="nt">&lt;filter-class&gt;</span>org.springframework.web.filter.DelegatingFilterProxy<span class="nt">&lt;/filter-class&gt;</span>
+<span class="nt">&lt;/filter&gt;</span>
+<span class="nt">&lt;filter-mapping&gt;</span>
+    <span class="nt">&lt;filter-name&gt;</span>springSecurityFilterChain<span class="nt">&lt;/filter-name&gt;</span>
+    <span class="nt">&lt;servlet-name&gt;</span>/*<span class="nt">&lt;/servlet-name&gt;</span>
+<span class="nt">&lt;/filter-mapping&gt;</span>
+</code></pre></div>
+<p>值得一提的是，该过滤器的名字具有特殊意义，没有特别需求不建议修改，我们可以在该过滤的源码中看到，其过滤行为委托给了一个<code class="prettyprint">delegate</code>对象，该delegate对象是一个从spring容器中获取的bean，依据的beanid就是filter-name。</p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="nd">@Override</span>
+<span class="kd">protected</span> <span class="kt">void</span> <span class="nf">initFilterBean</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">ServletException</span> <span class="o">{</span>
+    <span class="kd">synchronized</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">delegateMonitor</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">delegate</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="c1">// If no target bean name specified, use filter name.</span>
+            <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">targetBeanName</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">this</span><span class="o">.</span><span class="na">targetBeanName</span> <span class="o">=</span> <span class="n">getFilterName</span><span class="o">();</span>
+            <span class="o">}</span>
+            <span class="c1">// Fetch Spring root application context and initialize the delegate early,</span>
+            <span class="c1">// if possible. If the root application context will be started after this</span>
+            <span class="c1">// filter proxy, we&#39;ll have to resort to lazy initialization.</span>
+            <span class="n">WebApplicationContext</span> <span class="n">wac</span> <span class="o">=</span> <span class="n">findWebApplicationContext</span><span class="o">();</span>
+            <span class="k">if</span> <span class="o">(</span><span class="n">wac</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">this</span><span class="o">.</span><span class="na">delegate</span> <span class="o">=</span> <span class="n">initDelegate</span><span class="o">(</span><span class="n">wac</span><span class="o">);</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<h1 id="http">HTTP</h1>
+
+<p>我们可以在security中声明多个<code class="prettyprint">http</code>元素，每个http元素将产生一个<code class="prettyprint">FilterChain</code>，这些FilterChain将按照声明顺序加入到<code class="prettyprint">FilterChainProxy</code>中，而这个FilterChainProxy就是web.xml中定义的springSecurityFilterChain内部的<code class="prettyprint">delegate</code>。</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;security:http</span> <span class="na">security=</span><span class="s">&quot;none&quot;</span> <span class="na">pattern=</span><span class="s">&quot;/favicon.ico&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;security:http</span> <span class="na">security=</span><span class="s">&quot;none&quot;</span> <span class="na">pattern=</span><span class="s">&quot;/resources/**&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;security:http</span> <span class="na">security=</span><span class="s">&quot;none&quot;</span> <span class="na">pattern=</span><span class="s">&quot;/user/login&quot;</span> <span class="nt">/&gt;</span>
+</code></pre></div>
+<p>在http元素也就是FilterChain中，以责任链的形式存在多个<code class="prettyprint">Filter</code>，这些Filter真正执行过滤操作，http标签中的许多配置项，如<code class="prettyprint">&lt;security:http-basic/&gt;</code>、<code class="prettyprint">&lt;security:logout/&gt;</code>等，其实就是创建指定的Filter，以下表格列举了这些Filter。</p>
+
+<p><img src="http://blog.rainyalley.com/static/img/spring-security-filter.png" alt="filter"></p>
+
+<p>利用别名，我们可以将自定义的过滤器加入指定的位置，或者替换其中的某个过滤器。</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;security:custom-filter</span> <span class="na">ref=</span><span class="s">&quot;filterSecurityInterceptor&quot;</span> <span class="na">before=</span><span class="s">&quot;FILTER_SECURITY_INTERCEPTOR&quot;</span> <span class="nt">/&gt;</span>
+</code></pre></div>
+<p>整体来看，一个FilterChainProxy中可以包含有多个FilterChain，一个FilterChain中又可以包含有多个Filter，然而对于一个既定请求，只会使用其中一个FilterChain。</p>
+
+<h1 id="业务结构">业务结构</h1>
+
+<p>如果一个http请求能够匹配security定义的规则，那么该请求将进入security业务流程，大体上，security分为三个部分：</p>
+
+<ul>
+<li>AuthenticationManager 处理认证请求</li>
+<li>AccessDecisionManager 提供访问决策</li>
+<li>SecurityMetadataSource 元数据</li>
+</ul>
+
+<p>以下代码摘自<code class="prettyprint">AbstractSecurityInterceptor</code>， 这是<code class="prettyprint">FilterSecurityInterceptor</code>的父类， 也正是在此处区分了web请求拦截器与方法调用拦截器。(代码有所精简)</p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">protected</span> <span class="n">InterceptorStatusToken</span> <span class="nf">beforeInvocation</span><span class="o">(</span><span class="n">Object</span> <span class="n">object</span><span class="o">)</span> <span class="o">{</span>
+
+    <span class="k">if</span> <span class="o">(!</span><span class="n">getSecureObjectClass</span><span class="o">().</span><span class="na">isAssignableFrom</span><span class="o">(</span><span class="n">object</span><span class="o">.</span><span class="na">getClass</span><span class="o">()))</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">();</span>
+    <span class="o">}</span>
+
+    <span class="n">Collection</span><span class="o">&lt;</span><span class="n">ConfigAttribute</span><span class="o">&gt;</span> <span class="n">attributes</span> <span class="o">=</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">obtainSecurityMetadataSource</span><span class="o">().</span><span class="na">getAttributes</span><span class="o">(</span><span class="n">object</span><span class="o">);</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">attributes</span> <span class="o">==</span> <span class="kc">null</span> <span class="o">||</span> <span class="n">attributes</span><span class="o">.</span><span class="na">isEmpty</span><span class="o">())</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">rejectPublicInvocations</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">throw</span> <span class="k">new</span> <span class="nf">IllegalArgumentException</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="n">publishEvent</span><span class="o">(</span><span class="k">new</span> <span class="nf">PublicInvocationEvent</span><span class="o">(</span><span class="n">object</span><span class="o">));</span>
+        <span class="k">return</span> <span class="kc">null</span><span class="o">;</span> <span class="c1">// no further work post-invocation</span>
+    <span class="o">}</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">SecurityContextHolder</span><span class="o">.</span><span class="na">getContext</span><span class="o">().</span><span class="na">getAuthentication</span><span class="o">()</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+        <span class="c1">//...</span>
+    <span class="o">}</span>
+
+    <span class="n">Authentication</span> <span class="n">authenticated</span> <span class="o">=</span> <span class="n">authenticateIfRequired</span><span class="o">();</span>
+
+    <span class="c1">// Attempt authorization</span>
+    <span class="k">try</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">accessDecisionManager</span><span class="o">.</span><span class="na">decide</span><span class="o">(</span><span class="n">authenticated</span><span class="o">,</span> <span class="n">object</span><span class="o">,</span> <span class="n">attributes</span><span class="o">);</span>
+    <span class="o">}</span>
+    <span class="k">catch</span> <span class="o">(</span><span class="n">AccessDeniedException</span> <span class="n">accessDeniedException</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">publishEvent</span><span class="o">(</span><span class="k">new</span> <span class="nf">AuthorizationFailureEvent</span><span class="o">(</span><span class="n">object</span><span class="o">,</span> <span class="n">attributes</span><span class="o">,</span>
+                    <span class="n">authenticated</span><span class="o">,</span><span class="n">accessDeniedException</span><span class="o">));</span>
+        <span class="k">throw</span> <span class="n">accessDeniedException</span><span class="o">;</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>在Filter的处理流程中，首先会处理认证请求，获取用户信息，然后决策处理器根据用户信息与权限元数据进行决策，同样，这三个部分都是可以自定义的。</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="c">&lt;!-- 自定义过滤器 --&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;filterSecurityInterceptor&quot;</span>
+            <span class="na">class=</span><span class="s">&quot;org.springframework.security.web.access.intercept.FilterSecurityInterceptor&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;securityMetadataSource&quot;</span> <span class="na">ref=</span><span class="s">&quot;securityMetadataSource&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;authenticationManager&quot;</span> <span class="na">ref=</span><span class="s">&quot;authenticationManager&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;accessDecisionManager&quot;</span> <span class="na">ref=</span><span class="s">&quot;accessDecisionManager&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+</code></pre></div>
+<h1 id="authenticationmanager">AuthenticationManager</h1>
+
+<p>AuthenticationManager处理认证请求，然而它并不直接处理，而是将工作委托给了一个<code class="prettyprint">ProviderManager</code>，ProviderManager又将工作委托给了一个<code class="prettyprint">AuthenticationProvider</code>列表，只要任何一个AuthenticationProvider认证通过，则AuthenticationManager认证通过，我们可以配置一个或者多个AuthenticationProvider，还可以对密码进行加密。</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;security:authentication-manager</span> <span class="na">id=</span><span class="s">&quot;authenticationManager&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;security:authentication-provider</span> <span class="na">user-service-ref=</span><span class="s">&quot;userDetailsService&quot;</span> <span class="nt">&gt;</span>
+        <span class="nt">&lt;security:password-encoder</span> <span class="na">base64=</span><span class="s">&quot;true&quot;</span> <span class="na">hash=</span><span class="s">&quot;md5&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;security:salt-source</span> <span class="na">user-property=</span><span class="s">&quot;username&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/security:password-encoder&gt;</span>
+    <span class="nt">&lt;/security:authentication-provider&gt;</span>
+<span class="nt">&lt;/security:authentication-manager&gt;</span>
+</code></pre></div>
+<p>考虑到一种常见情形，用户输入用户名密码，然后与数据比对，验证用户信息，security提供了类来处理。</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;userDetailsService&quot;</span>
+            <span class="na">class=</span><span class="s">&quot;org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl&quot;</span> <span class="nt">&gt;</span>
+     <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;dataSource&quot;</span> <span class="na">ref=</span><span class="s">&quot;dataSource&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+</code></pre></div>
+<p>JdbcDaoImpl使用内置的SQL查询数据，这些SQL以常量的形式出现在JdbcDaoImpl开头，同样可以注入修改。</p>
+
+<p>每次登陆都执行一次SQL可能会存在性能问题，如果用户表数据量不太大，可以考虑缓存，Security可以方便地使用ehcache</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;ehcache&quot;</span> <span class="na">class=</span><span class="s">&quot;org.springframework.cache.ehcache.EhCacheFactoryBean&quot;</span><span class="nt">/&gt;</span>
+
+<span class="c">&lt;!-- 可以缓存UserDetails的UserDetailsService --&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;cachingUserDetailsService&quot;</span>
+            <span class="na">class=</span><span class="s">&quot;org.springframework.security.config.authentication.CachingUserDetailsService&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- 真正加载UserDetails的UserDetailsService --&gt;</span>
+    <span class="nt">&lt;constructor-arg</span> <span class="na">ref=</span><span class="s">&quot;userDetailsService&quot;</span><span class="nt">/&gt;</span>
+    <span class="c">&lt;!-- 缓存UserDetails的UserCache --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;userCache&quot;</span> <span class="na">ref=</span><span class="s">&quot;userCache&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;userCache&quot;</span>
+            <span class="na">class=</span><span class="s">&quot;org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- 用于真正缓存的Ehcache对象 --&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;cache&quot;</span> <span class="na">ref=</span><span class="s">&quot;ehcache&quot;</span><span class="nt">/&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+</code></pre></div>
+<p>然后用<code class="prettyprint">cachingUserDetailsService</code>代替<code class="prettyprint">authentication-provider</code>处的<code class="prettyprint">userDetailsService</code>。</p>
+
+<h1 id="accessdecisionmanager">AccessDecisionManager</h1>
+
+<p>AccessDecisionManager提供访问决策，它同样不会直接处理，而是仅仅抽象为一种投票规则，然后决策行为委托给所有投票人。</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="c">&lt;!-- 决策管理器 --&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;accessDecisionManager&quot;</span>
+            <span class="na">class=</span><span class="s">&quot;org.springframework.security.access.vote.AffirmativeBased&quot;</span> <span class="nt">&gt;</span>
+    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;allowIfAllAbstainDecisions&quot;</span> <span class="na">value=</span><span class="s">&quot;false&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;constructor-arg</span> <span class="na">index=</span><span class="s">&quot;0&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;list&gt;</span>
+           <span class="c">&lt;!-- &lt;bean class=&quot;org.springframework.security.web.access.expression.WebExpressionVoter&quot;/&gt;--&gt;</span>
+            <span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;org.springframework.security.access.vote.RoleVoter&quot;</span><span class="nt">&gt;</span>
+                <span class="c">&lt;!-- 支持所有角色名称，无需前缀 --&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;rolePrefix&quot;</span> <span class="na">value=</span><span class="s">&quot;&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/bean&gt;</span>
+            <span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;org.springframework.security.access.vote.AuthenticatedVoter&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/list&gt;</span>
+    <span class="nt">&lt;/constructor-arg&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+</code></pre></div>
+<p>security提供了三种投票规则：</p>
+
+<ul>
+<li>AffirmativeBased 只要有一个voter同意就通过</li>
+<li>ConsensusBased 只要投同意票的大于投反对票的就通过</li>
+<li>UnanimousBased 需要一致同意才通过</li>
+</ul>
+
+<p>以下为<code class="prettyprint">AffirmativeBased</code>决策过程</p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kt">void</span> <span class="nf">decide</span><span class="o">(</span><span class="n">Authentication</span> <span class="n">authentication</span><span class="o">,</span> <span class="n">Object</span> <span class="n">object</span><span class="o">,</span>
+        <span class="n">Collection</span><span class="o">&lt;</span><span class="n">ConfigAttribute</span><span class="o">&gt;</span> <span class="n">configAttributes</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">AccessDeniedException</span> <span class="o">{</span>
+    <span class="kt">int</span> <span class="n">deny</span> <span class="o">=</span> <span class="mi">0</span><span class="o">;</span>
+
+    <span class="k">for</span> <span class="o">(</span><span class="n">AccessDecisionVoter</span> <span class="n">voter</span> <span class="o">:</span> <span class="n">getDecisionVoters</span><span class="o">())</span> <span class="o">{</span>
+        <span class="kt">int</span> <span class="n">result</span> <span class="o">=</span> <span class="n">voter</span><span class="o">.</span><span class="na">vote</span><span class="o">(</span><span class="n">authentication</span><span class="o">,</span> <span class="n">object</span><span class="o">,</span> <span class="n">configAttributes</span><span class="o">);</span>
+
+        <span class="k">if</span> <span class="o">(</span><span class="n">logger</span><span class="o">.</span><span class="na">isDebugEnabled</span><span class="o">())</span> <span class="o">{</span>
+            <span class="n">logger</span><span class="o">.</span><span class="na">debug</span><span class="o">(</span><span class="s">&quot;Voter: &quot;</span> <span class="o">+</span> <span class="n">voter</span> <span class="o">+</span> <span class="s">&quot;, returned: &quot;</span> <span class="o">+</span> <span class="n">result</span><span class="o">);</span>
+        <span class="o">}</span>
+
+        <span class="k">switch</span> <span class="o">(</span><span class="n">result</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">case</span> <span class="n">AccessDecisionVoter</span><span class="o">.</span><span class="na">ACCESS_GRANTED</span><span class="o">:</span>
+            <span class="k">return</span><span class="o">;</span>
+
+        <span class="k">case</span> <span class="n">AccessDecisionVoter</span><span class="o">.</span><span class="na">ACCESS_DENIED</span><span class="o">:</span>
+            <span class="n">deny</span><span class="o">++;</span>
+
+            <span class="k">break</span><span class="o">;</span>
+
+        <span class="k">default</span><span class="o">:</span>
+            <span class="k">break</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+    <span class="k">if</span> <span class="o">(</span><span class="n">deny</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">throw</span> <span class="k">new</span> <span class="nf">AccessDeniedException</span><span class="o">(</span><span class="n">messages</span><span class="o">.</span><span class="na">getMessage</span><span class="o">(</span>
+                <span class="s">&quot;AbstractAccessDecisionManager.accessDenied&quot;</span><span class="o">,</span> <span class="s">&quot;Access is denied&quot;</span><span class="o">));</span>
+    <span class="o">}</span>
+
+    <span class="c1">// To get this far, every AccessDecisionVoter abstained</span>
+    <span class="n">checkAllowIfAllAbstainDecisions</span><span class="o">();</span>
+<span class="o">}</span>
+</code></pre></div>
+<h1 id="securitymetadatasource">SecurityMetadataSource</h1>
+
+<p>SecurityMetadataSource定义权限元数据，即资源与角色的关系，并提供了一个核心方法<code class="prettyprint">Collection&lt;ConfigAttribute&gt; getAttributes(Object object)</code>来获取资源对应的角色列，这种结构非常类似于Map。</p>
+
+<p>security提供了<code class="prettyprint">DefaultFilterInvocationSecurityMetadataSource</code>来进行角色读取操作，并将数据存储委托给一个<code class="prettyprint">LinkedHashMap</code>对象。</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="c">&lt;!-- 资源与角色关系元数据 --&gt;</span>
+<span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;securityMetadataSource&quot;</span>
+            <span class="na">class=</span><span class="s">&quot;org.springframework.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;constructor-arg</span> <span class="na">index=</span><span class="s">&quot;0&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;top.rainynight.site.core.RequestMapFactoryBean&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;dataSource&quot;</span> <span class="na">ref=</span><span class="s">&quot;dataSource&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;/bean&gt;</span>
+    <span class="nt">&lt;/constructor-arg&gt;</span>
+<span class="nt">&lt;/bean&gt;</span>
+</code></pre></div>
+<p>DefaultFilterInvocationSecurityMetadataSource获取角色方法</p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">ConfigAttribute</span><span class="o">&gt;</span> <span class="nf">getAttributes</span><span class="o">(</span><span class="n">Object</span> <span class="n">object</span><span class="o">)</span> <span class="o">{</span>
+    <span class="kd">final</span> <span class="n">HttpServletRequest</span> <span class="n">request</span> <span class="o">=</span> <span class="o">((</span><span class="n">FilterInvocation</span><span class="o">)</span> <span class="n">object</span><span class="o">).</span><span class="na">getRequest</span><span class="o">();</span>
+    <span class="k">for</span> <span class="o">(</span><span class="n">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="n">RequestMatcher</span><span class="o">,</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">ConfigAttribute</span><span class="o">&gt;&gt;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">requestMap</span>
+            <span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">().</span><span class="na">matches</span><span class="o">(</span><span class="n">request</span><span class="o">))</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">entry</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+    <span class="k">return</span> <span class="kc">null</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>除此之外，还需要定义如何匹配资源，比元数据中定义的资源格式为<code class="prettyprint">/user/**</code>，那么形如<code class="prettyprint">/user/1</code>的资源应该匹配，针对这类情形，security提供了大量的类供客户使用，此处使用<code class="prettyprint">AntPathRequestMatcher</code>。</p>
+
+<h1 id="源码">源码</h1>
+
+<p>上节配置中的<code class="prettyprint">RequestMapFactoryBean</code>为自定义工厂类，使用工厂注入的方法提供<code class="prettyprint">LinkedHashMap</code>对象，以下为该类的源代码：</p>
+<div class="highlight"><pre><code class="language-java" data-lang="java"><span class="kn">import</span> <span class="nn">org.springframework.beans.factory.FactoryBean</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.jdbc.core.RowMapper</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.jdbc.core.support.JdbcDaoSupport</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.security.access.ConfigAttribute</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.security.access.SecurityConfig</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.security.web.util.matcher.AntPathRequestMatcher</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.security.web.util.matcher.RequestMatcher</span><span class="o">;</span>
+
+<span class="kn">import</span> <span class="nn">java.sql.ResultSet</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.sql.SQLException</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.*</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">RequestMapFactoryBean</span> <span class="kd">extends</span> <span class="n">JdbcDaoSupport</span> <span class="kd">implements</span> <span class="n">FactoryBean</span><span class="o">&lt;</span><span class="n">LinkedHashMap</span><span class="o">&lt;</span><span class="n">RequestMatcher</span><span class="o">,</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">ConfigAttribute</span><span class="o">&gt;&gt;&gt;</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">final</span> <span class="kd">static</span> <span class="n">String</span> <span class="n">METADATA_QUERY</span> <span class="o">=</span> <span class="s">&quot;SELECT w.sequence,w.pattern,r.name FROM webresource w LEFT JOIN securitymetadata s on w.id = s.webResource_id LEFT JOIN role r ON r.id = s.role_id&quot;</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="n">String</span> <span class="n">metadataQuery</span><span class="o">;</span>
+
+    <span class="kd">private</span> <span class="n">LinkedHashMap</span><span class="o">&lt;</span><span class="n">RequestMatcher</span><span class="o">,</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">ConfigAttribute</span><span class="o">&gt;&gt;</span> <span class="n">requestMap</span><span class="o">;</span>
+
+    <span class="kd">public</span> <span class="nf">RequestMapFactoryBean</span><span class="o">(){</span>
+        <span class="n">metadataQuery</span> <span class="o">=</span> <span class="n">METADATA_QUERY</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">LinkedHashMap</span><span class="o">&lt;</span><span class="n">RequestMatcher</span><span class="o">,</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">ConfigAttribute</span><span class="o">&gt;&gt;</span> <span class="nf">getObject</span><span class="o">()</span> <span class="kd">throws</span> <span class="n">Exception</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">requestMap</span> <span class="o">==</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">fill</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">requestMap</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="n">Class</span><span class="o">&lt;?&gt;</span> <span class="n">getObjectType</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">if</span> <span class="o">(</span><span class="n">requestMap</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="n">requestMap</span><span class="o">.</span><span class="na">getClass</span><span class="o">();</span>
+        <span class="o">}</span>
+        <span class="k">return</span> <span class="n">LinkedHashMap</span><span class="o">.</span><span class="na">class</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">boolean</span> <span class="nf">isSingleton</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">private</span> <span class="kt">void</span> <span class="nf">fill</span><span class="o">()</span> <span class="o">{</span>
+        <span class="n">Set</span><span class="o">&lt;</span><span class="n">Metadata</span><span class="o">&gt;</span> <span class="n">metadataList</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TreeSet</span><span class="o">&lt;</span><span class="n">Metadata</span><span class="o">&gt;(</span><span class="n">loadMetadata</span><span class="o">())</span> <span class="o">;</span>
+        <span class="n">requestMap</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LinkedHashMap</span><span class="o">&lt;</span><span class="n">RequestMatcher</span><span class="o">,</span> <span class="n">Collection</span><span class="o">&lt;</span><span class="n">ConfigAttribute</span><span class="o">&gt;&gt;();</span>
+      <span class="cm">/*  RequestMatcher matcher = new AntPathRequestMatcher(&quot;/user*//**&quot;);</span>
+<span class="cm">        Collection&lt;ConfigAttribute&gt; attributes = SecurityConfig.createListFromCommaDelimitedString(&quot;ROLE_userAdmin&quot;);</span>
+<span class="cm">        requestMap.put(matcher, attributes);*/</span>
+
+        <span class="k">for</span> <span class="o">(</span><span class="n">Metadata</span> <span class="n">metadata</span> <span class="o">:</span> <span class="n">metadataList</span><span class="o">)</span> <span class="o">{</span>
+            <span class="n">RequestMatcher</span> <span class="n">matcher</span> <span class="o">=</span> <span class="k">new</span> <span class="nf">AntPathRequestMatcher</span><span class="o">(</span><span class="n">metadata</span><span class="o">.</span><span class="na">pattern</span><span class="o">);</span>
+            <span class="n">Collection</span><span class="o">&lt;</span><span class="n">ConfigAttribute</span><span class="o">&gt;</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">requestMap</span><span class="o">.</span><span class="na">get</span><span class="o">(</span><span class="n">matcher</span><span class="o">);</span>
+            <span class="k">if</span><span class="o">(</span><span class="n">attributes</span> <span class="o">==</span> <span class="kc">null</span><span class="o">){</span>
+                <span class="n">attributes</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="o">&lt;</span><span class="n">ConfigAttribute</span><span class="o">&gt;();</span>
+                <span class="n">requestMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="n">matcher</span><span class="o">,</span> <span class="n">attributes</span><span class="o">);</span>
+            <span class="o">}</span>
+            <span class="n">attributes</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="k">new</span> <span class="nf">SecurityConfig</span><span class="o">(</span><span class="n">metadata</span><span class="o">.</span><span class="na">role</span><span class="o">));</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+
+
+    <span class="kd">protected</span> <span class="n">List</span><span class="o">&lt;</span><span class="n">Metadata</span><span class="o">&gt;</span> <span class="nf">loadMetadata</span><span class="o">()</span> <span class="o">{</span>
+        <span class="k">return</span> <span class="nf">getJdbcTemplate</span><span class="o">().</span><span class="na">query</span><span class="o">(</span><span class="n">metadataQuery</span><span class="o">,</span> <span class="k">new</span> <span class="n">String</span><span class="o">[]{},</span>
+                <span class="k">new</span> <span class="n">RowMapper</span><span class="o">&lt;</span><span class="n">Metadata</span><span class="o">&gt;()</span> <span class="o">{</span>
+                    <span class="kd">public</span> <span class="n">Metadata</span> <span class="nf">mapRow</span><span class="o">(</span><span class="n">ResultSet</span> <span class="n">rs</span><span class="o">,</span> <span class="kt">int</span> <span class="n">rowNum</span><span class="o">)</span> <span class="kd">throws</span> <span class="n">SQLException</span> <span class="o">{</span>
+                        <span class="kt">int</span> <span class="n">sequence</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getInt</span><span class="o">(</span><span class="mi">1</span><span class="o">);</span>
+                        <span class="n">String</span> <span class="n">pattern</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">2</span><span class="o">);</span>
+                        <span class="n">String</span> <span class="n">role</span> <span class="o">=</span> <span class="n">rs</span><span class="o">.</span><span class="na">getString</span><span class="o">(</span><span class="mi">3</span><span class="o">);</span>
+                        <span class="k">return</span> <span class="k">new</span> <span class="nf">Metadata</span><span class="o">(</span><span class="n">sequence</span><span class="o">,</span> <span class="n">pattern</span><span class="o">,</span> <span class="n">role</span><span class="o">);</span>
+                    <span class="o">}</span>
+                <span class="o">});</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">setMetadataQuery</span><span class="o">(</span><span class="n">String</span> <span class="n">metadataQuery</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">this</span><span class="o">.</span><span class="na">metadataQuery</span> <span class="o">=</span> <span class="n">metadataQuery</span><span class="o">;</span>
+    <span class="o">}</span>
+
+    <span class="kd">protected</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">Metadata</span> <span class="kd">implements</span> <span class="n">Comparable</span><span class="o">&lt;</span><span class="n">Metadata</span><span class="o">&gt;{</span>
+
+        <span class="kd">private</span> <span class="nf">Metadata</span><span class="o">(</span><span class="kt">int</span> <span class="n">sequence</span><span class="o">,</span> <span class="n">String</span> <span class="n">pattern</span><span class="o">,</span> <span class="n">String</span> <span class="n">role</span><span class="o">){</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">sequence</span> <span class="o">=</span> <span class="n">sequence</span><span class="o">;</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">pattern</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">;</span>
+            <span class="k">this</span><span class="o">.</span><span class="na">role</span> <span class="o">=</span> <span class="n">role</span><span class="o">;</span>
+        <span class="o">}</span>
+
+        <span class="kd">private</span> <span class="kt">int</span> <span class="n">sequence</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">String</span> <span class="n">pattern</span><span class="o">;</span>
+        <span class="kd">private</span> <span class="n">String</span> <span class="n">role</span><span class="o">;</span>
+
+        <span class="nd">@Override</span>
+        <span class="kd">public</span> <span class="kt">int</span> <span class="nf">compareTo</span><span class="o">(</span><span class="n">Metadata</span> <span class="n">o</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="o">.</span><span class="na">sequence</span> <span class="o">-</span> <span class="n">o</span><span class="o">.</span><span class="na">sequence</span><span class="o">;</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div>
+<p>以下为完整的Security配置文件</p>
+<div class="highlight"><pre><code class="language-xml" data-lang="xml"><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="nt">&lt;beans</span> <span class="na">xmlns=</span><span class="s">&quot;http://www.springframework.org/schema/beans&quot;</span>
+       <span class="na">xmlns:xsi=</span><span class="s">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span>
+       <span class="na">xmlns:security=</span><span class="s">&quot;http://www.springframework.org/schema/security&quot;</span>
+       <span class="na">xsi:schemaLocation=</span><span class="s">&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd</span>
+<span class="s">       http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd&quot;</span><span class="nt">&gt;</span>
+
+
+    <span class="c">&lt;!-- 当指定一个http元素的security属性为none时，表示其对应pattern的filter链为空 --&gt;</span>
+    <span class="nt">&lt;security:http</span> <span class="na">security=</span><span class="s">&quot;none&quot;</span> <span class="na">pattern=</span><span class="s">&quot;/favicon.ico&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;security:http</span> <span class="na">security=</span><span class="s">&quot;none&quot;</span> <span class="na">pattern=</span><span class="s">&quot;/resources/**&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;security:http</span> <span class="na">security=</span><span class="s">&quot;none&quot;</span> <span class="na">pattern=</span><span class="s">&quot;/user/login&quot;</span><span class="nt">/&gt;</span>
+
+
+    <span class="nt">&lt;security:http</span> <span class="na">pattern=</span><span class="s">&quot;/user/**&quot;</span>
+                   <span class="na">authentication-manager-ref=</span><span class="s">&quot;authenticationManager&quot;</span>
+                   <span class="na">access-decision-manager-ref=</span><span class="s">&quot;accessDecisionManager&quot;</span>
+                   <span class="na">use-expressions=</span><span class="s">&quot;true&quot;</span><span class="nt">&gt;</span>
+
+        <span class="c">&lt;!--&lt;security:form-login /&gt;--&gt;</span>
+        <span class="nt">&lt;security:http-basic/&gt;</span>
+
+        <span class="nt">&lt;security:logout</span> <span class="na">delete-cookies=</span><span class="s">&quot;JSESSIONID&quot;</span> <span class="na">logout-success-url=</span><span class="s">&quot;/&quot;</span> <span class="na">logout-url=</span><span class="s">&quot;/user/logout&quot;</span><span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;security:custom-filter</span> <span class="na">ref=</span><span class="s">&quot;filterSecurityInterceptor&quot;</span> <span class="na">before=</span><span class="s">&quot;FILTER_SECURITY_INTERCEPTOR&quot;</span><span class="nt">/&gt;</span>
+
+    <span class="nt">&lt;/security:http&gt;</span>
+
+    <span class="c">&lt;!-- 自定义过滤器 --&gt;</span>
+    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;filterSecurityInterceptor&quot;</span> <span class="na">class=</span><span class="s">&quot;org.springframework.security.web.access.intercept.FilterSecurityInterceptor&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;securityMetadataSource&quot;</span> <span class="na">ref=</span><span class="s">&quot;securityMetadataSource&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;authenticationManager&quot;</span> <span class="na">ref=</span><span class="s">&quot;authenticationManager&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;accessDecisionManager&quot;</span> <span class="na">ref=</span><span class="s">&quot;accessDecisionManager&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;messageSource&quot;</span> <span class="na">ref=</span><span class="s">&quot;securityMessageSource&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+    <span class="c">&lt;!-- 资源与角色关系元数据 --&gt;</span>
+    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;securityMetadataSource&quot;</span> <span class="na">class=</span><span class="s">&quot;org.springframework.security.web.access.intercept.DefaultFilterInvocationSecurityMetadataSource&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;constructor-arg</span> <span class="na">index=</span><span class="s">&quot;0&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;top.rainynight.site.core.RequestMapFactoryBean&quot;</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;dataSource&quot;</span> <span class="na">ref=</span><span class="s">&quot;dataSource&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/bean&gt;</span>
+        <span class="nt">&lt;/constructor-arg&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+    <span class="c">&lt;!-- 认证管理器。用户名密码都集成在配置文件中 --&gt;</span>
+    <span class="nt">&lt;security:authentication-manager</span> <span class="na">id=</span><span class="s">&quot;authenticationManager&quot;</span><span class="nt">&gt;</span>
+ <span class="c">&lt;!--       &lt;security:authentication-provider&gt;</span>
+<span class="c">            &amp;lt;!&amp;ndash; InMemoryDaoImpl &amp;ndash;&amp;gt;</span>
+<span class="c">            &lt;security:user-service&gt;</span>
+<span class="c">                &lt;security:user name=&quot;sharp&quot; password=&quot;sharp&quot; authorities=&quot;ROLE_TEST&quot;/&gt;</span>
+<span class="c">            &lt;/security:user-service&gt;</span>
+<span class="c">        &lt;/security:authentication-provider&gt;--&gt;</span>
+        <span class="nt">&lt;security:authentication-provider</span> <span class="na">user-service-ref=</span><span class="s">&quot;cachingUserDetailsService&quot;</span> <span class="nt">&gt;</span>
+           <span class="c">&lt;!-- &lt;security:password-encoder base64=&quot;true&quot; hash=&quot;md5&quot;&gt;</span>
+<span class="c">                &lt;security:salt-source user-property=&quot;username&quot;/&gt;</span>
+<span class="c">            &lt;/security:password-encoder&gt;--&gt;</span>
+        <span class="nt">&lt;/security:authentication-provider&gt;</span>
+    <span class="nt">&lt;/security:authentication-manager&gt;</span>
+
+    <span class="c">&lt;!-- 可以缓存UserDetails的UserDetailsService --&gt;</span>
+    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;cachingUserDetailsService&quot;</span> <span class="na">class=</span><span class="s">&quot;org.springframework.security.config.authentication.CachingUserDetailsService&quot;</span><span class="nt">&gt;</span>
+        <span class="c">&lt;!-- 真正加载UserDetails的UserDetailsService --&gt;</span>
+        <span class="nt">&lt;constructor-arg</span> <span class="na">ref=</span><span class="s">&quot;userDetailsService&quot;</span><span class="nt">/&gt;</span>
+        <span class="c">&lt;!-- 缓存UserDetails的UserCache --&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;userCache&quot;</span> <span class="na">ref=</span><span class="s">&quot;userCache&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;userCache&quot;</span> <span class="na">class=</span><span class="s">&quot;org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache&quot;</span><span class="nt">&gt;</span>
+        <span class="c">&lt;!-- 用于真正缓存的Ehcache对象 --&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;cache&quot;</span> <span class="na">ref=</span><span class="s">&quot;ehcache&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;userDetailsService&quot;</span> <span class="na">class=</span><span class="s">&quot;org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;dataSource&quot;</span> <span class="na">ref=</span><span class="s">&quot;dataSource&quot;</span><span class="nt">/&gt;</span>
+            <span class="c">&lt;!-- 查询出的角色名称不添加前缀 --&gt;</span>
+            <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;rolePrefix&quot;</span> <span class="na">value=</span><span class="s">&quot;&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;usersByUsernameQuery&quot;</span> <span class="na">value=</span><span class="s">&quot;SELECT name,password,enabled FROM user WHERE name = ?&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;authoritiesByUsernameQuery&quot;</span>
+                      <span class="na">value=</span><span class="s">&quot;SELECT u.name as username,role.name as rolename FROM (select id,name FROM user WHERE name = ?) AS u</span>
+<span class="s">                                INNER JOIN user_role ON u.id = user_role.user_id</span>
+<span class="s">                                INNER JOIN role ON user_role.role_id = role.id&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;enableGroups&quot;</span> <span class="na">value=</span><span class="s">&quot;true&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;groupAuthoritiesByUsernameQuery&quot;</span>
+                      <span class="na">value=</span><span class="s">&quot;SELECT colony.name as colonyname,colony.description as colonydesc,role.name as rolename FROM</span>
+<span class="s">                                (SELECT colony_id FROM (SELECT id FROM user WHERE name = ?) as u</span>
+<span class="s">                                INNER JOIN user_colony ON u.id = user_colony.user_id) AS g</span>
+<span class="s">                                INNER JOIN colony ON g.colony_id = colony.id</span>
+<span class="s">                                INNER JOIN colony_role ON colony.id = colony_role.colony_id</span>
+<span class="s">                                INNER JOIN role ON colony_role.role_id = role.id&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+    <span class="c">&lt;!-- 决策管理器 --&gt;</span>
+    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;accessDecisionManager&quot;</span> <span class="na">class=</span><span class="s">&quot;org.springframework.security.access.vote.AffirmativeBased&quot;</span> <span class="nt">&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;allowIfAllAbstainDecisions&quot;</span> <span class="na">value=</span><span class="s">&quot;false&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;constructor-arg</span> <span class="na">index=</span><span class="s">&quot;0&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;list&gt;</span>
+               <span class="c">&lt;!-- &lt;bean class=&quot;org.springframework.security.web.access.expression.WebExpressionVoter&quot;/&gt;--&gt;</span>
+                <span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;org.springframework.security.access.vote.RoleVoter&quot;</span><span class="nt">&gt;</span>
+                    <span class="c">&lt;!-- 支持所有角色名称，无需前缀 --&gt;</span>
+                    <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;rolePrefix&quot;</span> <span class="na">value=</span><span class="s">&quot;&quot;</span><span class="nt">/&gt;</span>
+                <span class="nt">&lt;/bean&gt;</span>
+                <span class="nt">&lt;bean</span> <span class="na">class=</span><span class="s">&quot;org.springframework.security.access.vote.AuthenticatedVoter&quot;</span><span class="nt">/&gt;</span>
+            <span class="nt">&lt;/list&gt;</span>
+        <span class="nt">&lt;/constructor-arg&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+
+    <span class="nt">&lt;bean</span> <span class="na">id=</span><span class="s">&quot;securityMessageSource&quot;</span> <span class="na">class=</span><span class="s">&quot;org.springframework.context.support.ReloadableResourceBundleMessageSource&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;basenames&quot;</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;list&gt;</span>
+                <span class="nt">&lt;value&gt;</span>classpath:messages/securityMessages<span class="nt">&lt;/value&gt;</span>
+                <span class="nt">&lt;value&gt;</span>classpath:org/springframework/security/messages<span class="nt">&lt;/value&gt;</span>
+            <span class="nt">&lt;/list&gt;</span>
+        <span class="nt">&lt;/property&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;useCodeAsDefaultMessage&quot;</span> <span class="na">value=</span><span class="s">&quot;false&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;defaultEncoding&quot;</span> <span class="na">value=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">/&gt;</span>
+        <span class="nt">&lt;property</span> <span class="na">name=</span><span class="s">&quot;cacheSeconds&quot;</span> <span class="na">value=</span><span class="s">&quot;60&quot;</span><span class="nt">/&gt;</span>
+    <span class="nt">&lt;/bean&gt;</span>
+
+<span class="nt">&lt;/beans&gt;</span>
+</code></pre></div>
+<p>建表语句</p>
+<div class="highlight"><pre><code class="language-mysql" data-lang="mysql"><span class="k">drop</span> <span class="k">table</span> <span class="k">if</span> <span class="k">exists</span> <span class="n">SecurityMetadata</span><span class="p">;</span>
+
+<span class="k">drop</span> <span class="k">table</span> <span class="k">if</span> <span class="k">exists</span> <span class="n">colony_role</span><span class="p">;</span>
+
+<span class="k">drop</span> <span class="k">table</span> <span class="k">if</span> <span class="k">exists</span> <span class="n">user_colony</span><span class="p">;</span>
+
+<span class="k">drop</span> <span class="k">table</span> <span class="k">if</span> <span class="k">exists</span> <span class="n">user_role</span><span class="p">;</span>
+
+<span class="k">drop</span> <span class="k">table</span> <span class="k">if</span> <span class="k">exists</span> <span class="n">colony</span><span class="p">;</span>
+
+<span class="k">drop</span> <span class="k">table</span> <span class="k">if</span> <span class="k">exists</span> <span class="n">role</span><span class="p">;</span>
+
+<span class="k">drop</span> <span class="k">table</span> <span class="k">if</span> <span class="k">exists</span> <span class="n">user</span><span class="p">;</span>
+
+<span class="k">drop</span> <span class="k">table</span> <span class="k">if</span> <span class="k">exists</span> <span class="n">webResource</span><span class="p">;</span>
+
+
+
+
+<span class="cm">/*==============================================================*/</span>
+<span class="cm">/* Table: SecurityMetadata                                      */</span>
+<span class="cm">/*==============================================================*/</span>
+<span class="k">create</span> <span class="k">table</span> <span class="nf">SecurityMetadata</span>
+<span class="p">(</span>
+   <span class="n">id</span>                   <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="kp">auto_increment</span> <span class="n">comment</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span>
+   <span class="n">webResource_id</span>       <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;资源ID&#39;</span><span class="p">,</span>
+   <span class="n">role_id</span>              <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;角色ID&#39;</span><span class="p">,</span>
+   <span class="k">primary</span> <span class="k">key</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span>
+   <span class="k">unique</span> <span class="k">key</span> <span class="nf">UK_SecurityMetadata</span> <span class="p">(</span><span class="n">webResource_id</span><span class="p">,</span> <span class="n">role_id</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="cm">/*==============================================================*/</span>
+<span class="cm">/* Table: colony                                                */</span>
+<span class="cm">/*==============================================================*/</span>
+<span class="k">create</span> <span class="k">table</span> <span class="nf">colony</span>
+<span class="p">(</span>
+   <span class="n">id</span>                   <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="kp">auto_increment</span> <span class="n">comment</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span>
+   <span class="n">name</span>                 <span class="kt">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;名称&#39;</span><span class="p">,</span>
+   <span class="n">description</span>          <span class="kt">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;描述&#39;</span><span class="p">,</span>
+   <span class="k">primary</span> <span class="k">key</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span>
+   <span class="k">unique</span> <span class="k">key</span> <span class="nf">UK_colony</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">alter</span> <span class="k">table</span> <span class="n">colony</span> <span class="n">comment</span> <span class="s1">&#39;群体&#39;</span><span class="p">;</span>
+
+<span class="cm">/*==============================================================*/</span>
+<span class="cm">/* Table: colony_role                                           */</span>
+<span class="cm">/*==============================================================*/</span>
+<span class="k">create</span> <span class="k">table</span> <span class="nf">colony_role</span>
+<span class="p">(</span>
+   <span class="n">id</span>                   <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="kp">auto_increment</span> <span class="n">comment</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span>
+   <span class="n">role_id</span>              <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;角色ID&#39;</span><span class="p">,</span>
+   <span class="n">colony_id</span>            <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;群体ID&#39;</span><span class="p">,</span>
+   <span class="k">primary</span> <span class="k">key</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span>
+   <span class="k">unique</span> <span class="k">key</span> <span class="nf">UK_colony_role</span> <span class="p">(</span><span class="n">role_id</span><span class="p">,</span> <span class="n">colony_id</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">alter</span> <span class="k">table</span> <span class="n">colony_role</span> <span class="n">comment</span> <span class="s1">&#39;群体角色&#39;</span><span class="p">;</span>
+
+<span class="cm">/*==============================================================*/</span>
+<span class="cm">/* Table: role                                                  */</span>
+<span class="cm">/*==============================================================*/</span>
+<span class="k">create</span> <span class="k">table</span> <span class="nf">role</span>
+<span class="p">(</span>
+   <span class="n">id</span>                   <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="kp">auto_increment</span> <span class="n">comment</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span>
+   <span class="n">name</span>                 <span class="kt">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;名称&#39;</span><span class="p">,</span>
+   <span class="n">description</span>          <span class="kt">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;描述&#39;</span><span class="p">,</span>
+   <span class="k">primary</span> <span class="k">key</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span>
+   <span class="k">unique</span> <span class="k">key</span> <span class="nf">UK_role</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">alter</span> <span class="k">table</span> <span class="n">role</span> <span class="n">comment</span> <span class="s1">&#39;角色&#39;</span><span class="p">;</span>
+
+<span class="cm">/*==============================================================*/</span>
+<span class="cm">/* Table: user                                                  */</span>
+<span class="cm">/*==============================================================*/</span>
+<span class="k">create</span> <span class="k">table</span> <span class="nf">user</span>
+<span class="p">(</span>
+   <span class="n">id</span>                   <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="kp">auto_increment</span> <span class="n">comment</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span>
+   <span class="n">name</span>                 <span class="kt">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;用户名&#39;</span><span class="p">,</span>
+   <span class="n">password</span>             <span class="kt">varchar</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;密码&#39;</span><span class="p">,</span>
+   <span class="n">enabled</span>              <span class="n">boolean</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;true : 可用,  false : 不可用&#39;</span><span class="p">,</span>
+   <span class="k">primary</span> <span class="k">key</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span>
+   <span class="k">unique</span> <span class="k">key</span> <span class="nf">UK_name</span> <span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">alter</span> <span class="k">table</span> <span class="n">user</span> <span class="n">comment</span> <span class="s1">&#39;用户&#39;</span><span class="p">;</span>
+
+<span class="cm">/*==============================================================*/</span>
+<span class="cm">/* Table: user_colony                                           */</span>
+<span class="cm">/*==============================================================*/</span>
+<span class="k">create</span> <span class="k">table</span> <span class="nf">user_colony</span>
+<span class="p">(</span>
+   <span class="n">id</span>                   <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="kp">auto_increment</span> <span class="n">comment</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span>
+   <span class="n">user_id</span>              <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;用户ID&#39;</span><span class="p">,</span>
+   <span class="n">colony_id</span>            <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;群体ID&#39;</span><span class="p">,</span>
+   <span class="k">primary</span> <span class="k">key</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span>
+   <span class="k">unique</span> <span class="k">key</span> <span class="nf">UK_user_colony</span> <span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">colony_id</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">alter</span> <span class="k">table</span> <span class="n">user_colony</span> <span class="n">comment</span> <span class="s1">&#39;用户群体&#39;</span><span class="p">;</span>
+
+<span class="cm">/*==============================================================*/</span>
+<span class="cm">/* Table: user_role                                             */</span>
+<span class="cm">/*==============================================================*/</span>
+<span class="k">create</span> <span class="k">table</span> <span class="nf">user_role</span>
+<span class="p">(</span>
+   <span class="n">id</span>                   <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="kp">auto_increment</span> <span class="n">comment</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span>
+   <span class="n">user_id</span>              <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;用户ID&#39;</span><span class="p">,</span>
+   <span class="n">role_id</span>              <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;角色ID&#39;</span><span class="p">,</span>
+   <span class="k">primary</span> <span class="k">key</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span>
+   <span class="k">unique</span> <span class="k">key</span> <span class="nf">UK_user_role</span> <span class="p">(</span><span class="n">user_id</span><span class="p">,</span> <span class="n">role_id</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">alter</span> <span class="k">table</span> <span class="n">user_role</span> <span class="n">comment</span> <span class="s1">&#39;用户角色&#39;</span><span class="p">;</span>
+
+<span class="cm">/*==============================================================*/</span>
+<span class="cm">/* Table: webResource                                           */</span>
+<span class="cm">/*==============================================================*/</span>
+<span class="k">create</span> <span class="k">table</span> <span class="nf">webResource</span>
+<span class="p">(</span>
+   <span class="n">id</span>                   <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="kp">auto_increment</span> <span class="n">comment</span> <span class="s1">&#39;ID&#39;</span><span class="p">,</span>
+   <span class="n">pattern</span>              <span class="kt">varchar</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;URI模式&#39;</span><span class="p">,</span>
+   <span class="n">sequence</span>             <span class="kt">int</span> <span class="k">not</span> <span class="no">null</span> <span class="n">comment</span> <span class="s1">&#39;排序号&#39;</span><span class="p">,</span>
+   <span class="k">primary</span> <span class="k">key</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span>
+   <span class="k">unique</span> <span class="k">key</span> <span class="nf">UK_pattern</span> <span class="p">(</span><span class="n">pattern</span><span class="p">),</span>
+   <span class="k">unique</span> <span class="k">key</span> <span class="nf">UK_sequence</span> <span class="p">(</span><span class="n">sequence</span><span class="p">)</span>
+<span class="p">);</span>
+
+<span class="k">alter</span> <span class="k">table</span> <span class="n">webResource</span> <span class="n">comment</span> <span class="s1">&#39;系统资源&#39;</span><span class="p">;</span>
+
+<span class="k">alter</span> <span class="k">table</span> <span class="n">SecurityMetadata</span> <span class="k">add</span> <span class="k">constraint</span> <span class="n">FK_SecurityMetadata_Reference_role</span> <span class="k">foreign</span> <span class="k">key</span> <span class="p">(</span><span class="n">role_id</span><span class="p">)</span>
+      <span class="k">references</span> <span class="nf">role</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">on</span> <span class="k">delete</span> <span class="k">restrict</span> <span class="k">on</span> <span class="k">update</span> <span class="k">restrict</span><span class="p">;</span>
+
+<span class="k">alter</span> <span class="k">table</span> <span class="n">SecurityMetadata</span> <span class="k">add</span> <span class="k">constraint</span> <span class="n">FK_SecurityMetadata_Reference_webResource</span> <span class="k">foreign</span> <span class="k">key</span> <span class="p">(</span><span class="n">webResource_id</span><span class="p">)</span>
+      <span class="k">references</span> <span class="nf">webResource</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">on</span> <span class="k">delete</span> <span class="k">restrict</span> <span class="k">on</span> <span class="k">update</span> <span class="k">restrict</span><span class="p">;</span>
+
+<span class="k">alter</span> <span class="k">table</span> <span class="n">colony_role</span> <span class="k">add</span> <span class="k">constraint</span> <span class="n">FK_colony_role_Reference_colony</span> <span class="k">foreign</span> <span class="k">key</span> <span class="p">(</span><span class="n">colony_id</span><span class="p">)</span>
+      <span class="k">references</span> <span class="nf">colony</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">on</span> <span class="k">delete</span> <span class="k">restrict</span> <span class="k">on</span> <span class="k">update</span> <span class="k">restrict</span><span class="p">;</span>
+
+<span class="k">alter</span> <span class="k">table</span> <span class="n">colony_role</span> <span class="k">add</span> <span class="k">constraint</span> <span class="n">FK_colony_role_Reference_role</span> <span class="k">foreign</span> <span class="k">key</span> <span class="p">(</span><span class="n">role_id</span><span class="p">)</span>
+      <span class="k">references</span> <span class="nf">role</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">on</span> <span class="k">delete</span> <span class="k">restrict</span> <span class="k">on</span> <span class="k">update</span> <span class="k">restrict</span><span class="p">;</span>
+
+<span class="k">alter</span> <span class="k">table</span> <span class="n">user_colony</span> <span class="k">add</span> <span class="k">constraint</span> <span class="n">FK_user_colony_Reference_colony</span> <span class="k">foreign</span> <span class="k">key</span> <span class="p">(</span><span class="n">colony_id</span><span class="p">)</span>
+      <span class="k">references</span> <span class="nf">colony</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">on</span> <span class="k">delete</span> <span class="k">restrict</span> <span class="k">on</span> <span class="k">update</span> <span class="k">restrict</span><span class="p">;</span>
+
+<span class="k">alter</span> <span class="k">table</span> <span class="n">user_colony</span> <span class="k">add</span> <span class="k">constraint</span> <span class="n">FK_user_colony_Reference_user</span> <span class="k">foreign</span> <span class="k">key</span> <span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+      <span class="k">references</span> <span class="nf">user</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">on</span> <span class="k">delete</span> <span class="k">restrict</span> <span class="k">on</span> <span class="k">update</span> <span class="k">restrict</span><span class="p">;</span>
+
+<span class="k">alter</span> <span class="k">table</span> <span class="n">user_role</span> <span class="k">add</span> <span class="k">constraint</span> <span class="n">FK_user_role_Reference_role</span> <span class="k">foreign</span> <span class="k">key</span> <span class="p">(</span><span class="n">role_id</span><span class="p">)</span>
+      <span class="k">references</span> <span class="nf">role</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">on</span> <span class="k">delete</span> <span class="k">restrict</span> <span class="k">on</span> <span class="k">update</span> <span class="k">restrict</span><span class="p">;</span>
+
+<span class="k">alter</span> <span class="k">table</span> <span class="n">user_role</span> <span class="k">add</span> <span class="k">constraint</span> <span class="n">FK_user_role_Reference_user</span> <span class="k">foreign</span> <span class="k">key</span> <span class="p">(</span><span class="n">user_id</span><span class="p">)</span>
+      <span class="k">references</span> <span class="nf">user</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span> <span class="k">on</span> <span class="k">delete</span> <span class="k">restrict</span> <span class="k">on</span> <span class="k">update</span> <span class="k">restrict</span><span class="p">;</span>
+</code></pre></div>
+          </article>
+          <hr class="boundary">
+          <div id="post-share" class="bdsharebuttonbox">
+              <a href="#" class="bds_more" data-cmd="more"></a>
+              <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+              <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+              <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+              <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+              <a href="#" class="bds_copy" data-cmd="copy" title="分享到复制网址"></a>
+          </div>
+        </div>
+        <div class="pad-min"></div>
+        <div id="post-comment" class="sheet post">
+            <div id="disqus_thread"></div>
+        </div>
+    </div>
+    <div class="content-navigation col-lg-3">
+      <div class="shadow-bottom-center" >
+        <div class="content-navigation-toc">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Toc
+            </div>
+            <div class="content-navigation-list toc"></div>
+        </div>
+        <div class="content-navigation-tag">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Tags
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#spring"><span class="octicon octicon-tag"></span>&nbsp;spring</a>
+                    </li>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#security"><span class="octicon octicon-tag"></span>&nbsp;security</a>
+                    </li>
+                    
+                    <li>
+                        <a class="word-keep" href="http://blog.rainyalley.com/tags#Java"><span class="octicon octicon-tag"></span>&nbsp;Java</a>
+                    </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <div class="content-navigation-related">
+            <div class="content-navigation-header">
+                <span class="octicon octicon-list-unordered"></span>&nbsp;Related
+            </div>
+            <div class="content-navigation-list">
+                <ul>
+                    
+
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                                    
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                                    
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                                
+                            
+                        
+                    
+                        
+                            
+
+                            
+                                
+                            
+                                
+                            
+
+                            
+                                
+                            
+
+                            
+                        
+                    
+
+                    
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-04-09/rmi/">RMI</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-03-17/servlet-encode/">Servlet乱码分析</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-03-05/validator/">Bean Validation</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-02-22/javajs/">Java中用js解析json</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2015-02-13/sqlappend/">SQL 拼接</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-12-21/webservice/">WebService</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-12-13/java-newfeature/">Java8 新特性</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-11-18/java-concurrent/">Java Concurrent</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-08-20/jvm/">Java虚拟机</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-06-26/effective/">Effective Java</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-05-12/acturl-generic/">超类中的泛型</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-04-15/fileupload/">Custom Fileupload</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-03-22/reentrantlock/">可重入锁</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-03-16/tomcat-https/">Tomcat Https 配置</a>
+                            </li>
+                        
+                            <li>
+                                <a class="word-keep" href="http://blog.rainyalley.com/2014-03-13/resubmit/">防止重复提交的几种办法</a>
+                            </li>
+                        
+                    
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+    </div>
+
+    <div class="page-scrollTop" data-toggle="tooltip" data-placement="top" title="Top">
+        <a href="javascript:void(0);">
+            <div class="arrow"></div>
+            <div class="stick"></div>
+        </a>
+    </div>
+</div>
+
+    <footer  class="footnote footnote-tiffany">
+        <div class="container">
+                <a class="foot-item" href="mailto:dubuyuye@yeah.net" target="_blank"><span class="octicon octicon-mail"></span></a>
+                <a class="foot-item" href="https://github.com/dubuyuye" target="_blank"><span class="octicon octicon-mark-github"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/feed.xml" target="_blank"><span class="octicon octicon-rss"></span></a>
+                <a class="foot-item" href="http://blog.rainyalley.com/link/"><span class="octicon octicon-link-external"></span></a>
+                &nbsp;
+                <a href="http://blog.rainyalley.com/"><span class="word-keep">&copy; RainyAlley</span></a>
+        </div>
+    </footer>
+
+
+<div class="scriptHub">
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/jquery/1.11.3/jquery.js"></script>
+    <script type="text/javascript" src="http://apps.bdimg.com/libs/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/script.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/toc.js"></script>
+    <script type="text/javascript" src="http://blog.rainyalley.com/static/js/post.js"></script>
+    
+</div>
+
+
+
+</body>
+</html>
