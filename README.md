@@ -1,1 +1,1 @@
-<http://blog.rainyalley.com/>
+技术博客

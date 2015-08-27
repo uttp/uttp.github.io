@@ -27,13 +27,13 @@ paginate_path: ":num"
 
 baseurl: ""
 
-title: "RainyAlley"
-email: "dubuyuye@yeah.net"
+title: "UpToTop"
+email: "zhangyh13548081964@163.com"
 description: "Developer"
-github_username:  "dubuyuye"
+github_username:  "uttp"
 
-url: "http://blog.rainyalley.com"
-imgrepo: "http://blog.rainyalley.com/static/img"
+url: "www.sharexperience11.com"
+imgrepo: "www.sharexperience11.com"
 #url: "http://127.0.0.1:4000"
 #imgrepo: "http://127.0.0.1:4000/static/img"
 
