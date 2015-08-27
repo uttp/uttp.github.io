@@ -81,7 +81,7 @@ void set(T value) {
     else
          createMap(t, value);
 }
-~~
+~~~
 ThreadLocalMap分析
 ~~~java
 //创建对象
@@ -96,5 +96,31 @@ ThreadLocalMap(ThreadLocal<?> firstKey, Object firstValue){
     setThreshold(INITIAL_CAPACITY);
 }
 
+//获得当前线程的对象
+private Entry getEntry(ThreadLocal<?> key) {
+	int i = key.threadLocalHashCode & (table.length - 1);
+    Entry e = table[i];
+    if (e != null && e.get() == key)
+    	return e;
+    else
+    	return getEntryAfterMiss(key, i, e);
+}
+
+//hash算法碰撞处理，线性探测
+private Entry getEntryAfterMiss(ThreadLocal<?> key, int i, Entry e) {
+	Entry[] tab = table;
+    int len = tab.length;
+    while (e != null) {
+    	ThreadLocal<?> k = e.get();
+        if (k == key)
+        	return e;
+        if (k == null)
+            expungeStaleEntry(i);
+        else
+            i = nextIndex(i, len);
+        e = tab[i];
+     }
+     return null;
+}
 
 ~~~
