@@ -115,6 +115,7 @@ private Entry getEntryAfterMiss(ThreadLocal<?> key, int i, Entry e) {
         if (k == key)
         	return e;
         if (k == null)
+			//弱引用的对象回收后
             expungeStaleEntry(i);
         else
             i = nextIndex(i, len);
@@ -122,5 +123,45 @@ private Entry getEntryAfterMiss(ThreadLocal<?> key, int i, Entry e) {
      }
      return null;
 }
+//去掉弱应用的对象
+private int expungeStaleEntry(int staleSlot) {
+	Entry[] tab = table;
+    int len = tab.length;
+	//设置value和table[staleSlot]为空，不然出现内存泄露
+    tab[staleSlot].value = null;
+    tab[staleSlot] = null;
+    size--;
 
+    // Rehash until we encounter null
+    Entry e;
+    int i;
+    for (i = nextIndex(staleSlot, len);
+    	(e = tab[i]) != null;
+        	i = nextIndex(i, len)) {
+    	ThreadLocal<?> k = e.get();
+		//下一个对象中得弱引用为空，则继续回收Entry对象
+        if (k == null) {
+        	e.value = null;
+            tab[i] = null;
+            size--;
+        } else {
+            int h = k.threadLocalHashCode & (len - 1);
+			// 重新hash
+            if (h != i) {
+           		 tab[i] = null;
+
+                 // Unlike Knuth 6.4 Algorithm R, we must scan until
+                 // null because multiple entries could have been stale.
+                 while (tab[h] != null)
+                 	h = nextIndex(h, len);
+                 tab[h] = e;
+            }
+        }
+   }
+   return i;
+}
 ~~~
+
+
+
+
