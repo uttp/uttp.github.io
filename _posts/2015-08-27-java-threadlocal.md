@@ -12,9 +12,9 @@ published: true
 <div class="toc"></div>
 #大纲
 </br>
-一、ThreadLocal初探
-二、ThreadLocal源码分析
-三、ThreadLocal总结
+一、ThreadLocal初探</br>
+二、ThreadLocal源码分析</br>
+三、ThreadLocal总结</br>
 <br/>
 #ThreadLocal初探
 <div class="toc"></div>
