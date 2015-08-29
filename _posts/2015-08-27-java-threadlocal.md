@@ -3,7 +3,10 @@ layout: post
 title: java多线程之ThreadLocal
 tags: 多线程 ThreadLocal
 categories: Java
+published: true
 ---
+
+
 
 <div class="toc"></div>
 
@@ -161,7 +164,5 @@ private int expungeStaleEntry(int staleSlot) {
    return i;
 }
 ~~~
-
-
-
-
+ThreadLocal总结图片如下
+![2015-08-28 144944.jpg]({{site.baseurl}}/_drafts/2015-08-28 144944.jpg)
