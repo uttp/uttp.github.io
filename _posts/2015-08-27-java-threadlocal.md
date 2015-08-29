@@ -165,4 +165,5 @@ private int expungeStaleEntry(int staleSlot) {
 }
 ~~~
 ThreadLocal总结图片如下
-![2015-08-28 144944.jpg]({{site.baseurl}}/_drafts/2015-08-28 144944.jpg)
+![ThreadLocalsummary.jpg]({{site.baseurl}}/_posts/ThreadLocalsummary.jpg)
+
