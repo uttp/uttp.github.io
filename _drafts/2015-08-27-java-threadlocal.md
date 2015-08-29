@@ -1,24 +1,17 @@
 ---
 layout: post
-title: java并发：ThreadLocal
-tags: 多线程 ThreadLocal java
+title: java多线程之ThreadLocal
+tags: 多线程 ThreadLocal
 categories: Java
 published: true
 ---
 
 
 
+<div class="toc"></div>
 
+#例子
 <div class="toc"></div>
-#大纲
-</br>
-一、ThreadLocal初探
-二、ThreadLocal源码分析
-三、ThreadLocal总结
-<br/>
-#ThreadLocal初探
-<div class="toc"></div>
-ThreadLocal也叫做本地对象，是为每一个访问它的线程分配一个对象，这样就为了防止线程之间对对象并发访问产生竞争
 ~~~java
 public class Test {
 	public static class ThreadLocalTest implements Runnable{
@@ -43,11 +36,11 @@ public class Test {
 	}
 }
 ~~~
-上面得到的结果是两次访问的值都是不一样的
+从上面例子可以体会到ThreadLocal并不神秘，它的核心思想就是为每个线程保存一个本地变量
 
 #源码分析
 <div class="toc"></div>
-ThreadLocal里面的get主要功能是得到存储在当前线程中ThreadLocalMap，以当前ThreadLocal为键的值
+get函数
 ~~~java
 public T get() {
 	//取得当前线程
@@ -66,7 +59,7 @@ public T get() {
     return setInitialValue();
 }
 ~~~
-setInitialValue主要功能是初始化当前线程里面的值
+setInitialValue函数
 ~~~java
 private T setInitialValue() {
 	//默认返回为null，可以覆盖这个方法
@@ -81,7 +74,7 @@ private T setInitialValue() {
     return value;
 }
 ~~~
-set设置当前线程对应的值
+set函数,比较简单没
 ~~~java
 void set(T value) {
 	Thread t = Thread.currentThread();
@@ -171,9 +164,5 @@ private int expungeStaleEntry(int staleSlot) {
    return i;
 }
 ~~~
-
-#ThreadLocal图解
-![ThreadLocal] [ThreadLocal]
-
-[ThreadLocal]: {{"/ThreadLocalsummary.jpg" | prepend: site.imgrepo }}
-
+ThreadLocal总结图片如下
+![2015-08-28 144944.jpg]({{site.baseurl}}/_drafts/2015-08-28 144944.jpg)
