@@ -25,6 +25,15 @@ DNS(domain name system，域名系统),主要是用于对域名和ip之间的映
 ![dnsr] [dnsr]   </br>
 浏览器输入DNS后解析过程:</br>
 ![bdDNSR] [bdDNSR] </br>
+<br>
+(2)DNS负载均衡</br>
+一个域名可以对应多个ip地址，这样可以在主域名服务器设置多个ip地址来进行负载均衡</br>
+DNS负载均衡有以下优点:</br>
+1)DNS负载均衡实现简单，只需把负载均衡的任务交给DNS服务器就可以了
+2)
+
+
+
 
 
 [dnsr]: {{"/dnsr.jpg" | prepend: site.imgrepo}}
