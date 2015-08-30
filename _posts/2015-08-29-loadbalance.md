@@ -22,13 +22,13 @@ DNS(domain name system，域名系统),主要是用于对域名和ip之间的映
 6)顶级域名服务器。根域名服务器会返回顶级域名服务器地址给本地DNS服务器，本地DNS服务器取查找顶级域名服务器，如果在顶级域名服务器缓存有对应的解析，则直接返回</br>
 7)主域名服务器。顶级域名服务器解析不了，就会返回主域名服务器，主域名服务器会去查找对应解析，找到后返回到本地DNS服务器缓存</br>
 下图DNS解析过程：</br>
-![dnsr] [dnsr]
+![dnsr] [dnsr]   </br>
 浏览器输入DNS后解析过程:</br>
-![bdDNSR] [bdDNSR]
+![bdDNSR] [bdDNSR] </br>
 
 
 [dnsr]: {{"/dnsr.jpg" | prepend: site.imgrepo}}
-[bdDNSR]: {{"/dbDNSR.jpg" | prepend: site.imgrepo}}
+[bdDNSR]: {{"/bdDNSR.jpg" | prepend: site.imgrepo}}
 
 
 
