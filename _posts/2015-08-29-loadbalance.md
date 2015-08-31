@@ -7,8 +7,8 @@ published: true
 ---
 
 #目录
-一、NDS负载均衡
-
+一、NDS负载均衡</br>
+二、四层负载均衡</br>
 
 #一、DNS负载均衡
 (1)DNS简介</br>
@@ -29,8 +29,29 @@ DNS(domain name system，域名系统),主要是用于对域名和ip之间的映
 (2)DNS负载均衡</br>
 一个域名可以对应多个ip地址，这样可以在主域名服务器设置多个ip地址来进行负载均衡</br>
 DNS负载均衡有以下优点:</br>
-1)DNS负载均衡实现简单，只需把负载均衡的任务交给DNS服务器就可以了
-2)
+1)DNS负载均衡实现简单，只需把负载均衡的任务交给DNS服务器就可以了</br>
+2)支持地理位置的域名解析，即将域名解析成距离用户地理位置最近的服务器地址</br>
+当然DNS负载均衡也有缺点</br>
+1)DNS为多级解析，当某一台服务器挂掉后，DNS缓存还存在，导致获取不到服务器的信息</br>
+2)DNS采用的是轮询的策略，不能按照服务器负载来实现；DNS为多级解析，这可能导致来自同一区域的访问都会集中到一台服务器上</br>
+#二、四层负载均衡
+根据报文中的ip地址和端口，再加上负载均衡设备设置的服务器选择方式，选择内部服务器与请求客户端建立连接，然后发送数据，典型的又LVS和F5</br>
+(1)LVS负载均衡服务器</br>
+LVS由三部分组成：最前端的负载均衡，中间的服务器集群，和最底端的数据共享层</br>
+1)IP负载均衡技术</br>
+LVS前端负载均衡服务器虚拟出一个IPVS，请求根据VIP到达负载均衡服务器，然后再由负载均衡服务器从Real Service列表中选取服务器进行相应</br>
+①·VS/NAT(virtual service via network address translation)</br>
+过程是这样的，请求到达了负载均衡服务器后，根据负载均衡算法选择真实的服务器，把VIP和对应的端口号改为，真实服务器对应的ip和端口号。真实服务器处理了请求后，返回给负载均衡服务器，把ip地址和对口号修改为负载均衡所对应的ip地址和端口号</br>
+这个过程中我们会发现一个问题就是每次响应请求都要经过负载均衡服务器，这样就导致负载均衡服务器的压力过大</br>
+![vsnat] [vsnat] </br>
+② VS/TUN(virtual service via IP Tunneling) </br>
+过程是这样的，请求到达负载均衡服务器后，选择真实的服务器，对报文由ip隧道技术进行封装，到达真实的服务器，处理请求，返回给用户</br>
+在返回请求应答的过程中不需要经过负载均衡服务器，这样就减小了负载均衡服务器的压力；而且真实服务器可以在不同的网段<br>
+![vstun] [vstun]  </br>
+③ VS/DR(virtual service vis Direct Routing) </br>
+连接调度和管理与VS/NAT和VS/TUN一样，报文转发方法不同，转发是通过修改MAC地址，将请求直接转发给真实服务器，真实服务器响应连接请求</br>
+这里要求负载均衡服务器和真实服务器都有一块网卡连在同一物理网端上</br>
+![vsdr] [vsdr] </br>
 
 
 
@@ -38,6 +59,10 @@ DNS负载均衡有以下优点:</br>
 
 [dnsr]: {{"/dnsr.jpg" | prepend: site.imgrepo}}
 [bdDNSR]: {{"/bdDNSR.jpg" | prepend: site.imgrepo}}
+[vsnat]: {{"/vsnat.jpg" | prepend: site.imgrepo}}
+[vstun]: {{"/vstun.jpg" | prepend: site.imgrepo}}
+[vsdr]: {{"/vsdr.jpg" | prepend: site.imgrepo}}
+
 
 
 
