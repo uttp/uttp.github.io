@@ -119,7 +119,7 @@ upstream backend{
 #四、缓存服务器
 (1)varnish缓存服务器</br>
 varnish是一个cache型的http反向代理，通过配置可以缓存一些静态文件，如果缓存没有命中，则访问服务器</br>
-
+(2)memcached缓存服务器</br>
 
 
 
