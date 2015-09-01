@@ -9,7 +9,8 @@ published: true
 #目录
 一、NDS负载均衡</br>
 二、四层负载均衡</br>
-
+三、七层负载均衡</br>
+四、缓存服务器</br>
 #一、DNS负载均衡
 (1)DNS简介</br>
 DNS(domain name system，域名系统),主要是用于对域名和ip之间的映射，当在浏览器输入域名之后，域名解析会经过以下过程：</br>
@@ -50,7 +51,7 @@ LVS前端负载均衡服务器虚拟出一个IPVS，请求根据VIP到达负载�
 ![vstun] [vstun]  </br>
 ③ VS/DR(virtual service vis Direct Routing) </br>
 连接调度和管理与VS/NAT和VS/TUN一样，报文转发方法不同，转发是通过修改MAC地址，将请求直接转发给真实服务器，真实服务器响应连接请求</br>
-这里要求负载均衡服务器和真实服务器都有一块网卡连在同一物理网端上</br>
+这里要求负载均衡服务器和真实服务器都有一块网卡连在同一物理网段上</br>
 ![vsdr] [vsdr] </br>
 
 2)LVS调度算法</br>
@@ -62,6 +63,64 @@ LVS前端负载均衡服务器虚拟出一个IPVS，请求根据VIP到达负载�
 选择真实服务器中连接数目最少的进行调度</br>
 ④ 加权最少连接调度</br>
 
+<br>
+
+(2)F5负载均衡
+
+
+#三、七层负载均衡</br>
+七层负载均衡是是基于http协议的，所以可以对一些静态文件进行缓存，这是四层负载均衡所不具备的</br>
+(1)nginx负载均衡</br>
+如下图所示nginx进程模型:</br>
+![ngxm] [ngxm] </br>
+nginx负载均衡算法:</br>
+1)轮询</br>
+每个请求按时间顺序逐一分配到不同的服务器后端服务器，如果后端服务器down掉，则自动剔除</br>
+2)权重</br>
+指定轮询概率，weight和访问概率成比例，主要用于后端服务性能不均的情况</br>
+~~~java
+upstream bakend{
+	server 192.168.0.14 weight=10;
+	server 192.168.0.15 weight=1;
+}
+~~~
+3)ip_hash</br>
+每个请求可以按照ip hash的结果分配，这样每个访问者访问一个固定的后端服务器，可以解决session问题</br>
+~~~java
+upstream bakend{
+	ip_hash;
+	server 192.168.0.11:8080;
+	server 192.168.0.15:8080;
+}
+
+~~~
+
+4)fair</br>
+按后端服务器响应请求来分配，响应时间短的优先</br>
+~~~java
+upstream bakend{
+	server server1;
+	server server2;
+	fair;
+}
+~~~
+5)url_hash</br>
+按访问url的hash结果来分配请求，使每个url定向同一服务器，后端为缓存服务器是比较有效</br>
+~~~java
+upstream backend{
+	server varnish1:8080;
+	server varnish2:8080;
+	hash $request_uri;
+	hash_method crc32;
+}
+~~~
+
+
+#四、缓存服务器
+(1)varnish缓存服务器</br>
+varnish是一个cache型的http反向代理，通过配置可以缓存一些静态文件，如果缓存没有命中，则访问服务器</br>
+
+
 
 
 [dnsr]: {{"/dnsr.jpg" | prepend: site.imgrepo}}
@@ -69,7 +128,7 @@ LVS前端负载均衡服务器虚拟出一个IPVS，请求根据VIP到达负载�
 [vsnat]: {{"/vsnat.jpg" | prepend: site.imgrepo}}
 [vstun]: {{"/vstun.jpg" | prepend: site.imgrepo}}
 [vsdr]: {{"/vsdr.jpg" | prepend: site.imgrepo}}
-
+[ngxm]: {{"/ngxm.png" | prepend: site.imgrepo}}
 
 
 
