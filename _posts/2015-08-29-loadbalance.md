@@ -11,6 +11,7 @@ published: true
 二、四层负载均衡</br>
 三、七层负载均衡</br>
 四、缓存服务器</br>
+</br>
 #一、DNS负载均衡
 (1)DNS简介</br>
 DNS(domain name system，域名系统),主要是用于对域名和ip之间的映射，当在浏览器输入域名之后，域名解析会经过以下过程：</br>
@@ -24,7 +25,6 @@ DNS(domain name system，域名系统),主要是用于对域名和ip之间的映
 7)主域名服务器。顶级域名服务器解析不了，就会返回主域名服务器，主域名服务器会去查找对应解析，找到后返回到本地DNS服务器缓存</br>
 下图DNS解析过程：</br>
 ![dnsr] [dnsr]   </br>
-</br>
 浏览器输入DNS后解析过程:</br>
 ![bdDNSR] [bdDNSR] </br>
 <br>
