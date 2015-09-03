@@ -55,7 +55,36 @@ public LinkedBlockingQueue(Collection<? extends E> c) {
     }
 }
 ~~~
+放入元素到队列中时，放入的元素不能为null</br>
+~~~java
+public void put(E e) throws InterruptedException {
+	if (e == null) throw new NullPointerException();
+  
+	int c = -1;
+    Node<E> node = new Node<E>(e);
+    final ReentrantLock putLock = this.putLock;
+    final AtomicInteger count = this.count;
+    putLock.lockInterruptibly();
+    try {
+	    //当容量满时，则不能往里面加入元素
+   	    while (count.get() == capacity) {
+    	   	notFull.await();
+        }
+  	    //加入node节点
+        enqueue(node);
+        c = count.getAndIncrement();
+        //为什么要加入？ 
+		if (c + 1 < capacity)
+         	notFull.signal();
+    } finally {
+         putLock.unlock();
+    }
+    if (c == 0)
+        signalNotEmpty();
+}
 
+
+~~~
 
 
 
