@@ -9,6 +9,7 @@ published: true
 #目录
 一、简介</br>
 二、源码分析</br>
+
 #一、简介
 ThreadPoolExecutor是java多线框架的基础，可以定制各种各样的多线程。比较常用的有Executors里面可以创建的newFixedThreadPool、newSingleThreadExecutor、newCachedThreadPool、newScheduledThreadPool等。理解了ThreadPoolExecutor的原理，就理解了java的线程池。</br>
 

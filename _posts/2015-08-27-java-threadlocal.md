@@ -15,8 +15,8 @@ published: true
 一、ThreadLocal初探</br>
 二、ThreadLocal源码分析</br>
 三、ThreadLocal总结</br>
-<br/>
-#ThreadLocal初探
+
+#一、ThreadLocal初探
 <div class="toc"></div>
 ThreadLocal也叫做本地对象，是为每一个访问它的线程分配一个对象，这样就为了防止线程之间对对象并发访问产生竞争
 ~~~java
@@ -45,7 +45,7 @@ public class Test {
 ~~~
 上面得到的结果是两次访问的值都是不一样的
 
-#源码分析
+#二、源码分析
 <div class="toc"></div>
 ThreadLocal里面的get主要功能是得到存储在当前线程中ThreadLocalMap，以当前ThreadLocal为键的值
 ~~~java
@@ -172,7 +172,7 @@ private int expungeStaleEntry(int staleSlot) {
 }
 ~~~
 
-#ThreadLocal图解
+#三、ThreadLocal图解
 ![ThreadLocal] [ThreadLocal]
 
 [ThreadLocal]: {{"/ThreadLocalsummary.jpg" | prepend: site.imgrepo }}
