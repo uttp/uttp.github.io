@@ -24,6 +24,7 @@ DNS(domain name system，域名系统),主要是用于对域名和ip之间的映
 7)主域名服务器。顶级域名服务器解析不了，就会返回主域名服务器，主域名服务器会去查找对应解析，找到后返回到本地DNS服务器缓存</br>
 下图DNS解析过程：</br>
 ![dnsr] [dnsr]   </br>
+</br>
 浏览器输入DNS后解析过程:</br>
 ![bdDNSR] [bdDNSR] </br>
 <br>
