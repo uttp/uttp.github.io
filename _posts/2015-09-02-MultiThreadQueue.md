@@ -82,10 +82,33 @@ public void put(E e) throws InterruptedException {
     if (c == 0)
         signalNotEmpty();
 }
-
-
 ~~~
-
+元素从队列中取出来时</br>
+~~~java
+public E take() throws InterruptedException {
+	E x;
+    int c = -1;
+    final AtomicInteger count = this.count;
+    final ReentrantLock takeLock = this.takeLock;
+    takeLock.lockInterruptibly();
+    try {
+		//如果队列为空，则阻塞
+    	while (count.get() == 0) {
+        	notEmpty.await();
+        }
+		//取出队列里面的元素
+        x = dequeue();
+        c = count.getAndDecrement();
+        if (c > 1)
+        	notEmpty.signal();
+    } finally {
+        takeLock.unlock();
+    }
+    if (c == capacity)
+    	signalNotFull();
+    return x;
+}
+~~~
 
 
 
