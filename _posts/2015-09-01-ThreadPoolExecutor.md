@@ -26,7 +26,7 @@ corePoolSize则新的任务来时就会创建新的线程，如果线程池里�
 ThreadPoolExecutor中定义了5个状态，分别是running--可以接收任务和处理队列中的任务；shutdown--不接受新的任务，但是要处理在
 队列中的任务；stop--不接受新的任务，不处理队列中的任务，中断正在处理的任务；tidying--所有的任务都终止，workerCount为零；terminated--terminated()方法完成</br>
 2）字段</br>
-``
+~~~java
 //ctl用于计算线程池里面线程的个数和辅助计算线程池的状态
 private final AtomicInteger ctl = new AtomicInteger(ctlOf(RUNNING, 0));
 private static final int COUNT_BITS = Integer.SIZE - 3;
@@ -42,11 +42,11 @@ private static final int STOP       =  1 << COUNT_BITS;
 private static final int TIDYING    =  2 << COUNT_BITS;
 //TERMINATED状态为01100...000
 private static final int TERMINATED =  3 << COUNT_BITS;
-``
+~~~
 用CAPACITY高三位得到状态，地位计算线程池里面线程的个数，而线程池的RUNNING状态转化为数字后为负数比其它状态值都要小，比较容易
 得到线程池的状态是否为运行状态
 
-``
+~~~java
 //得到运行的状态
 private static int runStateOf(int c)     { return c & ~CAPACITY; }
 //得到线程池里面线程的个数
@@ -83,7 +83,95 @@ private int largestPoolSize;
 private long completedTaskCount;
 private volatile ThreadFactory threadFactory;
 private volatile RejectedExecutionHandler handler;
-``
+~~~
 3)分析</br>
-先从
+先从execute函数开始分析，执行任务的时候可以是新的线程或者是线程池里面已经存在的线程；当然也可能会拒绝执行，因为线程池可能已经
+SHUTDOWN或者线程池没有可用线程并且线程数量达到上限了</br>
+~~~java
+public void execute(Runnable command) {
+	if (command == null)
+    	throw new NullPointerException();
+    int c = ctl.get();
+	//是否线程数达到了corePoolSize的大小，如果没有则直接创建新线程来运行任务
+    if (workerCountOf(c) < corePoolSize) {
+    	if (addWorker(command, true))
+        	return;
+        c = ctl.get();
+    }
+	//判断线程的状态
+    if (isRunning(c) && workQueue.offer(command)) {
+    	int recheck = ctl.get();
+        if (! isRunning(recheck) && remove(command))
+        	reject(command);
+        else if (workerCountOf(recheck) == 0)
+            addWorker(null, false);
+     }
+     else if (!addWorker(command, false))
+        reject(command);
+}
+~~~
+addWorker分析
+~~~java
+private boolean addWorker(Runnable firstTask, boolean core) {
+	retry:
+    for (;;) {
+    	int c = ctl.get();
+        int rs = runStateOf(c);
+        if (rs >= SHUTDOWN &&
+        	! (rs == SHUTDOWN &&
+            firstTask == null &&
+            ! workQueue.isEmpty()))
+            return false;
+
+     	for (;;) {
+     		int wc = workerCountOf(c);
+        	if (wc >= CAPACITY ||
+        	 	wc >= (core ? corePoolSize : maximumPoolSize))
+        		return false;
+            if (compareAndIncrementWorkerCount(c))
+                break retry;
+            c = ctl.get(); 
+            if (runStateOf(c) != rs)
+                continue retry;
+        }
+    }
+
+    boolean workerStarted = false;
+    boolean workerAdded = false;
+    Worker w = null;
+    try {
+    	w = new Worker(firstTask);
+        final Thread t = w.thread;
+        if (t != null) {
+        	final ReentrantLock mainLock = this.mainLock;
+            mainLock.lock();
+            try {
+            	int rs = runStateOf(ctl.get());
+
+                if (rs < SHUTDOWN ||
+                	(rs == SHUTDOWN && firstTask == null)) {
+                	if (t.isAlive())
+                    	throw new IllegalThreadStateException();
+                        workers.add(w);
+                        int s = workers.size();
+                        if (s > largestPoolSize)
+                            largestPoolSize = s;
+                        workerAdded = true;
+                    }
+             } finally {
+             	 mainLock.unlock();
+             }
+             if (workerAdded) {
+                 t.start();
+                 workerStarted = true;
+              }
+            }
+    } finally {
+    	if (! workerStarted)
+        	addWorkerFailed(w);
+    }
+    return workerStarted;
+}
+
+~~~
 
