@@ -20,6 +20,7 @@ corePoolSize则新的任务来时就会创建新的线程，如果线程池里�
 处于idle状态，当线程处于idle状态时间超过keepAliveTime时，线程回收；workQueue是存放线程的队列，主要由这几种:SynchronousQueue--
 没有数据缓冲生产者线程对其进行进行put操作必须要等到消费者线程进行消费，LinkedBlockingQueue--无线大的缓冲区， ArrayBlockingQueue
 --有限大的缓冲区；handler有四种策略：AbortPolicy CallerRunsPolicy DiscardPolicy DiscardOldestPolicy
+
 #二、源码分析</br>
 
 
