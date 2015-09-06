@@ -11,9 +11,9 @@ published: true
 二、源码分析</br>
 
 #一、简介
-    ThreadPoolExecutor是java多线框架的基础，可以定制各种各样的多线程。比较常用的有Executors里面可以创建的newFixedThreadPool、newSingleThreadExecutor、newCachedThreadPool、newScheduledThreadPool等。理解了ThreadPoolExecutor的原理，就理解了java的线程池。</br>
+>ThreadPoolExecutor是java多线框架的基础，可以定制各种各样的多线程。比较常用的有Executors里面可以创建的newFixedThreadPool、newSingleThreadExecutor、newCachedThreadPool、newScheduledThreadPool等。理解了ThreadPoolExecutor的原理，就理解了java的线程池。</br>
 
-    ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue
+>ThreadPoolExecutor(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, BlockingQueue<Runnable> workQueue
 , ThreadFactory threadFactory, RejectedExecutionHandler handler)corePoolSize线程池里面线程个数，如果线程池里面的线程个数少于
 corePoolSize则新的任务来时就会创建新的线程，如果线程池里面的线程大于等于corePoolSize，当workQueue队列满时，如果线程池里面的
 线程小于maximumPoolSize，那么就创建新的线程；keepAliveTime是当线程池里面的线程个数多于corePoolSize，并且线程池里面的线程有
