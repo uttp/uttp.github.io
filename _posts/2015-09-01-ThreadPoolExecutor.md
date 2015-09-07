@@ -19,7 +19,8 @@ corePoolSize则新的任务来时就会创建新的线程，如果线程池里�
 线程小于maximumPoolSize，那么就创建新的线程；keepAliveTime是当线程池里面的线程个数多于corePoolSize，并且线程池里面的线程有
 处于idle状态，当线程处于idle状态时间超过keepAliveTime时，线程回收；workQueue是存放线程的队列，主要由这几种:SynchronousQueue--
 没有数据缓冲生产者线程对其进行进行put操作必须要等到消费者线程进行消费，LinkedBlockingQueue--无线大的缓冲区， ArrayBlockingQueue
---有限大的缓冲区；handler有四种策略：AbortPolicy CallerRunsPolicy DiscardPolicy DiscardOldestPolicy
+--有限大的缓冲区；handler有四种策略：AbortPolicy--直接抛弃任务后抛出RejectedExecutionException异常；CallerRunsPolicy--如果线程
+池没有关闭，则运行任务；DiscardPolicy--直接抛弃任务，不抛出异常；DiscardOldestPolicy--从队列头里面poll一个元素后，再运行任务
 
 #二、源码分析</br>
 1）状态</br>
@@ -84,7 +85,7 @@ private long completedTaskCount;
 private volatile ThreadFactory threadFactory;
 private volatile RejectedExecutionHandler handler;
 ~~~
-3)分析</br>
+3)源代码分析</br>
 先从execute函数开始分析，执行任务的时候可以是新的线程或者是线程池里面已经存在的线程；当然也可能会拒绝执行，因为线程池可能已经
 SHUTDOWN或者线程池没有可用线程并且线程数量达到上限了</br>
 ~~~java
@@ -110,19 +111,25 @@ public void execute(Runnable command) {
         reject(command);
 }
 ~~~
-addWorker分析
+这里有如下过程:</br>
+①如果线程个数少于规定的核心线程个数，那么创建新的线程来运行任务</br>
+②如果在任务队列里面加入任务成功，需要重新判断线程池是否是运行状态，否则移除任务；如果线程池里面的线程个数为0,增加新的线程来运行</br>
+③如果队列已满，则创建新的线程来运行任务，如果失败，抛弃任务</br>
+addWorker分析</br>
 ~~~java
 private boolean addWorker(Runnable firstTask, boolean core) {
 	retry:
     for (;;) {
     	int c = ctl.get();
         int rs = runStateOf(c);
+		//等价于 rs >= SHUTDOWN && (rs != SHUTDOWN || firstTask != null || workQueue.isEmpty())
+		//如果线程池状态不为running，那么如果任务为不为空，或者队列为空，或者状态大于SHUTDOWN，则不创建线程
         if (rs >= SHUTDOWN &&
         	! (rs == SHUTDOWN &&
             firstTask == null &&
             ! workQueue.isEmpty()))
             return false;
-
+		//增加工作线程的数量
      	for (;;) {
      		int wc = workerCountOf(c);
         	if (wc >= CAPACITY ||
@@ -147,17 +154,17 @@ private boolean addWorker(Runnable firstTask, boolean core) {
             mainLock.lock();
             try {
             	int rs = runStateOf(ctl.get());
-
+				//如果线程是running状态，或者线程为shutdown状态，但是任务为null，则可以增加线程来运行应用程序
                 if (rs < SHUTDOWN ||
                 	(rs == SHUTDOWN && firstTask == null)) {
                 	if (t.isAlive())
                     	throw new IllegalThreadStateException();
-                        workers.add(w);
-                        int s = workers.size();
-                        if (s > largestPoolSize)
-                            largestPoolSize = s;
-                        workerAdded = true;
-                    }
+                    workers.add(w);
+                    int s = workers.size();
+                    if (s > largestPoolSize)
+                    	largestPoolSize = s;
+                    workerAdded = true;
+                 }
              } finally {
              	 mainLock.unlock();
              }
@@ -172,6 +179,51 @@ private boolean addWorker(Runnable firstTask, boolean core) {
     }
     return workerStarted;
 }
-
 ~~~
+在线程池里面运行任务时调用的是runWroker，线程会不断的从队列里面取出任务来运行，runWroker方法分析如下</br>
+~~~java
+final void runWorker(Worker w) {
+	Thread wt = Thread.currentThread();
+    Runnable task = w.firstTask;
+	//取出任务后任务置null
+    w.firstTask = null;
+    w.unlock();
+    boolean completedAbruptly = true;
+    try {
+		//不停的从队列里面取元素
+    	while (task != null || (task = getTask()) != null) {
+        	w.lock();
+            if ((runStateAtLeast(ctl.get(), STOP) ||
+                     (Thread.interrupted() &&
+                      runStateAtLeast(ctl.get(), STOP))) &&
+                    !wt.isInterrupted())
+            	 wt.interrupt();
+            try {
+            	beforeExecute(wt, task);
+                Throwable thrown = null;
+                try {
+                	task.run();
+                } catch (RuntimeException x) {
+                    thrown = x; throw x;
+                } catch (Error x) {
+                    thrown = x; throw x;
+                } catch (Throwable x) {
+                    thrown = x; throw new Error(x);
+                } finally {
+                    afterExecute(task, thrown);
+                }
+             } finally {
+             	task = null;
+                w.completedTasks++;
+                w.unlock();
+             }
+        }
+        completedAbruptly = false;
+     } finally {
+        processWorkerExit(w, completedAbruptly);
+     }
+}
+~~~
+
+
 
