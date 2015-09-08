@@ -114,4 +114,4 @@ LinkedBlockingQueue类中其它插入和取出数据和put、take类似</br>
 
 #二、ArrayBlockingQueue分析
 	ArrayBlockingQueue里面的元素是存储在数组里面的，与LinkedBlockingQueue不同的是它里面只有一个锁（为什么只有一个锁？）。这里
-把数组里面的元素当做循环数组，由于比较简单，古不做源码分析。
+把数组里面的元素当做循环数组，由于比较简单，故不做源码分析。
