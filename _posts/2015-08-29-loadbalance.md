@@ -80,7 +80,7 @@ nginx负载均衡算法:</br>
 2)权重</br>
 指定轮询概率，weight和访问概率成比例，主要用于后端服务性能不均的情况</br>
 ~~~java
-upstream bakend{
+upstream backend{
 	server 192.168.0.14 weight=10;
 	server 192.168.0.15 weight=1;
 }
@@ -88,7 +88,7 @@ upstream bakend{
 3)ip_hash</br>
 每个请求可以按照ip hash的结果分配，这样每个访问者访问一个固定的后端服务器，可以解决session问题</br>
 ~~~java
-upstream bakend{
+upstream backend{
 	ip_hash;
 	server 192.168.0.11:8080;
 	server 192.168.0.15:8080;
@@ -99,7 +99,7 @@ upstream bakend{
 4)fair</br>
 按后端服务器响应请求来分配，响应时间短的优先</br>
 ~~~java
-upstream bakend{
+upstream backend{
 	server server1;
 	server server2;
 	fair;
