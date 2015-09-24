@@ -60,9 +60,48 @@ MAXIMUM_CAPACITY为HashMap的桶的最大的个数，这里定义为2^30</br>
 DEFAULT_LOAD_FACTORY的作用是当元素的个数大于桶的个数*load_factory时HashMap就得重新进行hash</br>
 table是用一个数组来保存桶中的元素，每个桶是由一个链表组成</br>
 modCount记录的是桶更改的次数，这样在遍历时如果对HashMap进行了修改那么就会报ConcurrentModificationException异常</br>
-##1.2 
+##1.2 初始化
+~~~java
+public HashMap(int initialCapacity, float loadFactor) {
+	if (initialCapacity < 0)
+    	throw new IllegalArgumentException("Illegal initial capacity: " +
+        	initialCapacity);
+    if (initialCapacity > MAXIMUM_CAPACITY)
+        initialCapacity = MAXIMUM_CAPACITY;
+    if (loadFactor <= 0 || Float.isNaN(loadFactor))
+        throw new IllegalArgumentException("Illegal load factor: " +
+        	loadFactor);
+    this.loadFactor = loadFactor;
+    threshold = initialCapacity;
+    init();
+}
+~~~ 
+上面代码只是简单的对locadFactor和threshold进行初始化</br>
+~~~java
+public V put(K key, V value) {
+	if (table == EMPTY_TABLE) {
+    	inflateTable(threshold);
+    }
+    if (key == null)
+    	return putForNullKey(value);
+    int hash = hash(key);
+   	int i = indexFor(hash, table.length);
+    for (Entry<K,V> e = table[i]; e != null; e = e.next) {
+    Object k;
+            if (e.hash == hash && ((k = e.key) == key || key.equals(k))) {
+                V oldValue = e.value;
+                e.value = value;
+                e.recordAccess(this);
+                return oldValue;
+            }
+        }
 
-
+        modCount++;
+        addEntry(hash, key, value, i);
+        return null;
+    }
+~~~
+如果table为空
 
 
 
