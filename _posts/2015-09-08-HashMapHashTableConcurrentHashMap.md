@@ -11,7 +11,7 @@ published: true
 二 源码分析
 
 #一 简介</br>
-> 它们都是键值对的存储，区别在于HashMap为非线程安全的，HashTable和ConcurrentHashMap为线程安全的，ConcurrentHashMap使用了锁分离技术，它的效率比HashTable更高</br>
+> 使用键值对的存储，区别在于HashMap为非线程安全的，HashTable和ConcurrentHashMap为线程安全的，ConcurrentHashMap使用了锁分离技术，它的效率比HashTable更高</br>
 #二 源码分分析</br>
 ##1 HashMap分析</br>
 ###1.1 数据结构</br>
