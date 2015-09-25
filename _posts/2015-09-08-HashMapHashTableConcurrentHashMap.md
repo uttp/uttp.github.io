@@ -60,7 +60,7 @@ MAXIMUM_CAPACITY为HashMap的桶的最大的个数，这里定义为2^30</br>
 DEFAULT_LOAD_FACTORY的作用是当元素的个数大于桶的个数*load_factory时HashMap就得重新进行hash</br>
 table是用一个数组来保存桶中的元素，每个桶是由一个链表组成</br>
 modCount记录的是桶更改的次数，这样在遍历时如果对HashMap进行了修改那么就会报ConcurrentModificationException异常</br>
-##1.2 操作分析
+###1.2 操作分析
 ~~~java
 public HashMap(int initialCapacity, float loadFactor) {
 	if (initialCapacity < 0)
@@ -111,7 +111,6 @@ private void inflateTable(int toSize) {
     table = new Entry[capacity];
     initHashSeedAsNeeded(capacity);
 }
-
 ~~~
 对桶进行初始化</br>
 capacity设置为2的指数次方</br>
