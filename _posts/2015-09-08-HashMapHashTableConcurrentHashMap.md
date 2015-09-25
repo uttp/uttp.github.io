@@ -156,7 +156,6 @@ void resize(int newCapacity) {
     table = newTable;
     threshold = (int)Math.min(newCapacity * loadFactor, MAXIMUM_CAPACITY + 1);
 }
-
 void transfer(Entry[] newTable, boolean rehash) {
     int newCapacity = newTable.length;
     for (Entry<K,V> e : table) {
@@ -184,7 +183,6 @@ final Entry<K,V> removeEntryForKey(Object key) {
    	int i = indexFor(hash, table.length);
     Entry<K,V> prev = table[i];
     Entry<K,V> e = prev;
-
     while (e != null) {
     	Entry<K,V> next = e.next;
        	Object k;
@@ -202,7 +200,6 @@ final Entry<K,V> removeEntryForKey(Object key) {
         prev = e;
         e = next;
    }
-
    return e;
 }
 ~~~
