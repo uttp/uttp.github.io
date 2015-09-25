@@ -203,7 +203,10 @@ final Entry<K,V> removeEntryForKey(Object key) {
    return e;
 }
 ~~~
-由源码可得每次进行移除元素操作的时候，没有再对数据结构进行修改（指的是对capacity的大小进行增倍对每个元素进行重新hash）
+由源码可得每次进行移除元素操作的时候，没有再对数据结构进行修改（指的是对capacity的大小进行增倍对每个元素进行重新hash）</br></br>
+##2 HashTable分析</br>
+HashTable和HashMap源代码差不多，区别在于HashTable是线程安全的，在进行put和remove操作时运用了synchronized对对象进行加锁，故此时代码分析省略</br>
+##3 ConcurrentHashMap分析
 
 
 
