@@ -15,7 +15,7 @@ published: true
 仓库<br/>
 私服
 #二、settings.xml配置文件
-settings.xml文件为maven的全局配置文件，其默认${M2_HOME}/conf/settings.xml，所有用户共同使用此配置文件，如果用户需要配置自己的配置文件则可以把全局配置文件拷贝到用户home目录下的.m2文件夹下面，settings.xml可以配置私服用户名和密码、镜像库等。
+  settings.xml文件为maven的全局配置文件，其默认${M2_HOME}/conf/settings.xml，所有用户共同使用此配置文件，如果用户需要配置自己的配置文件则可以把全局配置文件拷贝到用户home目录下的.m2文件夹下面，settings.xml可以配置私服用户名和密码、镜像库等。
 ~~~java
 <mirrors>
 	<mirror>
