@@ -107,7 +107,7 @@ repository属性表明了仓库的id、仓库中下载的版本类型和仓库�
 outputDirecotry属性规定了mvn compile编译项目编译时目标文件的位置，sourceDirectory规定了java编译源文件的位置，testSourceDirectory规定了测试源文件的位置，resources规定了资源文件的位置，资源文件在编译后都会放到目标文件的根目录下，在spring-mvc配置文件中classpath与配置的resource对应。一般maven默认的源文件是在src/main/java中，破坏这种默认的目录结构使有些人难以看懂，但是有些项目就是配置了多个源文件的位置，它是利用plugin属性了，配置builder-helper-maven-plugin插件可以，如上配置文件中配置了src/core/java也为源文件的位置，这样在编译时也会编译src/core/java文件到目标文件，如下图对应上面配置文件生编译后生成的目录结构
 ![CompileCatalogStructure][CompileCatalogStructure]]
 在预发布环境中实现分支一键部署到指定的服务器，我觉得其中一种部署脚本实现可以是这样的：一、拉取分支；二、修改pom.xml文件中的tomcat7-maven-plugin插件的url属性，使其对应指定的工程部署的端口号（一个预发布环境有多个tomcat服务器）；三、运行 mvn clean tom
-cat7:redeploy命令。其中重要的一环是tomcat7-maven-plugin插件的配置，url配置属性指定了已经开启了的tomcat服务器的管理页，通过管理页可以部署war包到对应的服务器，username属性和password属性是登录管理页面的验证（另一种配置是在settings.xml文件中配置），其配置应该和tomcat服务器conf/tomcat-users.xml中的配置对应，如下图是部署成功后显示的log信息
+cat7:redeploy命令。其中重要的一环是tomcat7-maven-plugin插件的配置，url配置属性指定了已经开启了的tomcat服务器的管理页，通过管理页可以部署war包到对应的服务器，username属性和password属性是登录管理页面的验证（另一种配置是在settings.xml文件中配置），其配置应该和tomcat服务器conf/tomcat-users.xml中的配置对应，如下图是部署成功后显示的log信息</br>
 ![mvnDeploySuccess] [mvnDeploySuccess]
 ~~~java
 <distributionManagement>
