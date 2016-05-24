@@ -108,9 +108,7 @@ outputDirecotry属性规定了mvn compile编译项目编译时目标文件的位
 ![CompileCatalogStructure][CompileCatalogStructure]</br>
 在预发布环境中实现分支一键部署到指定的服务器，我觉得其中一种部署脚本实现可以是这样的：一、拉取分支；二、修改pom.xml文件中的tomcat7-maven-plugin插件的url属性，使其对应指定的工程部署的端口号（一个预发布环境有多个tomcat服务器）；三、运行 mvn clean tom
 cat7:redeploy命令。其中重要的一环是tomcat7-maven-plugin插件的配置，url配置属性指定了已经开启了的tomcat服务器的管理页，通过管理页可以部署war包到对应的服务器，username属性和password属性是登录管理页面的验证（另一种配置是在settings.xml文件中配置），其配置应该和tomcat服务器conf/tomcat-users.xml中的配置对应，如下图是部署成功后显示的log信息</br>
-<div style="width=800px">
 ![mvnDeploySuccess] [mvnDeploySuccess]</br>
-</div>
 ~~~java
 <distributionManagement>
    <repository>
