@@ -155,4 +155,4 @@ mvn deploy命令是部署项目生成的构建到远程仓库，distributionMana
 
 [CompileCatalogStructure]: {{"/spring-mvc_compile_catalog_structure.png" | prepend: site.imgrepo }}
 
-[mvnDeploySuccess]: {{"/spring-mvc_mvn_deploy_success.png" | prepend: site.imgrepo }}
+[mvnDeploySuccess]: {{"/spring-mvc_mvn_deploy_success.png =100x100" | prepend: site.imgrepo }}
